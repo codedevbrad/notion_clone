@@ -1,0 +1,20 @@
+
+$primary_elementBackground: white;
+$primary_button: white;
+$primary_border: 1px solid black;
+
+@mixin buttonStyle ( ) {
+
+}
+
+@mixin inputStyle ( ) {
+
+}
+
+@mixin boxShadow ( $color , $space ) {
+
+}
+
+@mixin flexbox_row ( $v_type , $h_type ) {
+   flex-direction: row; justify-content: $h_type ; align-items: $v_type;
+}

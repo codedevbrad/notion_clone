@@ -1,0 +1,207 @@
+
+
+#textarea {
+
+}
+
+.editable-heading[ contenteditable=true ]:empty:before {
+  content: attr(placeholder);
+  display: block; /* For Firefox */
+}
+
+.editable-body[ contenteditable=true ]:empty:before {
+  content: attr(placeholder);
+  display: block; /* For Firefox */
+  opacity: 0;
+}
+
+.editable-body[ contenteditable=true ]:empty:focus:before {
+  content: attr(placeholder);
+  display: block; /* For Firefox */
+  opacity: 1;
+}
+
+
+.editable {
+  outline: none; font-family: 'Cormorant Garamond'; width: 100%; height: 100%;
+  word-break: break-all;
+  cursor: text;
+  div , span , h1 , h2 , h3 , h4 , p { display: inline-block; }
+
+  h2 { font-size: 1em;   }
+  h3 { font-size: 0.7em; }
+
+  .bold  {
+      font-weight: bold;
+  }
+
+  .underlined {
+      border-bottom: 1px solid black;
+  }
+  .highlighted {
+      background: lightblue;
+      padding: 0 1px;
+   }
+}
+
+.App {
+  width: 100%; height: 100%; display: flex; justify-content: center;
+
+    .Page {
+        flex: 0 0 80%; background: white; display: flex; flex-direction: column; position: relative;
+        padding: 10px 0;
+        .page_top {
+            display: flex; flex-direction: row;
+            .page_top_titlecard {
+                flex: 0 0 25%; display: flex; justify-content: flex-end; align-items: center;
+                padding: 5px; border-right: 1px solid #cfcbcb;
+                padding-right: 10px;
+                h3 {
+                  font-size: 0.95em; font-family: 'Cormorant Garamond';
+                  color: #b8b8b8;
+                }
+            }
+
+            .page_top_heading {
+               flex: 1; padding: 15px 0;
+               .editable-heading {
+                   font-size: 2.25em; font-weight: 700; padding-left: 8px;
+               }
+            }
+        }
+
+        .page_bottom {
+
+            flex: 1; display: flex; flex-direction: row;
+            cursor: text;
+
+            .page_left {
+                flex: 0 0 25%; height: 100%; position: relative;
+            }
+
+            .page_right {
+
+                 flex: 1; height: 100%; display: flex; flex-direction: column;
+                 word-break: break-all;
+
+                     .writable_section {
+
+                         display: flex; flex-direction: row; margin: 4px 0; position: relative;
+
+                         .content_block {
+                             flex: 1 1;
+                             display: flex;
+                             flex-direction: row;
+                             .content_edit {
+                                display: flex; flex: 0 0 20px; visibility: hidden; cursor: pointer;
+                                > div {
+                                    width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+                                    svg {
+                                      width: 5px; height: 100%;
+                                    }
+                                }
+                             }
+                         }
+
+                         .content_hover {
+                           padding: 3px; border-radius: 8px;
+                         }
+
+                         .content_hover:hover {
+                            background: #f1f1f1;
+                         }
+
+
+                         .content_hover:hover .content_edit  {
+                            visibility: visible;
+                         }
+
+                         .content_text {
+                            > div {
+                                width: 100%; height: 100%;
+                                display: flex;
+                                flex-direction: row;
+
+                            }
+                         }
+
+                         .content_bullet {
+                            display: flex; flex-direction: column;
+
+                            .content_bullet_each {
+                                  flex: 1; display: flex; flex-direction: row;
+                                  margin-bottom: 4px;
+                                  .bullet-point {
+                                     flex: 0; display: flex; align-items: center; justify-content: center;
+                                     width: 10px; height: 7px; margin-top: 6px;
+                                     svg {
+                                        width: 5px;
+                                     }
+                                  }
+                                  .bullet-editable {
+                                     flex: 1; padding-left: 5px;
+                                  }
+                             }
+                          }
+                     }
+            }
+        }
+    }
+}
+
+.tooltip_highlight {
+    z-index: 9999; border-radius: 6px; display: inline-block;
+    position: absolute;
+    box-shadow: rgba(15, 15, 15, 0.05) 0px 0px 0px 1px, rgba(15, 15, 15, 0.1) 0px 3px 6px, rgba(15, 15, 15, 0.2) 0px 9px 24px;
+    transition: all 400ms; background: black;
+    ul > li {
+        font-size: 0.65em; padding: 4px 7px; cursor: pointer; display: inline-block;
+        color: white; margin: 5px; border-radius: 3px;
+    }
+    ul > li.highlight-active {
+        background: white; color: black;
+    }
+}
+
+.tooltip_section {
+    background: white; z-index: 9999; border-radius: 8px; display: inline-block;
+    width: 95px;
+    position: fixed;
+    box-shadow: rgba(15, 15, 15, 0.05) 0px 0px 0px 1px, rgba(15, 15, 15, 0.1) 0px 3px 6px, rgba(15, 15, 15, 0.2) 0px 9px 24px;
+    transition: all 400ms; background: black;
+
+    ul > li {
+      font-size: 0.65em; padding: 10px; cursor: pointer; display: block;
+      color: white;
+    }
+}
+
+.tooltip_blockcreation {
+    z-index: 9999; border-radius: 6px; display: inline-block;
+    position: absolute;
+    box-shadow: rgba(15, 15, 15, 0.05) 0px 0px 0px 1px, rgba(15, 15, 15, 0.1) 0px 3px 6px, rgba(15, 15, 15, 0.2) 0px 9px 24px;
+    transition: all 400ms; background: black; padding: 10px 20px 10px 15px;
+
+    > h3 {
+      color: white; font-size: 0.6em; padding-left: 5px;
+    }
+
+    div {
+        display: block; margin: 10px 0; padding: 5px; border-radius: 5px; cursor: pointer;
+        h3 {
+            display: block; color: white; font-size: 0.6em;
+        }
+        p {
+            font-size: 0.5em; color: grey;
+        }
+    }
+    div:hover {
+        background: white; box-shadow: 0 0 0 0 black;
+        h3, p { color: black; }
+    }
+}
+
+
+.active {
+  display: block;
+}
