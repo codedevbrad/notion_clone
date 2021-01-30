@@ -1,0 +1,54 @@
+@import "./class_variable.scss";
+@import url('https://fonts.googleapis.com/css?family=Montserrat:700');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&display=swap');
+
+
+// font-family: 'Montserrat', sans-serif;
+// font-family: 'Cormorant Garamond', serif;
+
+
+* {
+   -webkit-font-smoothing: antialiased;
+    padding: 0; margin: 0;
+   -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+   -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;        /* Opera/IE 8+ */
+}
+
+* {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+   user-select: none;
+}
+
+
+h1, h2, h3, h4, a, li, p, input, label, textarea, button {
+  font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 0.87em; letter-spacing: 0em;
+  display: inline-block;
+}
+
+input , button { font-weight: 400; }
+
+/* -- html content -- */
+html, body { padding: 0; margin: 0; width: 100%; background: white; }
+
+html , body { height: 100%; }
+
+
+li , a  { text-decoration: none; cursor: pointer; color: black; }
+a:hover { text-decoration: none; }
+svg     { pointer-events:  none; }
+
+.App , #root  { background: white; width: 100%; height: 100%; color: black; }
+
+.noSelect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+   user-select: none;
+}
