@@ -4,6 +4,8 @@ import { AppContext }   from '../context';
 
 import TextBlock     from './blocks/block.components/text/text';
 import BulletedBlock from './blocks/block.components/bulletpoints/bulletPoints';
+import BookmarkBlock from './blocks/block.components/bookmark/bookmark';
+
 
 import TooltipHighlight from './tooltips/tooltip.highlight';
 import TooltipSection   from './tooltips/tooltip.section';
@@ -55,12 +57,18 @@ const PageWritable = ( ) => {
             <div className='writable_section' key={ section.index }>
                 { section.type == 1 &&
                         <div className={`content_block content_text`}>
-                              <TextBlock section={ section } mainIndex={ section.index }/>
+                             <TextBlock section={ section } mainIndex={ section.index }/>
                         </div>
                 }
                 { section.type == 2 &&
                         <div className={`content_block content_bullet`}>
                              <BulletedBlock section={ section } mainIndex={ section.index } />
+                        </div>
+                }
+                {
+                  section.type == 3 &&
+                        <div className={`content_block content_bookmark`}>
+                             <BookmarkBlock section={ section } mainIndex={ section.index } />
                         </div>
                 }
             </div>
@@ -99,8 +107,7 @@ const Page = ( ) => {
                   </div>
 
                   <div className="page_right">
-
-                        <p onClick={ () => draggableEdit(  ) }> { dragSelection.canDrag ? 'delete state true' : 'edit and delete' } </p>
+                        <p className={ `edit_control ${ dragSelection.canDrag ? 'edit_control_on' : ''  } `} onClick={ () => draggableEdit(  ) }> { dragSelection.canDrag ? 'e' : 'e' } </p>
                         <PageWritable />
                   </div>
               </div>

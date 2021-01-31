@@ -1,0 +1,21 @@
+{
+  "name": "notion",
+  "version": "1.0.0",
+  "description": "base script to run server and frontend app.",
+  "scripts": {
+    "client": "npm --prefix ./app_frontend start" ,
+    "python": "python app_server/server.py" ,
+    "start":  "npm run client && npm npm python",
+    "deploy": "..."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codedevbrad/notion_frontend_clone.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/codedevbrad/notion_frontend_clone/issues"
+  },
+  "homepage": "https://github.com/codedevbrad/notion_frontend_clone#readme"
+}

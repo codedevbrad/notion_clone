@@ -8,23 +8,33 @@ const AppContextProvider = ( props  ) => {
 
     const [ writing , updateWriting ] = useState( [
         {
-           text: `hey there` ,
-           type: 1 ,
-           tag: 'h3' ,
-           index: 0
+          text: `hey there` ,
+          type: 1 ,
+          tag: 'h3' ,
+          index: 0
+        } ,
+        {
+          text: {
+            title: 'medium' ,
+            description: 'article for medium.com. thinking of investing, then read the top 5 tips' ,
+            link: 'https://medium.com'
+          } ,
+          type: 3 ,
+          tag: 'div' ,
+          index: 1
         } ,
         {
           text: 'something' ,
-           type: 1 ,
-           tag: 'p'  ,
-           index: 1
+          type: 1 ,
+          tag: 'p'  ,
+          index: 2
         } ,
         {
-           text: 'bullet item 1' ,
-           marginlevel: 0 ,
-           type: 2 ,
-           tag: 'p' ,
-           index: 2
+          text: 'bullet item 1' ,
+          marginlevel: 0 ,
+          type: 2 ,
+          tag: 'p' ,
+          index: 3
         }
     ] );
 
