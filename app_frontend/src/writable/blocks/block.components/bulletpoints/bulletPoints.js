@@ -1,11 +1,12 @@
 import React , { Fragment , useState , useRef , useEffect , useContext }  from 'react';
 import ContentEditable  from 'react-contenteditable';
 import { AppContext }   from '../../../../context';
-
 import Side from '../../block.chunks/chunk.side';
 
 import { scrubOffTags ,  makeFocus } from '../../../utils/util.blockHelpers';
 import { defaultEditableshortcuts } from '../../block.utils/util.keyboardShortcut';
+
+import './styles.scss';
 
 const BulletedBlock = ( {  section , mainIndex } ) => {
     const {

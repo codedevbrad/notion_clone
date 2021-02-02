@@ -5,7 +5,7 @@ import { AppContext }   from '../context';
 import TextBlock     from './blocks/block.components/text/text';
 import BulletedBlock from './blocks/block.components/bulletpoints/bulletPoints';
 import BookmarkBlock from './blocks/block.components/bookmark/bookmark';
-
+import ImageBlock    from './blocks/block.components/image/image';
 
 import TooltipHighlight from './tooltips/tooltip.highlight';
 import TooltipSection   from './tooltips/tooltip.section';
@@ -13,6 +13,7 @@ import BlockCreation    from './tooltips/tooltip.blockCreator';
 
 import useDraggable from './useEffects/useDraggable';
 import useSelection from './useEffects/useSelection';
+import { retrieveImageFromClipboardAsBlob }  from './useEffects/usePastable';
 import { requests } from './network_requests';
 
 import './styles.scss';
@@ -71,6 +72,12 @@ const PageWritable = ( ) => {
                              <BookmarkBlock section={ section } mainIndex={ section.index } />
                         </div>
                 }
+                {
+                  section.type == 4 &&
+                        <div className={`content_block content_image`}>
+                              <ImageBlock section={ section } mainIndex={ section.index } />
+                        </div>
+                }
             </div>
           )
         })
@@ -80,13 +87,23 @@ const PageWritable = ( ) => {
 const Page = ( ) => {
 
     const { dragSelection , togglecanEdit } = useContext( AppContext );
+    const { cloudinaryUpload } = requests;
 
     const draggableEdit = ( ) => {
         togglecanEdit();
     }
 
+    const handlePaste = ( evt ) => {
+      evt.preventDefault();
+      const dT = evt.clipboardData || window.clipboardData;
+      const file = dT.files[ 0 ];
+      cloudinaryUpload( file )
+          .then( image => console.log( image ) )
+          .catch( err => console.log( err ) );
+    }
+
     return (
-        <div className="Page">
+        <div className="Page" onPaste={ ( e ) => handlePaste( e ) }>
 
               <TooltipHighlight/>
 

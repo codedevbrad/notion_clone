@@ -14,6 +14,13 @@ const AppContextProvider = ( props  ) => {
           index: 0
         } ,
         {
+          text: `https://miro.medium.com/max/1050/1*72VaNWlaJ6cFx5HNshHh1w.jpeg` ,
+          type: 4 ,
+          tag: 'img' ,
+          index: 1 ,
+          pagedisplay: 0
+        } ,
+        {
           text: {
             title: 'medium' ,
             description: 'article for medium.com. thinking of investing, then read the top 5 tips' ,
@@ -21,20 +28,20 @@ const AppContextProvider = ( props  ) => {
           } ,
           type: 3 ,
           tag: 'div' ,
-          index: 1
+          index: 2
         } ,
         {
           text: 'something' ,
           type: 1 ,
           tag: 'p'  ,
-          index: 2
+          index: 3
         } ,
         {
           text: 'bullet item 1' ,
           marginlevel: 0 ,
           type: 2 ,
           tag: 'p' ,
-          index: 3
+          index: 4
         }
     ] );
 

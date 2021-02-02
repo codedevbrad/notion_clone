@@ -1,12 +1,33 @@
 import React , { useEffect } from 'react';
 
-const usePastable = ( element ) => {
+function retrieveImageFromClipboardAsBlob ( pasteEvent , callback ) {
+    console.log('ran')
+  	if(pasteEvent.clipboardData == false){
+          if(typeof(callback) == "function"){
+              callback(undefined);
+          }
+      };
 
-    useEffect( ( ) => {
+      var items = pasteEvent.clipboardData.items;
 
-      element.addEventListener( 'onpaste' , handleOnPaste , true );
-      return () => (
-          element.removeEventListener( 'onpaste' , handleOnPaste , true );
-      )
-    } , [ ] );
+      if(items == undefined){
+          if(typeof(callback) == "function"){
+              callback(undefined);
+          }
+      };
+
+      for (var i = 0; i < items.length; i++) {
+          // Skip content if not image
+          if (items[i].type.indexOf("image") == -1) continue;
+          // Retrieve image on clipboard as blob
+          var blob = items[i].getAsFile();
+
+          if(typeof(callback) == "function"){
+              callback(blob);
+          }
+      }
+}
+
+export {
+    retrieveImageFromClipboardAsBlob
 }

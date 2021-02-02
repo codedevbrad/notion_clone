@@ -17,7 +17,7 @@ const ImageBlock = ( { section , mainIndex } ) => {
         <div className="content_hover content_hover_allowed" data-editable-id={ mainIndex }>
               <Side curr={ mainIndex } />
               <div className={ styles.content_image } >
-
+                  <img src={ section.text } />
               </div>
          </div>
     )
