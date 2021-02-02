@@ -1,0 +1,12 @@
+{
+  "name": "index.js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test_bookmarks": "node ./sl_bookmarks/tests/test",
+    "deploy_bookmarks": "cd ./sl_bookmarks && rm -rf deploy/ && 7z a -r ./deploy/bookmarks.zip ."
+  },
+  "author": "",
+  "license": "ISC"
+}

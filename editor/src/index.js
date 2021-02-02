@@ -21,7 +21,7 @@ const App = () => {
                     <AppContextProvider>
                       <Route path="/"  exact component={ Page } />
                     </AppContextProvider>
-                    <Route path="*"  exact component={ Error404    } />
+                    <Route path="*"  exact component={ Error404 } />
                 </Switch>
           </div>
     </Router>

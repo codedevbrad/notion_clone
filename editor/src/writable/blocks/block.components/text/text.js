@@ -28,7 +28,7 @@ const TextBlock = ( { section , mainIndex } ) => {
                            onChange={ ( e ) => handleWritableUpdate( e.target.value  , mainIndex )}
                           className={ "editable editable-body" }
                             onFocus={ ( e ) => highlightedFunc( ) }
-                        placeholder={ 'list item' }
+                        placeholder={ 'start writing or use / to create a new block' }
                           onMouseUp={ ( e ) => handleWritableHighlighting( e ) }
                             tagName={ section.tag }
                            disabled={ dragSelection.canDrag }

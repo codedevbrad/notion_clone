@@ -124,7 +124,9 @@ const Page = ( ) => {
                   </div>
 
                   <div className="page_right">
-                        <p className={ `edit_control ${ dragSelection.canDrag ? 'edit_control_on' : ''  } `} onClick={ () => draggableEdit(  ) }> { dragSelection.canDrag ? 'e' : 'e' } </p>
+                        <p className={ `edit_control ${ dragSelection.canDrag ? 'edit_control_on' : ''  } `} onClick={ () => draggableEdit(  ) }>
+                              <i className="fas fa-edit"></i>
+                        </p>
                         <PageWritable />
                   </div>
               </div>

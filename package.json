@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "description": "base script to run server and frontend app.",
   "scripts": {
-    "client": "npm --prefix ./app_frontend start" ,
-    "python": "python app_server/server.py" ,
-    "start":  "npm run client && npm npm python",
-    "deploy": "..."
+    "client": "npm --prefix ./editor start" ,
+    "server": "npm --prefix ./server server:watch",
+    "client-install": "npm install --prefix client",
+    "client-run": "npm run start --prefix client",
+    "app-run-all": "concurrently \"npm run server\" \"npm run client\""
   },
   "repository": {
     "type": "git",
