@@ -1,11 +1,9 @@
 {
-  "name": "index.js",
+  "name": "18.-flask_rest_api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
-    "test_bookmarks": "node ./sl_bookmarks/tests/test",
-    "deploy_bookmarks": "cd ./sl_bookmarks && rm -rf deploy/ && 7z a -r ./deploy/bookmarks.zip ."
+    "requirements": "pipreqs --force"
   },
   "author": "",
   "license": "ISC"

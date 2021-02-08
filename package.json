@@ -4,19 +4,13 @@
   "description": "base script to run server and frontend app.",
   "scripts": {
     "client": "npm --prefix ./editor start" ,
-    "server": "npm --prefix ./server server:watch",
-    "client-install": "npm install --prefix client",
-    "client-run": "npm run start --prefix client",
-    "app-run-all": "concurrently \"npm run server\" \"npm run client\""
+    "server": "python ./server/api.py" ,
+    "update_server_package": "npm --prefix ./server requirements"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/codedevbrad/notion_frontend_clone.git"
   },
   "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/codedevbrad/notion_frontend_clone/issues"
-  },
-  "homepage": "https://github.com/codedevbrad/notion_frontend_clone#readme"
+  "license": "ISC"
 }
