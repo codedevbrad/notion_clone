@@ -2,7 +2,8 @@
 
 .env
 *env
-
+*uploads
+/server/uploads
 node_modules
 
 # dependencies
