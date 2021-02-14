@@ -1,3 +1,4 @@
 
 notion front_end ( react )
-server ( python , flask )
+server basic ( python , flask )
+server new   ( python , django )

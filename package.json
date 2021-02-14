@@ -4,8 +4,8 @@
   "description": "base script to run server and frontend app.",
   "scripts": {
     "client": "npm --prefix ./editor start" ,
-    "server": "python ./server/api.py" ,
-    "update_server_package": "npm --prefix ./server requirements"
+    "server_flask": "python ./server/api.py" ,
+    "update_flask": "npm --prefix ./server requirements"
   },
   "repository": {
     "type": "git",
