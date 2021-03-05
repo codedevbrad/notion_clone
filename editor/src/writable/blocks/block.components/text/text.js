@@ -3,29 +3,29 @@ import ContentEditable  from 'react-contenteditable';
 import Side from '../../block.chunks/chunk.side';
 import { AppContext } from '../../../../context';
 
-import { scrubOffTags , placeCaretAtEnd , makeFocus } from '../../../utils/util.blockHelpers';
+import useComponentKeybinds from '../../textShortcuts';
 
 const TextBlock = ( { section , mainIndex } ) => {
 
    const {
-       writing , handleWritableUpdate , updateHighlighted , handleWritableHighlighting , dragSelection
+       writing , updateWriting , handleWritableUpdate , updateHighlighted , handleWritableHighlighting , dragSelection
    } = useContext( AppContext );
 
     const highlightedFunc = ( ) => {
        updateHighlighted( value => mainIndex );
     }
 
-    const handleKeyboardShortcuts = ( keybind ) => {
-
-    }
+    const {
+     ref
+   } = useComponentKeybinds( 'text' );
 
     return (
-        <div className="content_hover content_hover_allowed" onKeyDown={ ( evt ) => handleKeyboardShortcuts( evt ) }
+        <div className="content_hover content_hover_allowed" ref={ ref }
              data-editable-id={ mainIndex }>
               <Side curr={ mainIndex } />
 
               <ContentEditable html={ section.text }
-                           onChange={ ( e ) => handleWritableUpdate( e.target.value  , mainIndex )}
+                           onChange={ ( e ) => handleWritableUpdate( e.target.value , mainIndex )}
                           className={ "editable editable-body" }
                             onFocus={ ( e ) => highlightedFunc( ) }
                         placeholder={ 'start writing or use / to create a new block' }

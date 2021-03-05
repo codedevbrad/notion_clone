@@ -16,13 +16,13 @@ const App = () => {
     return (
       <Router>
           <div className="App">
-                <HeadSeo title={ 'template' } description={ 'template description'} keywords={ 'react , css' }/>
-                <Switch>
-                    <AppContextProvider>
-                      <Route path="/"  exact component={ Page } />
-                    </AppContextProvider>
-                    <Route path="*"  exact component={ Error404 } />
-                </Switch>
+                <HeadSeo title={ 'notion clone' } description={ 'template description'} keywords={ 'react , css' }/>
+                <AppContextProvider>
+                  <Switch>
+                        <Route path="/" exact component={ Page } />
+                        <Route component={ Error404 } />
+                  </Switch>
+                </AppContextProvider>
           </div>
     </Router>
     );

@@ -3,38 +3,27 @@ import ContentEditable  from 'react-contenteditable';
 import { AppContext }   from '../../../../context';
 import Side from '../../block.chunks/chunk.side';
 
-import { scrubOffTags ,  makeFocus } from '../../../utils/util.blockHelpers';
-import { defaultEditableshortcuts } from '../../block.utils/util.keyboardShortcut';
+import useComponentKeybinds from '../../textShortcuts';
 
 import './styles.scss';
 
 const BulletedBlock = ( {  section , mainIndex } ) => {
     const {
-        writing , handleWritableUpdate , updateHighlighted , handleWritableHighlighting ,
-        dragSelection
+        writing , handleWritableUpdate , updateHighlighted , handleWritableHighlighting , dragSelection
     } = useContext( AppContext );
 
     const highlightedFunc = ( ) => {
         updateHighlighted( value => mainIndex );
     }
 
-    const handleKeyboardShortcuts = ( keybind ) => {
-        const currentText = writing[ mainIndex ].text;
-        const currentText_scrubbed = scrubOffTags( currentText );
-        let currentAnchor = window.getSelection().anchorOffset - 1;
-        let shortcutNotDefault = defaultEditableshortcuts( {
-            writing , index: mainIndex
-        } , keybind , 0 );
-        if ( shortcutNotDefault ) {
-
-        }
-    }
+    const { ref } = useComponentKeybinds( 'bullet' );
 
     return (
         <Fragment>
             <div className={ `content_hover content_hover_allowed content_bullet_each margin-level-${ section.level }` } key={ mainIndex }
                  data-editable-id={ mainIndex }
-                 onKeyDown={ ( evt ) => handleKeyboardShortcuts( evt ) } >
+                 ref={ ref }
+                 >
 
                 <Side curr={ mainIndex } />
 

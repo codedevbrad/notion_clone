@@ -10,7 +10,14 @@ export const requests = {
               .then(  res => resolve( res.data ) )
               .catch( err => reject( err ) );
       }) ,
-      cloudinaryUpload: ( file ) => {
+
+      imageGet : ( file ) => new Promise( ( resolve , reject ) => {
+          axios.get( `${ PORT }/image?name=${ file }` )
+               .then(  res => resolve( res.data ) )
+               .catch( err => reject( err ) );
+      }) ,
+      
+      iageUpload: ( file ) => {
           var formData = new FormData();
               formData.append('file' , file );
           return new Promise( ( resolve , reject ) => {

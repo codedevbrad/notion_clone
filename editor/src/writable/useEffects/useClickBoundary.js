@@ -17,8 +17,8 @@ function useComponentVisible( state , closeTooltips , conditions , type  ) {
           while( i < 4 ) {
               let next = cycleClassNodes( el );
               let array = [ ...next.classList ];
-              let test = conditions.some( el => array.includes( el ) );
 
+              let test = conditions.some( el => array.includes( el ) );
               if ( array.length > 0 && test ) {
                    found = true;
                    return;
@@ -29,6 +29,7 @@ function useComponentVisible( state , closeTooltips , conditions , type  ) {
           }
           // clck outside ...
           if ( ref.current && !ref.current.contains(event.target) && !found ) {
+              console.log('clicked outside' , type );
               closeTooltips();
           }
         }

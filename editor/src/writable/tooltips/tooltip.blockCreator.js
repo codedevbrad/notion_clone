@@ -2,38 +2,33 @@ import React , { Fragment , useState , useRef , useEffect , useContext }  from '
 import { AppContext } from '../../context';
 
 import useComponentVisible from '../useEffects/useClickBoundary';
+import { getblockData } from '../blocks/blockJSON';
 import { makeFocus , scrubOffTags } from '../utils/util.blockHelpers';
 
 const BlockCreation  = ( ) => {
-    const { writing , updateWriting , highlighted , tooltip_b_coordinates , closeTooltips } = useContext( AppContext );
+    const { writing , highlighted , tooltip_b_coordinates , closeTooltips , handleWrtableBlockUpdate } = useContext( AppContext );
     const { state , coor , anchor } = tooltip_b_coordinates;
+
+    const {
+     ref
+   } = useComponentVisible( state , closeTooltips , [  ] , 'blockcreator'  );
 
     const createNewBlock = async ( type ) => {
           const arrayCopy = [ ...writing ];
           const currentElement = scrubOffTags( arrayCopy[ highlighted ].text );
-          const stayInSection  = currentElement.length == 1;
 
           switch ( type ) {
             case 'text':
-                if ( !stayInSection ) {
-                  arrayCopy.splice( highlighted + 1 , 0 , { text: '' , type: 1 } );
-                  await updateWriting( arrayCopy );
+                  let blockObject_1 = getblockData('text');
+                  await handleWrtableBlockUpdate( 'new' , highlighted , blockObject_1 );
                   makeFocus( highlighted , 'next' , false );
-                  // remove a / value from the current section.
-                  // keep all tags. just remove the / value from the text.
-                  // if multiple / exist. how do we get the position of the / we need to remove.
-
-                } else {
-                  writing[ highlighted ].text = '';
-                  await updateWriting( arrayCopy );
-                  makeFocus( highlighted , 'curr' , false );
-                }
-                closeTooltips( );
-                break;
+                  closeTooltips( );
+                  break;
             case 'bullet':
-
-                return { text: [ '' ] , type: 2 };
-                break;
+                  let blockObject_2 = getblockData('bullet');
+                  await handleWrtableBlockUpdate( 'new' , highlighted , blockObject_2 );
+                  makeFocus( highlighted , 'next' , false );
+                  closeTooltips( );
             default:
           }
     }
@@ -41,7 +36,7 @@ const BlockCreation  = ( ) => {
     return (
         <Fragment>
             { state &&
-              <div className="tooltip tooltip_blockcreation" style={ { left: coor[0] , top: coor[1] - 10 } }>
+              <div className="tooltip tooltip_blockcreation" style={ { left: coor[0] , top: coor[1] - 10 } } ref={ ref }>
                     <h3> create a new ... </h3>
                     <div onClick={ ( ) => createNewBlock( 'text' ) }>
                         <h3> Text block </h3>

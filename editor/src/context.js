@@ -1,4 +1,5 @@
 import React , { createContext , useState } from 'react';
+import { makeFocus } from './writable/utils/util.blockHelpers';
 
 export const AppContext = createContext();
 
@@ -10,38 +11,7 @@ const AppContextProvider = ( props  ) => {
         {
           text: `hey there` ,
           type: 1 ,
-          tag: 'h3' ,
-          index: 0
-        } ,
-        {
-          text: `https://miro.medium.com/max/1050/1*72VaNWlaJ6cFx5HNshHh1w.jpeg` ,
-          type: 4 ,
-          tag: 'img' ,
-          index: 1 ,
-          pagedisplay: 0
-        } ,
-        {
-          text: {
-            title: 'medium' ,
-            description: 'article for medium.com. thinking of investing, then read the top 5 tips' ,
-            link: 'https://medium.com'
-          } ,
-          type: 3 ,
-          tag: 'div' ,
-          index: 2
-        } ,
-        {
-          text: 'something' ,
-          type: 1 ,
-          tag: 'p'  ,
-          index: 3
-        } ,
-        {
-          text: 'bullet item 1' ,
-          marginlevel: 0 ,
-          type: 2 ,
-          tag: 'p' ,
-          index: 4
+          tag: 'h3'
         }
     ] );
 
@@ -72,6 +42,29 @@ const AppContextProvider = ( props  ) => {
     const [ tooltip_s_coordinates , update_tooltip_s_coordinates ] = useState( { state: false , coor: [ 0 , 0 ] } );
     const [ tooltip_h_coordinates , update_tooltip_h_coordinates ] = useState( { state: false , coor: [ 0 , 0 ] } );
     const [ tooltip_b_coordinates , update_tooltip_b_coordinates ] = useState( { state: false , coor: [ 0 , 0 ] , anchor: 0 } );
+
+    const handleWrtableBlockUpdate = ( type , index , block ) => {
+        let arrayCopy = [ ...writing ];
+
+        switch ( type ) {
+            case 'convert':
+                break;
+                
+            case 'new':
+                arrayCopy.splice( index + 1 , 0 , {
+                    text: '' ,
+                    marginlevel: 0 ,
+                    type: block.type ,
+                    tag: block.tag
+                });
+                updateWriting( arrayCopy );
+                break;
+            case 'delete':
+                arrayCopy.splice( index , 1 );
+                updateWriting( arrayCopy );
+                break;
+        }
+    }
 
     const handleWritableUpdate = ( value , index ) => {
         let arrayCopy = [ ...writing ];
@@ -133,7 +126,7 @@ const AppContextProvider = ( props  ) => {
         <AppContext.Provider value={ {
               heading , updateHeading ,
 
-              writing , updateWriting , handleWritableUpdate , handleWritableHighlighting ,
+              writing , updateWriting , handleWritableUpdate , handleWritableHighlighting , handleWrtableBlockUpdate ,
 
               highlighted , updateHighlighted ,
               currCursor , updateCursor ,
