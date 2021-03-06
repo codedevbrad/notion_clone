@@ -5,7 +5,9 @@ const scrubOffTags = ( input , both ) => {
 }
 
 // what is the highlighted variable?
-const makeFocus = ( highlighted , direction , setToEnd ) => {
+const makeFocus = ( highlighted , direction , options ) => {
+
+    let { elementTarget } = options;
 
     const returnIndex = ( direction ) => {
         switch( direction ) {
@@ -21,7 +23,7 @@ const makeFocus = ( highlighted , direction , setToEnd ) => {
     }
 
     let indexOfelement = returnIndex( direction );
-    let div = document.querySelector(`[data-editable-id="${ indexOfelement }"] .editable`);
+    let div = document.querySelector(`[data-editable-id="${ indexOfelement }"] ${ elementTarget }`);
     div.focus();
 };
 

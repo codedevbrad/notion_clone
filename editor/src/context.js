@@ -1,5 +1,6 @@
 import React , { createContext , useState } from 'react';
 import { makeFocus } from './writable/utils/util.blockHelpers';
+import { v4 as uuidv4 } from 'uuid';
 
 export const AppContext = createContext();
 
@@ -9,9 +10,11 @@ const AppContextProvider = ( props  ) => {
 
     const [ writing , updateWriting ] = useState( [
         {
-          text: `hey there` ,
+          text: '' ,
+          marginlevel: 0 ,
           type: 1 ,
-          tag: 'h3'
+          tag: 'p' ,
+          key: uuidv4()
         }
     ] );
 
@@ -46,16 +49,16 @@ const AppContextProvider = ( props  ) => {
     const handleWrtableBlockUpdate = ( type , index , block ) => {
         let arrayCopy = [ ...writing ];
 
+        let key_id = uuidv4();
+
         switch ( type ) {
-            case 'convert':
-                break;
-                
             case 'new':
                 arrayCopy.splice( index + 1 , 0 , {
-                    text: '' ,
+                    text: block.text ,
                     marginlevel: 0 ,
                     type: block.type ,
-                    tag: block.tag
+                    tag: block.tag ,
+                    key: key_id
                 });
                 updateWriting( arrayCopy );
                 break;

@@ -5,13 +5,11 @@ import { AppContext } from '../../context';
 import { getblockData } from './blockJSON';
 import { scrubOffTags , placeCaretAtEnd , makeFocus } from '../utils/util.blockHelpers';
 
-function useComponentKeybinds( blockType ) {
+function useComponentKeybinds( target, blockType , ...options ) {
 
   const {
   writing , highlighted , handleWrtableBlockUpdate , tooltip_b_coordinates , update_tooltip_b_coordinates , closeTooltips
   } = useContext( AppContext );
-
-  const ref = useRef(null);
 
   const handleKeybind = async ( evt  ) => {
 
@@ -20,14 +18,10 @@ function useComponentKeybinds( blockType ) {
                 const currentText = writing[ highlighted ].text;
                 const currentText_scrubbed = scrubOffTags( currentText );
 
-                // detect if text or bullet
-
                 const block_toCreate = getblockData( blockType );
 
                 let keyInput   = evt.key;
                 let keyElement = evt.target.innerHTML;
-
-                console.log( blockType );
 
                 // if a bullet element and < 1 then convert that block to a text element.
 
@@ -37,7 +31,9 @@ function useComponentKeybinds( blockType ) {
                      if ( currentText_scrubbed < 1 ) {
                           evt.preventDefault();
                           await handleWrtableBlockUpdate( 'delete' , highlighted );
-                          makeFocus( highlighted , 'prev' , false );
+                          makeFocus( highlighted , 'prev' , {
+                              elementTarget: '.editable'
+                          } );
 
                      } else {
                           let textMatch = keyElement.slice( keyElement.length - 1 , keyElement.length );
@@ -49,7 +45,9 @@ function useComponentKeybinds( blockType ) {
                 else if ( keyInput == 'Enter' ) {
                      evt.preventDefault();
                      await handleWrtableBlockUpdate( 'new' , highlighted , block_toCreate );
-                     makeFocus( highlighted , 'next' , false );
+                     makeFocus( highlighted , 'next' , {
+                            elementTarget: '.editable'
+                     } );
                 }
                 else if ( keyInput == '/' ) {
                      let curr_elm = evt.target.getBoundingClientRect();
@@ -59,14 +57,18 @@ function useComponentKeybinds( blockType ) {
                 }
   }
 
-  useEffect(() => {
-      document.addEventListener("keydown", handleKeybind , true);
+  useEffect( ( ) => {
+      const targetIsRef = target.hasOwnProperty("current");
+      const currentTarget = targetIsRef ? target.current : target;
+      if (currentTarget)
+        currentTarget.addEventListener( 'keydown', handleKeybind, ...options);
       return () => {
-        document.removeEventListener("keydown", handleKeybind , true);
+        if (currentTarget)
+          currentTarget.removeEventListener( 'keydown', handleKeybind, ...options);
       };
-  });
-
-  return { ref };
+    },
+    [target , options ]
+  );
 }
 
 export default useComponentKeybinds;

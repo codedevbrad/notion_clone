@@ -37,7 +37,6 @@ const PageHeading = ( ) => {
 const PageWritable = ( ) => {
 
     const { writing , highlighted , selectedText , dragSelection } = useContext( AppContext );
-    const { generateBookmark } = requests;
 
     const itemsSelected = ({ items, event }) => {
           console.log( items , 'now' );
@@ -46,19 +45,13 @@ const PageWritable = ( ) => {
     useDraggable();
     useSelection( dragSelection.canDrag , itemsSelected );
 
-    useEffect( ( ) => {
-      // generateBookmark('https://www.youtube.com/watch?v=nhpKHSy78t0')
-      //     .then( data => console.log( data ))
-      //     .catch( err => console.log( err  ) );
-    } , [ ] );
-
     return (
       writing.map( ( section , index ) => {
           return (
-            <div className='writable_section' key={ index } >
+            <div className='writable_section' key={ section.key } >
                 { section.type == 1 &&
                         <div className={`content_block content_text`}>
-                             <TextBlock section={ section } mainIndex={ index }/>
+                             <TextBlock section={ section } mainIndex={ index } />
                         </div>
                 }
                 { section.type == 2 &&

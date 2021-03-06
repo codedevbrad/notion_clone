@@ -14,14 +14,15 @@ const TextBlock = ( { section , mainIndex } ) => {
     const highlightedFunc = ( ) => {
        updateHighlighted( value => mainIndex );
     }
+    const elementRef = useRef( null );
+    useComponentKeybinds( elementRef , 'text' , mainIndex  );
 
-    const {
-     ref
-   } = useComponentKeybinds( 'text' );
+    useEffect( ( ) => {
+        console.log('text' , mainIndex );
+    } , [ ] );
 
     return (
-        <div className="content_hover content_hover_allowed" ref={ ref }
-             data-editable-id={ mainIndex }>
+        <div className="content_hover content_hover_allowed" data-editable-id={ mainIndex } ref={ elementRef }>
               <Side curr={ mainIndex } />
 
               <ContentEditable html={ section.text }

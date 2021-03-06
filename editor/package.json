@@ -21,7 +21,8 @@
     "react-helmet": "^6.0.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "2.1.8",
-    "react-selectable": "^2.1.1"
+    "react-selectable": "^2.1.1",
+    "uuid": "^8.3.2"
   },
   "scripts": {
     "start": "react-scripts start",
