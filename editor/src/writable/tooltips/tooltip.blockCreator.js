@@ -5,7 +5,6 @@ import useComponentVisible from '../useEffects/useClickBoundary';
 import { getblockData } from '../blocks/blockJSON';
 import { makeFocus , scrubOffTags } from '../utils/util.blockHelpers';
 
-
 const BlockCreation  = ( ) => {
     const { writing , highlighted , tooltip_b_coordinates , closeTooltips , handleWrtableBlockUpdate } = useContext( AppContext );
     const { state , coor , anchor } = tooltip_b_coordinates;

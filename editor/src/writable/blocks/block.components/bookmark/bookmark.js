@@ -44,9 +44,12 @@ const Placeholder = ( { index , update } ) => {
 
     return  (
         <Fragment>
-          <div>
-              <input placeholder={ `bookmark-${ index }`} type="text" value={ bookmarkText } onChange={ ( evt ) => updateText( evt.target.value ) } />
-              <div onClick={ () => generateBookmarkFunc( ) }> upload bookmark </div>
+          <div className={ styles.content_bookmark_placeholder }>
+              <h3> generate a bookmark </h3>
+              <p> paste or manually write a link into the inputfield and hit enter when you're set. it's that easy. </p>
+              <form onSubmit={ ( ) => generateBookmarkFunc( ) }>
+                <input type="text" value={ bookmarkText } onChange={ ( evt ) => updateText( evt.target.value ) } />
+              </form>
            </div>
         </Fragment>
     )

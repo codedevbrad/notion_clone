@@ -1,6 +1,7 @@
 import React , { createContext , useState } from 'react';
 import { makeFocus } from './writable/utils/util.blockHelpers';
 import { v4 as uuidv4 } from 'uuid';
+import { getblockData } from './writable/blocks/blockJSON';
 
 export const AppContext = createContext();
 
@@ -8,15 +9,7 @@ const AppContextProvider = ( props  ) => {
 
     const [ heading , updateHeading ] = useState(``);
 
-    const [ writing , updateWriting ] = useState( [
-        {
-          text: '' ,
-          marginlevel: 0 ,
-          type: 1 ,
-          tag: 'p' ,
-          key: uuidv4()
-        }
-    ] );
+    const [ writing , updateWriting ] = useState( [ ] );
 
     const [ dragSelection , updateDragSelection ] = useState( {
         canDrag: false , isDragging: false , selected: [ ]
@@ -46,20 +39,23 @@ const AppContextProvider = ( props  ) => {
     const [ tooltip_h_coordinates , update_tooltip_h_coordinates ] = useState( { state: false , coor: [ 0 , 0 ] } );
     const [ tooltip_b_coordinates , update_tooltip_b_coordinates ] = useState( { state: false , coor: [ 0 , 0 ] , anchor: 0 } );
 
-    const handleWrtableBlockUpdate = ( type , index , block ) => {
+    const handleWrtableBlockUpdate = async ( type , index , block ) => {
         let arrayCopy = [ ...writing ];
-
         let key_id = uuidv4();
 
         switch ( type ) {
+            case 'fresh':
+                let object = getblockData('text');
+                    object.key = key_id;
+                arrayCopy.push( object );
+                await updateWriting( arrayCopy );
+                makeFocus( writing.length , 'curr' , {
+                    elementTarget: '.editable'
+                } );
+                break;
             case 'new':
-                arrayCopy.splice( index + 1 , 0 , {
-                    text: block.text ,
-                    marginlevel: 0 ,
-                    type: block.type ,
-                    tag: block.tag ,
-                    key: key_id
-                });
+                block.key = key_id;
+                arrayCopy.splice( index + 1 , 0 , block );
                 updateWriting( arrayCopy );
                 break;
             case 'delete':

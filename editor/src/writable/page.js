@@ -79,7 +79,7 @@ const PageWritable = ( ) => {
 
 const Page = ( ) => {
 
-    const { writing , dragSelection , togglecanEdit } = useContext( AppContext );
+    const { writing , dragSelection , togglecanEdit , handleWrtableBlockUpdate } = useContext( AppContext );
     const { cloudinaryUpload } = requests;
 
     const draggableEdit = ( ) => {
@@ -87,12 +87,19 @@ const Page = ( ) => {
     }
 
     const handlePaste = ( evt ) => {
-      evt.preventDefault();
-      const dT = evt.clipboardData || window.clipboardData;
-      const file = dT.files[ 0 ];
-      cloudinaryUpload( file )
-          .then( image => console.log( image ) )
-          .catch( err => console.log( err ) );
+        evt.preventDefault();
+        const dT = evt.clipboardData || window.clipboardData;
+        const file = dT.files[ 0 ];
+        cloudinaryUpload( file )
+            .then( image => console.log( image ) )
+            .catch( err => console.log( err ) );
+    }
+
+    const handleKeybinds = async ( evt ) => {
+          let isOutOfElement = evt.classList[0] == 'page_right';
+          if ( isOutOfElement ) {
+               await handleWrtableBlockUpdate( 'fresh' );
+          }
     }
 
     return (
@@ -116,7 +123,7 @@ const Page = ( ) => {
                       <TooltipSection />
                   </div>
 
-                  <div className="page_right">
+                  <div className="page_right" onClick={ ( evt ) => handleKeybinds( evt.target ) }>
                         <p className={ `edit_control ${ dragSelection.canDrag ? 'edit_control_on' : ''  } `} onClick={ () => draggableEdit(  ) }>
                               <i className="fas fa-edit"></i>
                         </p>

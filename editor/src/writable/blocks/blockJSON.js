@@ -5,28 +5,32 @@ export const getblockData = ( type ) => {
               return {
                   type: 1 ,
                   tag: 'p' ,
-                  text: ''
+                  text: '' ,
+                  marginlevel: 0
               }
               break;
           case 'bullet' :
               return {
                   type: 2 ,
                   tag: 'div' ,
-                  text: ''
+                  text: '' ,
+                  marginlevel: 0
               }
               break;
           case 'bookmark' :
               return {
                   type: 3 ,
                   tag: 'div' ,
-                  text: ''
+                  text: '' ,
+                  marginlevel: 0
               }
               break;
           case 'image' :
               return {
                   type: 4 ,
                   tag: 'image' ,
-                  text: false
+                  text: false ,
+                  marginlevel: 0
               }
               break;
     }
