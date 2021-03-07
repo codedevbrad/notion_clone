@@ -39,25 +39,32 @@ const AppContextProvider = ( props  ) => {
     const [ tooltip_h_coordinates , update_tooltip_h_coordinates ] = useState( { state: false , coor: [ 0 , 0 ] } );
     const [ tooltip_b_coordinates , update_tooltip_b_coordinates ] = useState( { state: false , coor: [ 0 , 0 ] , anchor: 0 } );
 
+    const handleWritableDragUpdate = ( data ) => {
+          
+    }
+
     const handleWrtableBlockUpdate = async ( type , index , block ) => {
         let arrayCopy = [ ...writing ];
         let key_id = uuidv4();
 
         switch ( type ) {
+
             case 'fresh':
-                let object = getblockData('text');
-                    object.key = key_id;
-                arrayCopy.push( object );
+                let object_fresh = getblockData('text');
+                    object_fresh.key = key_id;
+                arrayCopy.push( object_fresh );
                 await updateWriting( arrayCopy );
                 makeFocus( writing.length , 'curr' , {
                     elementTarget: '.editable'
                 } );
                 break;
+
             case 'new':
                 block.key = key_id;
                 arrayCopy.splice( index + 1 , 0 , block );
-                updateWriting( arrayCopy );
+                await updateWriting( arrayCopy );
                 break;
+
             case 'delete':
                 arrayCopy.splice( index , 1 );
                 updateWriting( arrayCopy );
@@ -66,9 +73,9 @@ const AppContextProvider = ( props  ) => {
     }
 
     const handleWritableUpdate = ( value , index ) => {
-        let arrayCopy = [ ...writing ];
-        arrayCopy[ index ].text = value;
-        updateWriting( arrayCopy );
+          let arrayCopy = [ ...writing ];
+          arrayCopy[ index ].text = value;
+          updateWriting( arrayCopy );
     }
 
     const handleWritableHighlighting = async ( evt ) => {
@@ -125,7 +132,9 @@ const AppContextProvider = ( props  ) => {
         <AppContext.Provider value={ {
               heading , updateHeading ,
 
-              writing , updateWriting , handleWritableUpdate , handleWritableHighlighting , handleWrtableBlockUpdate ,
+              writing , updateWriting , handleWritableUpdate , handleWritableHighlighting ,
+
+              handleWrtableBlockUpdate , handleWritableDragUpdate ,
 
               highlighted , updateHighlighted ,
               currCursor , updateCursor ,

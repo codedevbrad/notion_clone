@@ -1,22 +1,55 @@
-import React , { useEffect } from 'react';
+import React , { useEffect , useContext } from 'react';
 import { elementHasClass } from '../utils/util.classSearch';
 
-const useDraggable = ( evt , editableClass ) => {
+/*
+   dragging down from element before last causes an issue.
+*/
 
-    const changeWritableindexes = ( ) => {
+const useDraggable = ( update , item ) => {
 
+    function diff ( num1, num2  ) {
+
+        if ( num1 == num2 ) {
+            return {
+                direction: 'same' ,
+                canChange: false
+            }
+        }
+
+        if (num1 > num2) {
+            return {
+                direction: 'down' ,
+                canChange: (num1 - num2) > 1 ,
+                updateIndex: num1 ,
+                prepend: false
+            };
+        }
+        else {
+            return {
+               direction: 'up' ,
+               canChange:  ( num2 - num1 ) >= 1 ,
+               updateIndex: num1 > 0 ? num1 - 1 : num1 ,
+               prepend: num1 == 0
+            };
+        }
     }
 
     const handleDraggableStart = evt => {
         let data_id = evt.target.getAttribute( 'data-editable-id' );
-        evt.dataTransfer.setData( 'text/plain', data_id );
+        localStorage.setItem("item", data_id );
     }
 
     const handleDraggableEnter = evt => {
         evt.preventDefault();
-        let isOverEditable = elementHasClass( evt.target , 'content_hover' );
-        if ( isOverEditable ) {
-             evt.target.classList.add('content_hover_active');
+        let element = evt.target;
+        let currentElement  = parseInt( element.getAttribute( 'data-editable-id' ));
+        let isOverEditable  = elementHasClass( element , 'content_hover' );
+        let lastElement     = parseInt( localStorage.getItem( 'item' ) );
+
+        let canDrop = diff( currentElement , lastElement );
+
+        if ( isOverEditable && canDrop.canChange ) {
+             element.classList.add('content_hover_active');
         }
     }
 
@@ -32,15 +65,18 @@ const useDraggable = ( evt , editableClass ) => {
         evt.preventDefault();
     }
 
-
     const handleDraggableDrop = evt => {
         evt.preventDefault();
-        let isOverEditable = elementHasClass( evt.target , 'content_hover' );
+        let element = evt.target;
+        let isOverEditable = elementHasClass( element , 'content_hover' );
+        let stored_element = parseInt( localStorage.getItem( 'item' ) );
+        let moveToPosition = parseInt( element.getAttribute('data-editable-id') );
+        element.classList.remove('content_hover_active');
+
+        let canDrop = diff( moveToPosition , stored_element );
+
         if ( isOverEditable ) {
-             evt.target.classList.remove('content_hover_active');
-             let data   = evt.dataTransfer.getData('text/plain');
-             let moveTo = evt.target.getAttribute('data-editable-id');
-             console.log( data , moveTo );
+             console.log( canDrop );
         }
     }
 

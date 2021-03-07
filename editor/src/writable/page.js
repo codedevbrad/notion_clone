@@ -34,46 +34,71 @@ const PageHeading = ( ) => {
     )
 }
 
+function useStateRef(initialValue) {
+
+    const { writing } = useContext( AppContext );
+    const ref = useRef( writing );
+
+    useEffect(() => {
+       ref.current = writing;
+    }, [ writing ]);
+
+    return [ ref ];
+}
+
 const PageWritable = ( ) => {
 
-    const { writing , highlighted , selectedText , dragSelection } = useContext( AppContext );
+    const { writing , highlighted , selectedText , dragSelection , handleWrtableBlockUpdate , handleWritableDragUpdate } = useContext( AppContext );
+
+    let [ writable_updated ] = useStateRef();
 
     const itemsSelected = ({ items, event }) => {
-          console.log( items , 'now' );
+        console.log( items , 'now' , writing );
     }
 
-    useDraggable();
+    const updateDraggableFunc = ( last , updatedPos ) => {
+
+        handleWritableDragUpdate({
+            lastPos : last , updatedPos , array: writable_updated
+        });
+    }
+
+    useDraggable( updateDraggableFunc , writable_updated );
     useSelection( dragSelection.canDrag , itemsSelected );
 
     return (
-      writing.map( ( section , index ) => {
-          return (
-            <div className='writable_section' key={ section.key } >
-                { section.type == 1 &&
-                        <div className={`content_block content_text`}>
-                             <TextBlock section={ section } mainIndex={ index } />
-                        </div>
-                }
-                { section.type == 2 &&
-                        <div className={`content_block content_bullet`}>
-                             <BulletedBlock section={ section } mainIndex={ index } />
-                        </div>
-                }
-                {
-                  section.type == 3 &&
-                        <div className={`content_block content_bookmark`}>
-                             <BookmarkBlock section={ section } mainIndex={ index } />
-                        </div>
-                }
-                {
-                  section.type == 4 &&
-                        <div className={`content_block content_image`}>
-                              <ImageBlock section={ section } mainIndex={ index } />
-                        </div>
-                }
-            </div>
-          )
-        })
+        <Fragment>
+            { writing.map( ( section , index ) =>
+              <div className='writable_section' key={ section.key }>
+
+                  { section.type == 1 &&
+                          <div className={`content_block content_text`}>
+                               <TextBlock section={ section } mainIndex={ index } />
+                          </div>
+                  }
+                  { section.type == 2 &&
+                          <div className={`content_block content_bullet`}>
+                               <BulletedBlock section={ section } mainIndex={ index } />
+                          </div>
+                  }
+                  {
+                    section.type == 3 &&
+                          <div className={`content_block content_bookmark`}>
+                               <BookmarkBlock section={ section } mainIndex={ index } />
+                          </div>
+                  }
+                  {
+                    section.type == 4 &&
+                          <div className={`content_block content_image`}>
+                                <ImageBlock section={ section } mainIndex={ index } />
+                          </div>
+                  }
+              </div>
+            )}
+            { writing.length > 1 &&
+              <div className={`writable_placeholder content_hover`} data-editable-id={ writing.length }> </div>
+            }
+        </Fragment>
     )
 }
 

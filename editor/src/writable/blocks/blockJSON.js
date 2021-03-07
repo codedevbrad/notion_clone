@@ -1,6 +1,7 @@
 
 export const getblockData = ( type ) => {
     switch ( type ) {
+
           case 'text' :
               return {
                   type: 1 ,
