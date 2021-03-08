@@ -20,16 +20,16 @@ const useDraggable = ( update , item ) => {
             return {
                 direction: 'down' ,
                 canChange: (num1 - num2) > 1 ,
-                updateIndex: num1 ,
-                prepend: false
+                updateIndex: ( num1 - 1 ) ,
+                shouldPrepend: false
             };
         }
         else {
             return {
                direction: 'up' ,
                canChange:  ( num2 - num1 ) >= 1 ,
-               updateIndex: num1 > 0 ? num1 - 1 : num1 ,
-               prepend: num1 == 0
+               updateIndex: num1 ,
+               shouldPrepend: num1 == 0
             };
         }
     }
@@ -46,9 +46,9 @@ const useDraggable = ( update , item ) => {
         let isOverEditable  = elementHasClass( element , 'content_hover' );
         let lastElement     = parseInt( localStorage.getItem( 'item' ) );
 
-        let canDrop = diff( currentElement , lastElement );
+        let { canChange } = diff( currentElement , lastElement );
 
-        if ( isOverEditable && canDrop.canChange ) {
+        if ( isOverEditable && canChange ) {
              element.classList.add('content_hover_active');
         }
     }
@@ -73,10 +73,12 @@ const useDraggable = ( update , item ) => {
         let moveToPosition = parseInt( element.getAttribute('data-editable-id') );
         element.classList.remove('content_hover_active');
 
-        let canDrop = diff( moveToPosition , stored_element );
+        let { canChange , updateIndex , shouldPrepend } = diff( moveToPosition , stored_element );
 
-        if ( isOverEditable ) {
-             console.log( canDrop );
+        if ( isOverEditable && canChange ) {
+             update({
+                elementToRemove: stored_element , updateIndex , shouldPrepend
+             } );
         }
     }
 

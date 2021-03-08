@@ -17,10 +17,6 @@ const TextBlock = ( { section , mainIndex } ) => {
     const elementRef = useRef( null );
     useComponentKeybinds( elementRef , 'text' , mainIndex  );
 
-    useEffect( ( ) => {
-        console.log('text' , mainIndex );
-    } , [ ] );
-
     return (
         <div className="content_hover content_hover_allowed" data-editable-id={ mainIndex } ref={ elementRef }>
               <Side curr={ mainIndex } />

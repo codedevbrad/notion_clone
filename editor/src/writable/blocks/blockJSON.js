@@ -1,7 +1,6 @@
 
 export const getblockData = ( type ) => {
     switch ( type ) {
-
           case 'text' :
               return {
                   type: 1 ,
@@ -13,7 +12,7 @@ export const getblockData = ( type ) => {
           case 'bullet' :
               return {
                   type: 2 ,
-                  tag: 'div' ,
+                  tag: 'p' ,
                   text: '' ,
                   marginlevel: 0
               }
@@ -29,7 +28,7 @@ export const getblockData = ( type ) => {
           case 'image' :
               return {
                   type: 4 ,
-                  tag: 'image' ,
+                  tag: 'img' ,
                   text: false ,
                   marginlevel: 0
               }
@@ -37,6 +36,7 @@ export const getblockData = ( type ) => {
     }
 }
 
+const 
 
 // {
 //   text: `https://miro.medium.com/max/1050/1*72VaNWlaJ6cFx5HNshHh1w.jpeg` ,

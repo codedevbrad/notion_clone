@@ -19,10 +19,6 @@ const BulletedBlock = ( {  section , mainIndex } ) => {
     const elementRef = useRef( null );
     useComponentKeybinds( elementRef , 'bullet' , mainIndex  );
 
-    useEffect( ( ) => {
-          console.log('bullet' , mainIndex );
-    } , [ ] );
-
     return (
         <Fragment>
             <div className={ `content_hover content_hover_allowed content_bullet_each margin-level-${ section.level }` } key={ mainIndex }

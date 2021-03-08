@@ -39,9 +39,23 @@ const AppContextProvider = ( props  ) => {
     const [ tooltip_h_coordinates , update_tooltip_h_coordinates ] = useState( { state: false , coor: [ 0 , 0 ] } );
     const [ tooltip_b_coordinates , update_tooltip_b_coordinates ] = useState( { state: false , coor: [ 0 , 0 ] , anchor: 0 } );
 
-    const handleWritableDragUpdate = ( data ) => {
-          
+    const handleWritableDragUpdate = async ( updatedObject , writable_updated ) => {
+        let { elementToRemove , updateIndex , shouldPrepend } = updatedObject;
+        let arrayCopy = [ ...writable_updated.current ];
+
+        let object = arrayCopy[ elementToRemove ];
+
+        arrayCopy.splice( elementToRemove , 1 );
+
+        if ( shouldPrepend ) {
+             arrayCopy.unshift( object );
+        } else {
+             arrayCopy.splice( updateIndex , 0 , object );
+        }
+        await updateWriting( arrayCopy );
     }
+
+    // ( type : switch condition , index: single or array of values for array , block : block : object to be inserted )
 
     const handleWrtableBlockUpdate = async ( type , index , block ) => {
         let arrayCopy = [ ...writing ];
@@ -67,7 +81,14 @@ const AppContextProvider = ( props  ) => {
 
             case 'delete':
                 arrayCopy.splice( index , 1 );
-                updateWriting( arrayCopy );
+                await updateWriting( arrayCopy );
+                break;
+
+            case 'delete_many':
+                arrayCopy = arrayCopy.filter( ( value , itemIndex ) => {
+                    return index.indexOf( itemIndex ) == -1;
+                });
+                await updateWriting( arrayCopy );
                 break;
         }
     }

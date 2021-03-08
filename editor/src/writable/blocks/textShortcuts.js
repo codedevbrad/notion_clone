@@ -3,13 +3,18 @@ import { useState, useEffect, useRef , useContext } from 'react';
 import { AppContext } from '../../context';
 
 import { getblockData } from './blockJSON';
-import { scrubOffTags , placeCaretAtEnd , makeFocus } from '../utils/util.blockHelpers';
+import { scrubOffTags , placeCaretAtEnd , makeFocus , getTextWidth } from '../utils/util.blockHelpers';
+
 
 function useComponentKeybinds( target, blockType , ...options ) {
 
   const {
   writing , highlighted , handleWrtableBlockUpdate , tooltip_b_coordinates , update_tooltip_b_coordinates , closeTooltips
   } = useContext( AppContext );
+
+  const filterBlock = ( stringMatch ) => {
+      // convert block data into an array and match based on string provided.
+  }
 
   const handleKeybind = async ( evt  ) => {
 
@@ -25,14 +30,12 @@ function useComponentKeybinds( target, blockType , ...options ) {
 
                 // if a bullet element and < 1 then convert that block to a text element.
 
-                // await handleWrtableBlockUpdate( 'update' , highlighted , block_toCreate );
-
                 if ( keyInput == 'Backspace' ) {
                      if ( currentText_scrubbed < 1 ) {
                           evt.preventDefault();
                           await handleWrtableBlockUpdate( 'delete' , highlighted );
                           makeFocus( highlighted , 'prev' , {
-                              elementTarget: '.editable'
+                                elementTarget: '.editable'
                           } );
 
                      } else {
@@ -42,18 +45,28 @@ function useComponentKeybinds( target, blockType , ...options ) {
                           }
                      }
                 }
-                else if ( keyInput == 'Enter' ) {
+                else if ( keyInput == 'Enter' && !tooltip_b_coordinates.state ) {
                      evt.preventDefault();
                      await handleWrtableBlockUpdate( 'new' , highlighted , block_toCreate );
                      makeFocus( highlighted , 'next' , {
-                            elementTarget: '.editable'
+                        elementTarget: '.editable'
                      } );
                 }
                 else if ( keyInput == '/' ) {
-                     let curr_elm = evt.target.getBoundingClientRect();
+                     let curr_elm_coors = evt.target.getBoundingClientRect();
+                     let curr_elm_text  = scrubOffTags( evt.target.innerHTML );
+                     let curr_elm_text_length = getTextWidth( curr_elm_text );
                      update_tooltip_b_coordinates( {
-                        state: true , coor: [ curr_elm.x + 50 , curr_elm.y ]
+                        state: true , coor: [ curr_elm_coors.x + ( curr_elm_text_length + 25 ) , curr_elm_coors.y + 40 ]
                      });
+                }
+
+                else if ( tooltip_b_coordinates.state ) {
+                    let curr_elm_text    = scrubOffTags( evt.target.innerHTML );
+                    let keysTriggerClose = evt.code == 'Space' || evt.key == 'Enter';
+                    if ( keysTriggerClose ) {
+                        closeTooltips();
+                    }
                 }
   }
 

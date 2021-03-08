@@ -5,9 +5,8 @@ const useSelection = ( state , callback ) => {
    var df;
    useEffect( ( ) => {
      if ( state ) {
-         console.log('can edit');
          df = new DragSelect({
-             selectables: document.getElementsByClassName('writable_section') ,
+             selectables: document.querySelectorAll('.content_block .content_hover') ,
              area: document.querySelector('.Page') ,
              selectedClass: 'drag_highlighted'
          });

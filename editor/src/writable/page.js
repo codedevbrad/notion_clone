@@ -53,21 +53,32 @@ const PageWritable = ( ) => {
     let [ writable_updated ] = useStateRef();
 
     const itemsSelected = ({ items, event }) => {
-        console.log( items , 'now' , writing );
+          let arraySelected = [ ];
+          items.forEach( ( item , i ) => {
+                let id = parseInt( item.getAttribute('data-editable-id') );
+                arraySelected.push( id );
+          });
+          handleWrtableBlockUpdate('delete_many' , arraySelected );
     }
 
-    const updateDraggableFunc = ( last , updatedPos ) => {
-
-        handleWritableDragUpdate({
-            lastPos : last , updatedPos , array: writable_updated
-        });
+    const updateDraggableFunc = ( updatedPos ) => {
+          handleWritableDragUpdate( updatedPos , writable_updated );
     }
 
-    useDraggable( updateDraggableFunc , writable_updated );
+    const handleclickOnFreshStart = async( ) => {
+         await handleWrtableBlockUpdate( 'fresh' );
+    }
+
+    useDraggable( updateDraggableFunc );
     useSelection( dragSelection.canDrag , itemsSelected );
 
     return (
         <Fragment>
+            { writing.length === 0 &&
+              <div className="writable_start" onClick={ ( ) => handleclickOnFreshStart( ) }>
+                  <p> click on the section to start your writing journey </p>
+              </div>
+            }
             { writing.map( ( section , index ) =>
               <div className='writable_section' key={ section.key }>
 
