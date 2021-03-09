@@ -2,19 +2,19 @@ import { useState, useEffect, useRef , useContext } from 'react';
 
 import { AppContext } from '../../context';
 
-import { getblockData } from './blockJSON';
-import { scrubOffTags , placeCaretAtEnd , makeFocus , getTextWidth } from '../utils/util.blockHelpers';
-
+import { getblockData , blockChoices } from './blockJSON';
+import { scrubOffTags , placeCaretAtEnd , makeFocus , getTextWidth , detectKeyIsCharacter } from '../utils/util.blockHelpers';
 
 function useComponentKeybinds( target, blockType , ...options ) {
 
   const {
-  writing , highlighted , handleWrtableBlockUpdate , tooltip_b_coordinates , update_tooltip_b_coordinates , closeTooltips
+    writing , highlighted , handleWrtableBlockUpdate ,
+    tooltip_b_coordinates , update_tooltip_b_coordinates ,
+    tooltip_b_blocks , update_tooltip_b_blocks ,
+    closeTooltips
   } = useContext( AppContext );
 
-  const filterBlock = ( stringMatch ) => {
-      // convert block data into an array and match based on string provided.
-  }
+  const { block_state , block_query } = tooltip_b_blocks;
 
   const handleKeybind = async ( evt  ) => {
 
@@ -23,14 +23,14 @@ function useComponentKeybinds( target, blockType , ...options ) {
                 const currentText = writing[ highlighted ].text;
                 const currentText_scrubbed = scrubOffTags( currentText );
 
-                const block_toCreate = getblockData( blockType );
+                const block_toCreate = getblockData( blockType ).block;
 
                 let keyInput   = evt.key;
                 let keyElement = evt.target.innerHTML;
 
                 // if a bullet element and < 1 then convert that block to a text element.
 
-                if ( keyInput == 'Backspace' ) {
+                if ( keyInput == 'Backspace' && !tooltip_b_coordinates.state ) {
                      if ( currentText_scrubbed < 1 ) {
                           evt.preventDefault();
                           await handleWrtableBlockUpdate( 'delete' , highlighted );
@@ -40,7 +40,7 @@ function useComponentKeybinds( target, blockType , ...options ) {
 
                      } else {
                           let textMatch = keyElement.slice( keyElement.length - 1 , keyElement.length );
-                          if ( textMatch == '/' && tooltip_b_coordinates.state == true ) {
+                          if ( textMatch === '/' && tooltip_b_coordinates.state == true ) {
                               closeTooltips();
                           }
                      }
@@ -57,15 +57,28 @@ function useComponentKeybinds( target, blockType , ...options ) {
                      let curr_elm_text  = scrubOffTags( evt.target.innerHTML );
                      let curr_elm_text_length = getTextWidth( curr_elm_text );
                      update_tooltip_b_coordinates( {
-                        state: true , coor: [ curr_elm_coors.x + ( curr_elm_text_length + 25 ) , curr_elm_coors.y + 40 ]
+                        ...tooltip_b_coordinates , state: true , coor: [ curr_elm_coors.x + ( curr_elm_text_length + 25 ) , curr_elm_coors.y + 40 ]
                      });
                 }
 
                 else if ( tooltip_b_coordinates.state ) {
-                    let curr_elm_text    = scrubOffTags( evt.target.innerHTML );
+                    let eventIsCharacter = detectKeyIsCharacter( evt );
                     let keysTriggerClose = evt.code == 'Space' || evt.key == 'Enter';
+
+                    console.log( 'eventIsCharacter' );
                     if ( keysTriggerClose ) {
-                        closeTooltips();
+                         closeTooltips();
+                    } else {
+                        if ( evt.key === 'Backspace' ) {
+                            let text = scrubOffTags( evt.target.innerHTML );
+                            console.log( text );
+                            let generatedBlocksToShow_fromDelete = blockChoices( true , text );
+                            update_tooltip_b_blocks( { block_state: generatedBlocksToShow_fromDelete , block_query: text });
+                        } else if ( keysTriggerClose ) {
+                            let block_searchString = ( block_query + evt.key );
+                            let generatedBlocksToShow_fromAppend = blockChoices( true , block_searchString );
+                            update_tooltip_b_blocks( { block_state: generatedBlocksToShow_fromAppend , block_query: block_query + evt.key });
+                        }
                     }
                 }
   }

@@ -4,6 +4,10 @@ const scrubOffTags = ( input , both ) => {
     return input.replace( regex , '' ).replace(/&nbsp;/i , "" ).trim();
 }
 
+const detectKeyIsCharacter = ( event ) => {
+    return event.keyCode >= 65 && event.keyCode <= 90;
+}
+
 function getTextWidth(text, font) {
     // if given, use cached canvas for better performance
     // else, create new canvas
@@ -61,5 +65,5 @@ const makeFocus = ( highlighted , direction , options ) => {
 };
 
 export {
-    scrubOffTags , makeFocus , placeCaretAtEnd , getTextWidth
+    scrubOffTags , makeFocus , placeCaretAtEnd , getTextWidth , detectKeyIsCharacter
 }

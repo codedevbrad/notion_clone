@@ -1,7 +1,7 @@
 import React , { createContext , useState } from 'react';
 import { makeFocus } from './writable/utils/util.blockHelpers';
 import { v4 as uuidv4 } from 'uuid';
-import { getblockData } from './writable/blocks/blockJSON';
+import { getblockData , blockChoices } from './writable/blocks/blockJSON';
 
 export const AppContext = createContext();
 
@@ -37,7 +37,11 @@ const AppContextProvider = ( props  ) => {
 
     const [ tooltip_s_coordinates , update_tooltip_s_coordinates ] = useState( { state: false , coor: [ 0 , 0 ] } );
     const [ tooltip_h_coordinates , update_tooltip_h_coordinates ] = useState( { state: false , coor: [ 0 , 0 ] } );
-    const [ tooltip_b_coordinates , update_tooltip_b_coordinates ] = useState( { state: false , coor: [ 0 , 0 ] , anchor: 0 } );
+    const [ tooltip_b_coordinates , update_tooltip_b_coordinates ] = useState( { state: false , coor: [ 0 , 0 ] } );
+    const [ tooltip_b_blocks      , update_tooltip_b_blocks ] = useState( {
+        block_state: blockChoices( false , null ) ,
+        block_query: ''
+    } );
 
     const handleWritableDragUpdate = async ( updatedObject , writable_updated ) => {
         let { elementToRemove , updateIndex , shouldPrepend } = updatedObject;
@@ -64,7 +68,7 @@ const AppContextProvider = ( props  ) => {
         switch ( type ) {
 
             case 'fresh':
-                let object_fresh = getblockData('text');
+                let object_fresh = getblockData('text').block;
                     object_fresh.key = key_id;
                 arrayCopy.push( object_fresh );
                 await updateWriting( arrayCopy );
@@ -125,15 +129,23 @@ const AppContextProvider = ( props  ) => {
         await update_tooltip_s_coordinates( { state: false , coor: [ 0 , 0 ] } );
     }
 
+    const resetBlockTooltip = async ( ) => {
+        let block_default_search = blockChoices( false , null );
+        await update_tooltip_b_coordinates( { state: false , coor: [ 0 , 0 ] } );
+        await update_tooltip_b_blocks( {
+            block_state: block_default_search , block_query: ''
+        } );
+    }
+
     const closeTooltipsExcept = async type => {
         switch ( type ) {
           case 'section':
             await update_tooltip_h_coordinates( { state: false , coor: [ 0 , 0 ] } );
-            await update_tooltip_b_coordinates( { state: false , coor: [ 0 , 0 ] } );
+            await resetBlockTooltip();
             break;
           case 'highlight':
-            await update_tooltip_b_coordinates( { state: false , coor: [ 0 , 0 ] } );
-            resetSectionTooltip();
+            await resetBlockTooltip();
+            await resetSectionTooltip();
             break;
           case 'block':
             await update_tooltip_h_coordinates( { state: false , coor: [ 0 , 0 ] } );
@@ -146,7 +158,7 @@ const AppContextProvider = ( props  ) => {
     const closeTooltips = async ( ) => {
         await resetSectionTooltip();
         await update_tooltip_h_coordinates( { state: false , coor: [ 0 , 0 ] } );
-        await update_tooltip_b_coordinates( { state: false , coor: [ 0 , 0 ] , anchor: 0 } );
+        await resetBlockTooltip();
     }
 
     return (
@@ -161,7 +173,7 @@ const AppContextProvider = ( props  ) => {
               currCursor , updateCursor ,
               tooltip_s_coordinates , update_tooltip_s_coordinates ,
               tooltip_h_coordinates , update_tooltip_h_coordinates ,
-              tooltip_b_coordinates , update_tooltip_b_coordinates ,
+              tooltip_b_coordinates , update_tooltip_b_coordinates , tooltip_b_blocks , update_tooltip_b_blocks ,
               closeTooltips , closeTooltipsExcept ,
               selectedText , updateSelected ,
               dragSelection , togglecanEdit
