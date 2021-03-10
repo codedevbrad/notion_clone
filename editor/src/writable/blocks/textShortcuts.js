@@ -37,14 +37,15 @@ function useComponentKeybinds( target, blockType , ...options ) {
                           makeFocus( highlighted , 'prev' , {
                                 elementTarget: '.editable'
                           } );
-
-                     } else {
+                     }
+                }
+                else if ( keyInput == 'Backspace' && tooltip_b_coordinates.state ) {
                           let textMatch = keyElement.slice( keyElement.length - 1 , keyElement.length );
                           if ( textMatch === '/' && tooltip_b_coordinates.state == true ) {
                               closeTooltips();
                           }
-                     }
                 }
+
                 else if ( keyInput == 'Enter' && !tooltip_b_coordinates.state ) {
                      evt.preventDefault();
                      await handleWrtableBlockUpdate( 'new' , highlighted , block_toCreate );
@@ -62,23 +63,10 @@ function useComponentKeybinds( target, blockType , ...options ) {
                 }
 
                 else if ( tooltip_b_coordinates.state ) {
-                    let eventIsCharacter = detectKeyIsCharacter( evt );
+                    let keysAreAllowed   = detectKeyIsCharacter( evt );
                     let keysTriggerClose = evt.code == 'Space' || evt.key == 'Enter';
-
-                    console.log( 'eventIsCharacter' );
                     if ( keysTriggerClose ) {
                          closeTooltips();
-                    } else {
-                        if ( evt.key === 'Backspace' ) {
-                            let text = scrubOffTags( evt.target.innerHTML );
-                            console.log( text );
-                            let generatedBlocksToShow_fromDelete = blockChoices( true , text );
-                            update_tooltip_b_blocks( { block_state: generatedBlocksToShow_fromDelete , block_query: text });
-                        } else if ( keysTriggerClose ) {
-                            let block_searchString = ( block_query + evt.key );
-                            let generatedBlocksToShow_fromAppend = blockChoices( true , block_searchString );
-                            update_tooltip_b_blocks( { block_state: generatedBlocksToShow_fromAppend , block_query: block_query + evt.key });
-                        }
                     }
                 }
   }

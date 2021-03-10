@@ -6,6 +6,7 @@ import TextBlock     from './blocks/block.components/text/text';
 import BulletedBlock from './blocks/block.components/bulletpoints/bulletPoints';
 import BookmarkBlock from './blocks/block.components/bookmark/bookmark';
 import ImageBlock    from './blocks/block.components/image/image';
+import DividerBlock  from './blocks/block.components/divider/divider';
 
 import TooltipHighlight from './tooltips/tooltip.highlight';
 import TooltipSection   from './tooltips/tooltip.section';
@@ -52,25 +53,17 @@ const PageWritable = ( ) => {
 
     let [ writable_updated ] = useStateRef();
 
-    const itemsSelected = ({ items, event }) => {
-          let arraySelected = [ ];
-          items.forEach( ( item , i ) => {
-                let id = parseInt( item.getAttribute('data-editable-id') );
-                arraySelected.push( id );
-          });
-          handleWrtableBlockUpdate('delete_many' , arraySelected );
-    }
-
     const updateDraggableFunc = ( updatedPos ) => {
           handleWritableDragUpdate( updatedPos , writable_updated );
     }
 
     const handleclickOnFreshStart = async( ) => {
-         await handleWrtableBlockUpdate( 'fresh' );
+         if ( !dragSelection.canDrag ) {
+              await handleWrtableBlockUpdate( 'fresh' );
+         }
     }
 
     useDraggable( updateDraggableFunc );
-    useSelection( dragSelection.canDrag , itemsSelected );
 
     return (
         <Fragment>
@@ -79,27 +72,33 @@ const PageWritable = ( ) => {
                   <p> click on the section to start your writing journey </p>
               </div>
             }
+
             { writing.map( ( section , index ) =>
               <div className='writable_section' key={ section.key }>
+                  { section.type === 'divider' &&
+                          <div className={`content_block content_divider`}>
+                               <DividerBlock section={ section } mainIndex={ index } />
+                          </div>
+                  }
 
-                  { section.type == 1 &&
+                  { section.type === 'text' &&
                           <div className={`content_block content_text`}>
                                <TextBlock section={ section } mainIndex={ index } />
                           </div>
                   }
-                  { section.type == 2 &&
+                  { section.type === 'bullet' &&
                           <div className={`content_block content_bullet`}>
                                <BulletedBlock section={ section } mainIndex={ index } />
                           </div>
                   }
                   {
-                    section.type == 3 &&
+                    section.type === 'bookmark' &&
                           <div className={`content_block content_bookmark`}>
                                <BookmarkBlock section={ section } mainIndex={ index } />
                           </div>
                   }
                   {
-                    section.type == 4 &&
+                    section.type === 'image' &&
                           <div className={`content_block content_image`}>
                                 <ImageBlock section={ section } mainIndex={ index } />
                           </div>
@@ -115,7 +114,7 @@ const PageWritable = ( ) => {
 
 const Page = ( ) => {
 
-    const { writing , dragSelection , togglecanEdit , handleWrtableBlockUpdate } = useContext( AppContext );
+    const { writing , dragSelection ,updateDragSelection , togglecanEdit , handleWrtableBlockUpdate } = useContext( AppContext );
     const { cloudinaryUpload } = requests;
 
     const draggableEdit = ( ) => {
@@ -124,24 +123,59 @@ const Page = ( ) => {
 
     const handlePaste = ( evt ) => {
         evt.preventDefault();
-        const dT = evt.clipboardData || window.clipboardData;
-        const file = dT.files[ 0 ];
-        cloudinaryUpload( file )
-            .then( image => console.log( image ) )
-            .catch( err => console.log( err ) );
+        var clipboardData = evt.clipboardData || window.clipboardData;
+        var file = clipboardData.files[ 0 ];
+        let pasteText = clipboardData.getData('Text');
+        // cloudinaryUpload( file )
+        //     .then( image => console.log( image ) )
+        //     .catch(  err => console.log( err ) );
+        console.log( pasteText , file );
+        if ( file ) {
+          // create new file block...
+        } else if ( pasteText ) {
+          // create new text block...
+        }
     }
 
-    const handleKeybinds = async ( evt ) => {
-          let isOutOfElement = evt.classList[0] == 'page_right';
-          if ( isOutOfElement ) {
-               await handleWrtableBlockUpdate( 'fresh' );
+    const handleBlockCreation = async ( evt ) => {
+        let isOutOfElement = evt.classList[0] == 'page_right';
+        if ( isOutOfElement && !dragSelection.canDrag ) {
+             await handleWrtableBlockUpdate( 'fresh' );
+        }
+    }
+
+    const handleKeybind = ( evt ) => {
+          if ( dragSelection.canDrag && evt.key === 'Backspace' ) {
+               handleWrtableBlockUpdate('delete_many' , dragSelection.selected );
           }
     }
 
-    return (
-        <div className="Page" onPaste={ ( e ) => handlePaste( e ) }>
+    const itemsSelected = ({ items, event }) => {
+          let arraySelected = [ ];
+          items.forEach( ( item , i ) => {
+                let id = parseInt( item.getAttribute('data-editable-id') );
+                arraySelected.push( id );
+          });
+          updateDragSelection({
+              ...dragSelection , selected: arraySelected
+          });
+    }
 
-              <TooltipHighlight/>
+    useSelection( dragSelection.canDrag , itemsSelected );
+
+    useEffect( ( ) => {
+        window.addEventListener("keydown", handleKeybind );
+        window.addEventListener("paste", handlePaste );
+        return ( ) => {
+            window.removeEventListener("keydown", handleKeybind );
+            window.removeEventListener("paste", handlePaste );
+        }
+    } , [ ] );
+
+    return (
+        <div className="Page">
+
+              <TooltipHighlight />
 
               <BlockCreation />
 
@@ -159,11 +193,11 @@ const Page = ( ) => {
                       <TooltipSection />
                   </div>
 
-                  <div className="page_right" onClick={ ( evt ) => handleKeybinds( evt.target ) }>
-                        <p className={ `edit_control ${ dragSelection.canDrag ? 'edit_control_on' : ''  } `} onClick={ () => draggableEdit(  ) }>
-                              <i className="fas fa-edit"></i>
-                        </p>
-                        <PageWritable />
+                  <div className="page_right" onClick={ ( evt ) => handleBlockCreation( evt.target ) }>
+                      <p className={ `edit_control ${ dragSelection.canDrag ? 'edit_control_on' : ''  } `} onClick={ () => draggableEdit(  ) }>
+                            <i className="fas fa-edit"></i>
+                      </p>
+                      <PageWritable />
                   </div>
               </div>
         </div>

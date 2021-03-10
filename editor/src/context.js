@@ -9,24 +9,32 @@ const AppContextProvider = ( props  ) => {
 
     const [ heading , updateHeading ] = useState(``);
 
-    const [ writing , updateWriting ] = useState( [ ] );
+    const [ writing , updateWriting ] = useState( [
+          {
+            type: 'divider' ,
+            tag: 'div' ,
+            text: '' ,
+            marginlevel: 0 ,
+            key: 'somekey1'
+          }
+    ] );
 
     const [ dragSelection , updateDragSelection ] = useState( {
-        canDrag: false , isDragging: false , selected: [ ]
+          canDrag: false , isDragging: false , selected: [ ]
     } );
 
     const togglecanEdit = ( ) => {
-        if ( !dragSelection.canDrag ) {
-          // document.querySelector('body').classList.add('disable_select');
-          Array.from(document.querySelectorAll('.content_hover_allowed')).forEach((el) => el.classList.remove('content_hover_allowed'));
-        } else {
-          // document.querySelector('body').classList.remove('disable_select');
-          Array.from(document.querySelectorAll('.drag_highlighted')).forEach((el) => el.classList.remove('drag_highlighted'));
-          Array.from(document.querySelectorAll('.content_hover')).forEach((el) => el.classList.add('content_hover_allowed'));
-        }
-        updateDragSelection( {
-           ...dragSelection , canDrag: !dragSelection.canDrag
-        });
+          if ( !dragSelection.canDrag ) {
+            // document.querySelector('body').classList.add('disable_select');
+            Array.from(document.querySelectorAll('.content_hover_allowed')).forEach((el) => el.classList.remove('content_hover_allowed'));
+          } else {
+            // document.querySelector('body').classList.remove('disable_select');
+            Array.from(document.querySelectorAll('.drag_highlighted')).forEach((el) => el.classList.remove('drag_highlighted'));
+            Array.from(document.querySelectorAll('.content_hover')).forEach((el) => el.classList.add('content_hover_allowed'));
+          }
+          updateDragSelection( {
+             ...dragSelection , canDrag: !dragSelection.canDrag
+          });
     }
 
     const [ highlighted , updateHighlighted ] = useState( null );
@@ -176,7 +184,7 @@ const AppContextProvider = ( props  ) => {
               tooltip_b_coordinates , update_tooltip_b_coordinates , tooltip_b_blocks , update_tooltip_b_blocks ,
               closeTooltips , closeTooltipsExcept ,
               selectedText , updateSelected ,
-              dragSelection , togglecanEdit
+              dragSelection , togglecanEdit , updateDragSelection
         } }>
 
             { props.children }

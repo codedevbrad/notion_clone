@@ -7,12 +7,46 @@ const blockTypes = [
     'image'
 ]
 
+const betterTypes = [
+  { type: 'text' ,
+    catches: 'text block writing'
+  } ,
+  {
+    type: 'bullet' ,
+    catches: 'bullet bulletmarks list'
+  } ,
+  {
+    type: 'bookmark' ,
+    catches: 'web bookmark link'
+  } ,
+  {
+    type: 'divider' ,
+    catches: 'divider'
+  } ,
+  {
+    type: 'image' ,
+    catches: 'image web img upload'
+  } ,
+  {
+    type: 'h1' ,
+    catches: 'heading1 heading header1'
+  } ,
+  {
+    type: 'h2' ,
+    catches: 'heading2 heading header2'
+  } ,
+  {
+    type: 'h3' ,
+    catches: 'heading3 heading header3'
+  }
+]
+
 const getblockData = ( type ) => {
     switch ( type ) {
           case 'text' :
               return {
                   block: {
-                      type: 1 ,
+                      type: 'text' ,
                       tag: 'p' ,
                       text: '' ,
                       marginlevel: 0
@@ -33,7 +67,7 @@ const getblockData = ( type ) => {
           case 'bullet' :
               return {
                   block: {
-                      type: 2 ,
+                      type: 'bullet' ,
                       tag: 'p' ,
                       text: '' ,
                       marginlevel: 0
@@ -53,7 +87,7 @@ const getblockData = ( type ) => {
           case 'bookmark' :
               return {
                   block: {
-                      type: 3 ,
+                      type: 'bookmark' ,
                       tag: 'div' ,
                       text: '' ,
                       marginlevel: 0
@@ -73,7 +107,7 @@ const getblockData = ( type ) => {
           case 'image' :
               return {
                   block: {
-                      type: 4 ,
+                      type: 'image' ,
                       tag: 'img' ,
                       text: false ,
                       marginlevel: 0
@@ -93,7 +127,7 @@ const getblockData = ( type ) => {
           case 'h1' :
               return {
                    block: {
-                      type: 'h1' ,
+                      type: 'text' ,
                       tag: 'h1' ,
                       text: '' ,
                       marginlevel: 0
@@ -113,7 +147,7 @@ const getblockData = ( type ) => {
         case 'h2' :
             return {
                 block: {
-                    type: 'h2' ,
+                    type: 'text' ,
                     tag: 'h2' ,
                     text: '' ,
                     marginlevel: 0
@@ -133,7 +167,7 @@ const getblockData = ( type ) => {
         case 'h3' :
             return {
                 block: {
-                    type: 'h3' ,
+                    type: 'text' ,
                     tag: 'h3' ,
                     text: '' ,
                     marginlevel: 0
@@ -164,7 +198,7 @@ const getblockData = ( type ) => {
                     block_description: 'Visually Divide blocks.' ,
                     classFocus:  '.editable' ,
                     rules: {
-                      canTurn:  true ,
+                      canTurn:  false ,
                       canFocus: false
                     }
                 }

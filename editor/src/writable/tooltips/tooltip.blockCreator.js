@@ -34,17 +34,34 @@ const BlockCreation  = ( ) => {
           closeTooltips( );
     }
 
+    const handleSearch = ( evt ) => {
+          let block_searchString = evt.target.value;
+          let generatedBlocksToShow = blockChoices( true , block_searchString );
+          update_tooltip_b_blocks( { block_state: generatedBlocksToShow , block_query: block_searchString } );
+    }
+
     return (
         <Fragment>
             { state &&
               <div className="tooltip tooltip_blockcreation" style={ { left: coor[0] , top: coor[1] - 10 } } ref={ ref }>
-                    <h3> create a new .. { block_query } </h3>
-                    { block_state.map( ( blockDescription , index ) =>
-                        <div key={ uuidv4() }>
-                            <h3> { blockDescription.block_title }      </h3>
-                            <p>  { blockDescription.block_description } </p>
-                        </div>
-                    )}
+                    <h3> create a new .. </h3>
+                    <input className="blockCreation_input" type="text" value={ block_query }
+                            onChange={ ( evt ) => handleSearch( evt ) }
+                         placeholder="filter blocks"
+                    />
+                    <section className="blockCreation_blockchoices">
+                        { block_state.map( ( blockDescription , index ) =>
+                            <div key={ uuidv4() } className="blockCreation_choice">
+                                  <section className="blockChoice_image">
+                                    <img src={ blockDescription.publicUrl } alt={ blockDescription.block_title } />
+                                  </section>
+                                  <section className="blockChoice_description">
+                                    <h3> { blockDescription.block_title }      </h3>
+                                    <p>  { blockDescription.block_description } </p>
+                                  </section>
+                            </div>
+                        )}
+                    </section>
               </div>
             }
         </Fragment>

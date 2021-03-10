@@ -31,6 +31,9 @@ const TooltipHighlight = ( ) => {
                 arrayCopy[ highlighted ].text = newText_HL;
                 break;
 
+              case 'header1':
+                arrayCopy[ highlighted ].tag = 'h2';
+                break;
               case 'header2':
                 arrayCopy[ highlighted ].tag = 'h2';
                 break;
