@@ -9,11 +9,12 @@ import './styles.scss';
 
 const BulletedBlock = ( {  section , mainIndex } ) => {
     const {
-        writing , handleWritableUpdate , updateHighlighted , handleWritableHighlighting , dragSelection
+        handleWritableUpdate , updateHighlighted , handleWritableHighlighting , dragSelection
     } = useContext( AppContext );
 
-    const highlightedFunc = ( ) => {
-        updateHighlighted( value => mainIndex );
+    const highlightedFunc = (e ) => {
+        let currentIndex = parseInt( e.target.parentNode.parentNode.getAttribute('data-editable-id') );
+        updateHighlighted( currentIndex );
     }
 
     const elementRef = useRef( null );
@@ -38,7 +39,7 @@ const BulletedBlock = ( {  section , mainIndex } ) => {
                     <ContentEditable html={ section.text }
                                  onChange={ ( e ) => handleWritableUpdate( e.target.value  , mainIndex )}
                                 className={ "editable editable-body" }
-                                  onFocus={ ( e ) => highlightedFunc( ) }
+                                  onFocus={ ( e ) => highlightedFunc( e ) }
                               placeholder={ 'list item' }
                                 onMouseUp={ ( e ) => handleWritableHighlighting( e ) }
                                   tagName={ section.tag }

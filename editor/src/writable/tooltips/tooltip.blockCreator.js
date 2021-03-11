@@ -19,13 +19,8 @@ const BlockCreation  = ( ) => {
      ref
     } = useComponentVisible( state , closeTooltips , [  ] , 'blockcreator'  );
 
-    const createNewBlock = async ( type , targetElement ) => {
-          const arrayCopy = [ ...writing ];
-          const currentElement = scrubOffTags( arrayCopy[ highlighted ].text );
-
-          let blockObject = getblockData( type ).block;
-
-          await handleWrtableBlockUpdate( 'new' , highlighted , blockObject );
+    const createNewBlock = async ( block , targetElement ) => {
+          await handleWrtableBlockUpdate( 'new' , highlighted , block );
           if ( typeof targetElement == 'string' && targetElement ) {
                makeFocus( highlighted , 'next' , {
                     elementTarget: targetElement
@@ -50,14 +45,15 @@ const BlockCreation  = ( ) => {
                          placeholder="filter blocks"
                     />
                     <section className="blockCreation_blockchoices">
-                        { block_state.map( ( blockDescription , index ) =>
-                            <div key={ uuidv4() } className="blockCreation_choice">
+                        { block_state.map( ( block , index ) =>
+
+                            <div key={ uuidv4() } className="blockCreation_choice" onClick={ ( ) => createNewBlock( block.block , block.definitions.classFocus ) }>
                                   <section className="blockChoice_image">
-                                    <img src={ blockDescription.publicUrl } alt={ blockDescription.block_title } />
+                                    <img src={ block.definitions.publicUrl } alt={ block.definitions.block_title } />
                                   </section>
                                   <section className="blockChoice_description">
-                                    <h3> { blockDescription.block_title }      </h3>
-                                    <p>  { blockDescription.block_description } </p>
+                                    <h3> { block.definitions.block_title }      </h3>
+                                    <p>  { block.definitions.block_description } </p>
                                   </section>
                             </div>
                         )}

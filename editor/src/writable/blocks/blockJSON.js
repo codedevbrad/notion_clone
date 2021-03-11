@@ -1,12 +1,3 @@
-const blockTypes = [
-    'text' ,
-    'bullet' ,
-    'bookmark' ,
-    'divider' ,
-    'h1' , 'h2' , 'h3' ,
-    'image'
-]
-
 const betterTypes = [
   { type: 'text' ,
     catches: 'text block writing'
@@ -29,15 +20,15 @@ const betterTypes = [
   } ,
   {
     type: 'h1' ,
-    catches: 'heading1 heading header1'
+    catches: 'heading1 heading header1 h1'
   } ,
   {
     type: 'h2' ,
-    catches: 'heading2 heading header2'
+    catches: 'heading2 heading header2 h2'
   } ,
   {
     type: 'h3' ,
-    catches: 'heading3 heading header3'
+    catches: 'heading3 heading header3 h3'
   }
 ]
 
@@ -208,19 +199,18 @@ const getblockData = ( type ) => {
 }
 
 const blockChoices = ( shouldFilter , stringInput ) => {
-
     let string_lowercase = shouldFilter ? stringInput.toLowerCase() : null;
 
     let blocksChosen = [ ];
-    let allBlocks = blockTypes;
+    let allBlocks = betterTypes;
 
     let filtered = shouldFilter ? allBlocks.filter( ( block ) => {
-          let block_lowercase = block.toLowerCase();
+          let block_lowercase = block.catches.toLowerCase();
        		return block_lowercase.indexOf( string_lowercase ) > -1
      }) : allBlocks;
 
-    filtered.forEach( ( blockValue , i ) => {
-          let blockObject = getblockData( blockValue ).definitions;
+    filtered.forEach( ( block, i ) => {
+          let blockObject = getblockData( block.type );
           blocksChosen.push( blockObject ) ;
     });
     return blocksChosen;

@@ -6,27 +6,30 @@ import { AppContext } from '../../../../context';
 import useComponentKeybinds from '../../textShortcuts';
 
 const TextBlock = ( { section , mainIndex } ) => {
+    const {
+        updateWriting , handleWritableUpdate , updateHighlighted , handleWritableHighlighting , dragSelection
+    } = useContext( AppContext );
 
-   const {
-       writing , updateWriting , handleWritableUpdate , updateHighlighted , handleWritableHighlighting , dragSelection
-   } = useContext( AppContext );
-
-    const highlightedFunc = ( ) => {
-       updateHighlighted( value => mainIndex );
+    const highlightedFunc = ( e ) => {
+       let currentIndex = parseInt( e.target.parentNode.getAttribute('data-editable-id') );
+       updateHighlighted( currentIndex );
     }
     const elementRef = useRef( null );
-    useComponentKeybinds( elementRef , 'text' , mainIndex  );
+    useComponentKeybinds( elementRef , 'text' );
 
     return (
         <div className="content_hover content_hover_allowed" data-editable-id={ mainIndex } ref={ elementRef }>
+
               <Side curr={ mainIndex } />
 
               <ContentEditable html={ section.text }
                            onChange={ ( e ) => handleWritableUpdate( e.target.value , mainIndex )}
                           className={ "editable editable-body" }
-                            onFocus={ ( e ) => highlightedFunc( ) }
+                            onFocus={ ( e ) => highlightedFunc( e ) }
                         placeholder={ 'start writing or use / to create a new block' }
-                          onMouseUp={ ( e ) => handleWritableHighlighting( e ) }
+                          onMouseUp={ ( e ) => {
+                              handleWritableHighlighting( e );
+                            } }
                             tagName={ section.tag }
                            disabled={ dragSelection.canDrag }
               />

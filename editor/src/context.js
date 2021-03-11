@@ -1,5 +1,5 @@
 import React , { createContext , useState } from 'react';
-import { makeFocus } from './writable/utils/util.blockHelpers';
+import { makeFocus , scrubOffTags } from './writable/utils/util.blockHelpers';
 import { v4 as uuidv4 } from 'uuid';
 import { getblockData , blockChoices } from './writable/blocks/blockJSON';
 
@@ -9,15 +9,7 @@ const AppContextProvider = ( props  ) => {
 
     const [ heading , updateHeading ] = useState(``);
 
-    const [ writing , updateWriting ] = useState( [
-          {
-            type: 'divider' ,
-            tag: 'div' ,
-            text: '' ,
-            marginlevel: 0 ,
-            key: 'somekey1'
-          }
-    ] );
+    const [ writing , updateWriting ] = useState( [ ] );
 
     const [ dragSelection , updateDragSelection ] = useState( {
           canDrag: false , isDragging: false , selected: [ ]
@@ -41,7 +33,9 @@ const AppContextProvider = ( props  ) => {
     const [ currCursor , updateCursor ] = useState( null );
 
     // grabs the current text selected from a highlight.
-    const [ selectedText , updateSelected ] = useState('');
+    const [ selectedText , updateSelected ] = useState({
+         element: '' , selected : false , selRange: [ 0 , 0 ]
+    });
 
     const [ tooltip_s_coordinates , update_tooltip_s_coordinates ] = useState( { state: false , coor: [ 0 , 0 ] } );
     const [ tooltip_h_coordinates , update_tooltip_h_coordinates ] = useState( { state: false , coor: [ 0 , 0 ] } );
@@ -69,12 +63,41 @@ const AppContextProvider = ( props  ) => {
 
     // ( type : switch condition , index: single or array of values for array , block : block : object to be inserted )
 
+    const handleBlockTagUpdate = async( type , tag ) => {
+        let arrayCopy = [ ...writing ];
+        let currentItem = arrayCopy[ highlighted ];
+        let { selected , selRange } = selectedText;
+
+        switch( type ) {
+            case 'tag_update':
+                currentItem.tag = tag;
+                await updateWriting( arrayCopy );
+                break;
+            case 'underline':
+                let newText_U = currentItem.text.replace( selected , `<div class="underlined"> ${ selected } </div>` );
+                currentItem.text = newText_U;
+                await updateWriting( arrayCopy );
+                break;
+            case 'highlight':
+                let newText_H = currentItem.text.replace( selected , `<div class="highlighted"> ${ selected } </div>` );
+                currentItem.text = newText_H;
+                await updateWriting( arrayCopy );
+                break;
+        }
+    }
+
+    /**
+    * creates or deletes blocks.
+    * @peram { type  } the type of update.
+    * @peram { index } the current position in the array.
+    * @peram { block } the object to push to the array.
+    */
+
     const handleWrtableBlockUpdate = async ( type , index , block ) => {
         let arrayCopy = [ ...writing ];
         let key_id = uuidv4();
 
         switch ( type ) {
-
             case 'fresh':
                 let object_fresh = getblockData('text').block;
                     object_fresh.key = key_id;
@@ -175,7 +198,7 @@ const AppContextProvider = ( props  ) => {
 
               writing , updateWriting , handleWritableUpdate , handleWritableHighlighting ,
 
-              handleWrtableBlockUpdate , handleWritableDragUpdate ,
+              handleWrtableBlockUpdate , handleWritableDragUpdate , handleBlockTagUpdate ,
 
               highlighted , updateHighlighted ,
               currCursor , updateCursor ,

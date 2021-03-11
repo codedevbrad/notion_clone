@@ -48,6 +48,9 @@ const Side = ( { curr } ) => {
     } , [ ] );
 
     const toggleSectionHover = async ( e ) => {
+
+        console.log( curr );
+
         let current = e.currentTarget.getBoundingClientRect();
         // if this is already active, then hide the tooltip...
         let data = ( e.currentTarget.getAttribute('data-carrot') == 'true');

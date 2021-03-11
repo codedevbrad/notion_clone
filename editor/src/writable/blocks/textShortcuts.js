@@ -5,6 +5,12 @@ import { AppContext } from '../../context';
 import { getblockData , blockChoices } from './blockJSON';
 import { scrubOffTags , placeCaretAtEnd , makeFocus , getTextWidth , detectKeyIsCharacter } from '../utils/util.blockHelpers';
 
+/**
+  @peram { target } element to attach keybind function to.
+  @peram { blockType } block to create when pressing enter as a keybind.
+  @peram { options } not yet programmed.
+*/
+
 function useComponentKeybinds( target, blockType , ...options ) {
 
   const {

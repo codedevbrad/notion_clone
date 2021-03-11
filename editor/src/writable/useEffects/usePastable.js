@@ -1,6 +1,6 @@
 import React , { useEffect } from 'react';
 
-function retrieveImageFromClipboardAsBlob ( pasteEvent , callback ) {
+function retrieveImageFromClipboardAsBlob ( pasteEvent , callback )  {
     console.log('ran')
   	if(pasteEvent.clipboardData == false){
           if(typeof(callback) == "function"){
