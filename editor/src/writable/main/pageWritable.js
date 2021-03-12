@@ -1,5 +1,5 @@
 import React , { Fragment , useState , useRef , useEffect , useContext } from 'react';
-import { AppContext } from '../../context';
+import { AppContext } from '../context';
 
 import TextBlock     from '../blocks/block.components/text/text';
 import BulletedBlock from '../blocks/block.components/bulletpoints/bulletPoints';

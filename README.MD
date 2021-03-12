@@ -1,4 +1,3 @@
 
-notion front_end ( react )
-server basic ( python , flask )
-server new   ( python , django )
+notion front_end ( react , contextAPI )
+server ( python , flask )

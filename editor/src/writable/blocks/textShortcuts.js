@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef , useContext } from 'react';
 
-import { AppContext } from '../../context';
+import { AppContext } from '../context';
 
 import { getblockData , blockChoices } from './blockJSON';
 import { scrubOffTags , placeCaretAtEnd , makeFocus , getTextWidth , detectKeyIsCharacter } from '../utils/util.blockHelpers';

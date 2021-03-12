@@ -4,7 +4,7 @@ const configFile = { headers: {'Content-Type': 'multipart/form-data' }};
 
 const PORT = `http://localhost:5000`;
 
-export const requests = {
+export const requests = ( { bookmarkUrl , imagesURLS } ) => ({
       generateBookmark : ( url ) => new Promise( ( resolve , reject ) => {
          axios.get( `${ PORT }/?url=${ url }`)
               .then(  res => resolve( res.data ) )
@@ -16,8 +16,8 @@ export const requests = {
                .then(  res => resolve( res.data ) )
                .catch( err => reject( err ) );
       }) ,
-      
-      iageUpload: ( file ) => {
+
+      imageUpload: ( file ) => {
           var formData = new FormData();
               formData.append('file' , file );
           return new Promise( ( resolve , reject ) => {
@@ -26,4 +26,4 @@ export const requests = {
                      .catch( err => reject( err.response.data ));
           });
       }
-};
+});

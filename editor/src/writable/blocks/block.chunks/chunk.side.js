@@ -1,6 +1,6 @@
 
 import React , { Fragment , useState , useRef , useEffect , useContext }  from 'react';
-import { AppContext }   from '../../../context';
+import { AppContext }   from '../../context';
 
 const Carrot = ( ) => {
     return (
