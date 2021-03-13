@@ -3,6 +3,8 @@ import { AppContext } from '../context';
 
 import useComponentVisible from '../useEffects/useClickBoundary';
 
+import styles from './tooltips.module.scss';
+
 const TooltipHighlight = ( ) => {
     const {
       selectedText , closeTooltips , tooltip_h_coordinates ,
@@ -23,7 +25,7 @@ const TooltipHighlight = ( ) => {
         <Fragment>
 
         { state &&
-          <div className="tooltip tooltip_highlight" style={ { left: coor[0] , top: coor[1] } } ref={ ref }>
+          <div className={ `tooltip ${ styles.tooltip_highlight } `} style={ { left: coor[0] , top: coor[1] } } ref={ ref }>
               <ul>
                   <li onClick={ () => turnInto('tag_update' , 'p' )}>    P  </li>
                   <li onClick={ () => turnInto('tag_update' , 'h1')}>   H1  </li>

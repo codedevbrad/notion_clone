@@ -2,6 +2,7 @@ import React , { Fragment , useState , useRef , useEffect , useContext }  from '
 import { AppContext } from '../context';
 
 import useComponentVisible from '../useEffects/useClickBoundary';
+import styles from './tooltips.module.scss';
 
 const TooltipSection = ( ) => {
 
@@ -16,7 +17,7 @@ const TooltipSection = ( ) => {
     return (
         <Fragment>
           { state &&
-            <div className="tooltip tooltip_section" style={ { left: coor[0] - 100, top: coor[1] - 10 } } ref={ ref }>
+            <div className={`tooltip ${ styles.tooltip_section }`} style={ { left: coor[0] - 100, top: coor[1] - 10 } } ref={ ref }>
               <ul>
                 <li> delete    </li>
                 <li> turn into </li>

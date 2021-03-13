@@ -60,8 +60,6 @@ const Notion = ( ) => {
 
               <BlockCreation />
 
-              { idspace } { idroom }
-
               <div className="page_top">
                   <div className="page_top_titlecard">
                      <h3> Heading </h3>
