@@ -1,10 +1,12 @@
 import React , { Fragment , useState , useRef , useEffect , useContext }  from 'react';
-import { AppContext } from '../../context';
+import { AppContext } from '../context';
 
 import useComponentVisible from '../useEffects/useClickBoundary';
 import { getblockData , blockChoices } from '../blocks/blockJSON';
 import { makeFocus , scrubOffTags } from '../utils/util.blockHelpers';
 import { v4 as uuidv4 } from 'uuid';
+
+import styles from './tooltips.module.scss';
 
 const BlockCreation  = ( ) => {
     const { writing , highlighted ,
@@ -38,20 +40,20 @@ const BlockCreation  = ( ) => {
     return (
         <Fragment>
             { state &&
-              <div className="tooltip tooltip_blockcreation" style={ { left: coor[0] , top: coor[1] - 10 } } ref={ ref }>
+              <div className={`tooltip ${ styles.tooltip_blockcreation }`} style={ { left: coor[0] , top: coor[1] - 10 } } ref={ ref }>
                     <h3> create a new .. </h3>
-                    <input className="blockCreation_input" type="text" value={ block_query }
+                    <input className={`${ styles.blockCreation_input }` } type="text" value={ block_query }
                             onChange={ ( evt ) => handleSearch( evt ) }
                          placeholder="filter blocks"
                     />
-                    <section className="blockCreation_blockchoices">
+                    <section className={ `${ styles.blockCreation_blockchoices }` }>
                         { block_state.map( ( block , index ) =>
 
-                            <div key={ uuidv4() } className="blockCreation_choice" onClick={ ( ) => createNewBlock( block.block , block.definitions.classFocus ) }>
-                                  <section className="blockChoice_image">
+                            <div key={ uuidv4() } className={ `${ styles.blockCreation_choice }`} onClick={ ( ) => createNewBlock( block.block , block.definitions.classFocus ) }>
+                                  <section className={ `${ styles.blockChoice_image } `}>
                                     <img src={ block.definitions.publicUrl } alt={ block.definitions.block_title } />
                                   </section>
-                                  <section className="blockChoice_description">
+                                  <section className={ `${ styles.blockChoice_description } ` }>
                                     <h3> { block.definitions.block_title }      </h3>
                                     <p>  { block.definitions.block_description } </p>
                                   </section>

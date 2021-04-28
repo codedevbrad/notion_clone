@@ -1,6 +1,8 @@
 import React , { Fragment , useState , useRef , useEffect , useContext }  from 'react';
-import ContentEditable  from 'react-contenteditable';
-import { AppContext }   from '../context';
+import { Link , useParams } from "react-router-dom";
+
+import { AppContext }     from './context';
+import AppContextProvider from './context';
 
 import PageHeading   from './main/pageHeading';
 import PageWritable  from './main/pageWritable';
@@ -11,7 +13,7 @@ import BlockCreation    from './tooltips/tooltip.blockCreator';
 
 import useSelection from './useEffects/useSelection';
 import useStateRef  from './useEffects/useStateRef';
-import { requests } from './network_requests';
+import usePageBindListeners from './main/functions/handleBindListener';
 
 import './styles.scss';
 
@@ -24,48 +26,9 @@ const StateStatus = ( ) => {
     )
 }
 
-const usePageBindListeners = ( ) => {
+const Notion = ( ) => {
 
-      const { dragSelection , updateDragSelection , handleWrtableBlockUpdate } = useContext( AppContext );
-      var [ dragSelection_updated ] = useStateRef( dragSelection );
-
-      const handleKeybind = ( evt ) => {
-            let { canDrag , selected } = dragSelection_updated.current;
-            if ( canDrag && evt.key === 'Backspace' ) {
-                 handleWrtableBlockUpdate('delete_many' , dragSelection.selected );
-            }
-      }
-
-      const handlePaste = ( evt ) => {
-          evt.preventDefault();
-          var clipboardData = evt.clipboardData || window.clipboardData;
-          var file = clipboardData.files[ 0 ];
-          let pasteText = clipboardData.getData('Text');
-          // cloudinaryUpload( file )
-          //     .then( image => console.log( image ) )
-          //     .catch(  err => console.log( err ) );
-          console.log( pasteText , file );
-          if ( file ) {
-            // create new file block...
-          } else if ( pasteText ) {
-            // create new text block...
-          }
-      }
-
-      useEffect( ( ) => {
-          window.addEventListener("keydown", handleKeybind );
-          window.addEventListener("paste", handlePaste );
-          return ( ) => {
-              window.removeEventListener("keydown", handleKeybind );
-              window.removeEventListener("paste", handlePaste );
-          }
-      } , [ ] );
-}
-
-const Page = ( ) => {
-
-    const { highlighted , selectedText , writing , dragSelection , updateDragSelection , togglecanEdit , handleWrtableBlockUpdate } = useContext( AppContext );
-    const { cloudinaryUpload } = requests;
+    const { dragSelection , updateDragSelection , togglecanEdit , handleWrtableBlockUpdate } = useContext( AppContext );
 
     const itemsSelected = ({ items, event }) => {
           let arraySelected = [ ];
@@ -85,6 +48,8 @@ const Page = ( ) => {
           }
     }
 
+    let { idspace , idroom } = useParams();
+
     usePageBindListeners();
     useSelection( dragSelection.canDrag , itemsSelected );
 
@@ -94,8 +59,6 @@ const Page = ( ) => {
               <TooltipHighlight />
 
               <BlockCreation />
-
-              <StateStatus />
 
               <div className="page_top">
                   <div className="page_top_titlecard">
@@ -122,4 +85,30 @@ const Page = ( ) => {
     )
 }
 
-export default Page;
+const Navigation = ( ) => {
+     let space = 'workspace1';
+
+     return (
+       <div className="navigation">
+            <ul>
+                <li>
+                  <Link to={ `/${space}/room1`}> room1 </Link>
+                </li>
+                <li>
+                  <Link to={ `/${space}/room2`}> room2 </Link>
+                </li>
+            </ul>
+       </div>
+     )
+}
+
+const NotionApp = ( ) => {
+    return (
+         <AppContextProvider>
+            <Notion />
+            <Navigation />
+         </AppContextProvider>
+    )
+}
+
+export default NotionApp;

@@ -1,7 +1,7 @@
 import React , { createContext , useState } from 'react';
-import { makeFocus , scrubOffTags } from './writable/utils/util.blockHelpers';
+import { makeFocus , scrubOffTags } from './utils/util.blockHelpers';
 import { v4 as uuidv4 } from 'uuid';
-import { getblockData , blockChoices } from './writable/blocks/blockJSON';
+import { getblockData , blockChoices } from './blocks/blockJSON';
 
 export const AppContext = createContext();
 

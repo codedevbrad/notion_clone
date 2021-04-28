@@ -2,7 +2,7 @@ import React , { Fragment , useState , useRef , useEffect , useContext }  from '
 import Side from '../../block.chunks/chunk.side';
 import styles from './bookmark.module.scss';
 
-import { AppContext } from '../../../../context';
+import { AppContext } from '../../../context';
 
 import { requests } from '../../../network_requests';
 
