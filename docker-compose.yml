@@ -1,0 +1,55 @@
+version: "3.8"
+services:
+  # client:
+  #   stdin_open: true # what does this do?
+  #   build:
+  #     context: './service_client'  
+  #   ports:
+  #     - '3000:3000'
+  #   volumes:
+  #     - ./service_client/:/usr/src/app
+  #     - ./service_client/app/node_modules
+
+  notion_writable:
+    container_name: notion_writable
+    image: francescoxx/nsp-template:0.0.2
+    build:
+      context: ./service_writable
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+      - MICROSERVICE_PORT=3001
+      - PGUSER=francesco
+      - PGPASSWORD=12345
+      - PGDATABASE=nsp_database
+      - PGHOST=nsp_db # NAME OF THE SERVICE
+    depends_on:
+      - notion_database
+    volumes:
+      - ./service_writable/:/usr/src/app
+      - ./service_writable/app/node_modules
+
+  notion_database:
+    container_name: notion_database
+    image: "postgres:12"
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=francesco
+      - POSTGRES_PASSWORD=12345
+      - POSTGRES_DB=nsp_database
+    volumes:
+      - nps_data:/var/lib/postgresql/data
+      
+  notion_scraper:
+    container_name: notion_scraper
+    build: 
+      context: ./service_flask
+    volumes:
+      - ./service_py:/usr/src/app
+    ports:
+      - "5100:5100"
+
+volumes:
+  nps_data: {}

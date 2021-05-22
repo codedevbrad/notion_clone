@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "base script to run server and frontend app.",
   "scripts": {
-    "client": "npm --prefix ./editor start" ,
-    "server_flask": "python ./server/api.py" ,
-    "update_flask": "npm --prefix ./server requirements"
+    "app:client":   "npm --prefix ./service_client start"  ,
+    "app:writable": "npm --prefix ./service_writable server:testing" ,
+    "app:scraper":  "npm --prefix ./service_flask api:run"
   },
   "repository": {
     "type": "git",
