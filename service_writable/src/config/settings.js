@@ -1,6 +1,7 @@
 const express  = require('express');
 const cors     = require('cors');
 const morgan   = require('morgan');
+const formData = require('express-form-data');
 
 module.exports = {
     development: ( app ) => {
@@ -14,7 +15,6 @@ module.exports = {
         app.use( express.urlencoded({ extended: true }))
         // parse application/json
         app.use( express.json());
-        app.use( cors());
 
         //Set proper Headers on Backend
         app.use((req, res, next) => {
@@ -23,9 +23,12 @@ module.exports = {
             res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
             next();
         });
+        //allow for form data upload. 
+        app.use( formData.parse());
     } ,
 
-    authStrategy: (  ) => {
-        
+    authStrategy: ( app ) => {
+        // set CORD FOR AUTH
+        app.use( cors());
     }
 }

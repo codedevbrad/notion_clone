@@ -15,7 +15,7 @@ const Writable = db.define('writable', {
 	},
 	writablename: {
         type: Sequelize.STRING
-    } 
+    }
 });
 
 module.exports = Writable;

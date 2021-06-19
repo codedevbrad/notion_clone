@@ -9,14 +9,14 @@ const port = process.env.MICROSERVICE_PORT || 5000 ;
 var config = require('./src/config/settings.js');
     config.development( app , __dirname );
     config.middleware(  app , __dirname );
+    config.authStrategy( app );
 
 const promiseTest = ( ) => new Promise( ( resolve , reject ) => {
     resolve('hey dude');
 });
 
 app.get('/' , asyncSupport( async ( req , res , next ) => {
-    let data = await promiseTest();
-    res.status(201).send( data );
+    res.status(201).send( process.env.envIncluded );
 }));
 
 app.use('/api'  , require('./src/api'));
