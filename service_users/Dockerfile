@@ -12,6 +12,6 @@ WORKDIR /usr/src/app
 
 COPY . .
 
-EXPOSE 3001
+EXPOSE 5001
 
 CMD [ "npm" , "run" , "server:micro" ]

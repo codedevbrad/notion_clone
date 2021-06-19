@@ -5,11 +5,15 @@
   "scripts": {
     "app:client":   "npm --prefix ./service_client start"  ,
     "app:writable": "npm --prefix ./service_writable server:testing" ,
-    "app:scraper":  "npm --prefix ./service_flask api:run"
+    "app:users":    "npm --prefix ./service_users server:testing" ,
+    "app:scraper":  "npm --prefix ./service_flask api:run" , 
+
+    "micro-up:all":  "docker compose up --build" ,
+    "micro-down":    "docker compose down"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/codedevbrad/notion_frontend_clone.git"
+     "url": "git+https://github.com/codedevbrad/notion_frontend_clone.git"
   },
   "author": "",
   "license": "ISC"
