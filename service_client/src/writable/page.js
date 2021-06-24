@@ -53,6 +53,10 @@ const Notion = ( ) => {
     usePageBindListeners();
     useSelection( dragSelection.canDrag , itemsSelected );
 
+    useEffect( (  ) => {
+        console.log('re rendered');
+    } , [ idroom ] );
+
     return (
         <div className="Page">
 
@@ -61,6 +65,9 @@ const Notion = ( ) => {
               <BlockCreation />
 
               <div className="page_top">
+
+                  { idroom }
+
                   <div className="page_top_titlecard">
                      <h3> Heading </h3>
                   </div>

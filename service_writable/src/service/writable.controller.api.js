@@ -8,17 +8,17 @@ const config   = require('../config/services.js') ,
 const { asyncSupport } = require('@codedevbrad/serverutils');
 const modelQueries = require('./writable.controller.db');
 
-const { writableFindByID } = modelQueries.finderqueries;
 const { writableCreate , writableUpdate , writableDelete } = modelQueries.mutableQueries;
 const { writableFindByUserPK } = modelQueries.authorizationQueries;
 
 // expect request to be user and user PK IS same as workspace FK..
 
-// ==== WRITABLES ==== // 
+
+// ==== WRITABLES fetch / create / update / delete ==== // 
 
 module.exports.getWritables = asyncSupport( async( req , res , next ) => {
     let { id } = res.locals.user;
-    let writables = await writableFindByUserPk( id );
+    let writables = await writableFindByUserPK( id );
     res.status( 200 ).send( writables );
 });
 
@@ -35,26 +35,31 @@ module.exports.createWritable = asyncSupport( async( req , res , next ) => {
 
 module.exports.updateWritable = asyncSupport( async ( req , res , next ) => {
     let { id } = res.locals.user;
-    let { writableID , model } = res.data;
+    let { writableID , model } = req.body;
 
     let updatedWritable = await writableUpdate(
         model , 
-        id , 
-        writableID 
+        writableID
     );
-    res.status(201).send( updatedWritable );
+    res.status(201).send( updatedWritable[1] );
 });
 
 module.exports.deleteWritable = asyncSupport( async ( req , res , next ) => {
     let { id } = res.locals.user;
-    let { writableID } = res.data;
+    let { writableID } = req.body;
 
     let deletedWritable = await writableDelete(
-        id , 
         writableID 
     );
-    res.status(201).send( deleteddWritable );
+
+    let wasDeleted = deletedWritable == 1;
+
+    res.status(201).json({ 
+        deleted: wasDeleted , msg: wasDeleted ? `deleted id ${ writableID }` : `could not delete id ${ writableID }`
+    });
 });
+
+// ==== IMAGE CREATE / DELETE ==== //
 
 module.exports.Writable__imageUPLOAD = asyncSupport( async( req , res , next ) => {
     // Get image from request...
@@ -73,6 +78,9 @@ module.exports.Writable__imageDELETE = asyncSupport( async( req , res , next ) =
     let statusOk = deleted.result != 'not found';
     res.status( 202 ).send({ deleted: statusOk });
 });
+
+
+// ==== WRITABLE BOOKMARK ==== //
 
 module.exports.Writable__bookmark = asyncSupport( async( req , res , next ) => {
     let { scrapeURL } = req.query;

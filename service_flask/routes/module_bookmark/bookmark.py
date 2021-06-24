@@ -35,4 +35,5 @@ class API_Bookmark ( Resource ):
             "title": title["content"] ,
             "favicon": favicon ,
             "description": desc["content"] , 
+            "url": bookmark_URL
         } , 200

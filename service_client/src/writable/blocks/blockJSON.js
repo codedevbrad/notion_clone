@@ -12,7 +12,7 @@ const betterTypes = [
   } ,
   {
     type: 'divider' ,
-    catches: 'divider'
+    catches: 'divider line seperator '
   } ,
   {
     type: 'image' ,
@@ -187,6 +187,8 @@ const getblockData = ( type ) => {
                     }
                 }
             }
+        default:
+            return false;
     }
 }
 

@@ -5,7 +5,7 @@ RUN npm i npm@latest -g
 
 COPY package.json package-lock.json* ./
 
-RUN npm install --no-optional && npm cache clean --force
+RUN npm install 
 
 # copy in our source code last, as it changes the most
 WORKDIR /usr/src/app

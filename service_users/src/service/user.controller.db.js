@@ -80,6 +80,7 @@ const findOrCreateUser = ( userObject ) => new Promise( async ( resolve , reject
 	}
 });
 
+
 module.exports.finderQueries = {
 	getUserById , getUserByUsername , findAllUsers
 }

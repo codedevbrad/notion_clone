@@ -3,18 +3,24 @@
   "version": "1.0.0",
   "description": "base script to run server and frontend app.",
   "scripts": {
-    "app:client":   "npm --prefix ./service_client start"  ,
-    "app:writable": "npm --prefix ./service_writable server:testing" ,
-    "app:users":    "npm --prefix ./service_users server:testing" ,
-    "app:scraper":  "npm --prefix ./service_flask api:run" , 
+    "app:client": "npm --prefix ./service_client run start",
+    "app:writable": "npm --prefix ./service_writable run server:testing",
+    "app:users": "npm --prefix ./service_users run server:testing",
+    "app:scraper": "npm --prefix ./service_flask run api:run",
 
-    "micro-up:all":  "docker compose up --build" ,
-    "micro-down":    "docker compose down"
+    "app:apis":  "concurrently \"npm run app:writable\" \"npm run app:users\"  \"npm run app:scraper\"",
+    "app:all":   "concurrently \"npm run app:apis\"     \"npm run app:client\"",
+
+    "micro-up:all": "docker-compose up --build",
+    "micro-down": "docker-compose down"
   },
   "repository": {
     "type": "git",
-     "url": "git+https://github.com/codedevbrad/notion_frontend_clone.git"
+    "url": "git+https://github.com/codedevbrad/notion_frontend_clone.git"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^6.2.0"
+  }
 }

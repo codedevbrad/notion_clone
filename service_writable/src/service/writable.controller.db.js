@@ -13,28 +13,29 @@ const writableCreate = ( Writable_MODEL ) => {
     return Writable.create( Writable_MODEL );
 }
 
-const writableUpdate = ( Writable_MODEL , userID , writableID ) => {
+const writableUpdate = ( Writable_MODEL , writableID ) => {
     return Writable.update( 
       Writable_MODEL , { where: { id: writableID } , returning: true, plain: true }
     );
 }
 
-const writableDelete = ( userID , writableID ) => {
+const writableDelete = ( writableID ) => {
     return Writable.destroy({ where: { 
-        id: writableID ,
-        userID
+        id: writableID 
     }})
 }
 
-// === authorization queries ===
+// === authorization queries === //
 
-const writableFindByUserPK = ( userID ) => {
+const writableFindByUserPK = ( userId ) => {
     return Writable.findAll({
         where: {
-          userID
+          userId
         }
     });
 }
+
+// === EXPORTS === //
 
 module.exports.finderqueries = {
     writableFindByID

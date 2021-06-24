@@ -23,9 +23,5 @@ module.exports = {
             res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
             next();
         });
-    } ,
-
-    authStrategy: (  ) => {
-        
     }
 }

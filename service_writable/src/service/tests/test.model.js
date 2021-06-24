@@ -1,25 +1,5 @@
 const WritableQueries = require("../writable.controller.db");
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // //CREATE-ONE
 // exports.createOne = async (req, res, next) => {
 // 	try {

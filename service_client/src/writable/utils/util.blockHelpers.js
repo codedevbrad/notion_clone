@@ -46,12 +46,12 @@ const makeFocus = ( highlighted , direction , options ) => {
         switch( direction ) {
             case 'prev':
               return highlighted - 1;
-              break;
             case 'curr':
               return highlighted;
-              break;
             case 'next':
               return highlighted + 1;
+            default:
+              return false;
         }
     }
 

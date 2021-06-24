@@ -30,7 +30,7 @@ h1, h2, h3, h4, a, li, p, input, label, textarea, button {
   display: inline-block;
 }
 
-input , button { font-weight: 400; }
+input , button { font-weight: 400; outline: none; border: none; }
 
 /* -- html content -- */
 html, body { padding: 0; margin: 0; width: 100%; background: white; }

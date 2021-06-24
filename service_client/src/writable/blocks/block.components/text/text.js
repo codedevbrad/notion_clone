@@ -32,6 +32,7 @@ const TextBlock = ( { section , mainIndex } ) => {
                             } }
                             tagName={ section.tag }
                            disabled={ dragSelection.canDrag }
+                           pastable_override='true'
               />
          </div>
     )

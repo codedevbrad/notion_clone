@@ -13,6 +13,7 @@ api_test
   .get( '/v0/auth/hash'     , test_authStrategy.createHashPassword )
   .post('/v0/auth/testhash' , test_authStrategy.testpasswords );
 
+  
 // @SERVICE - AUTH TESTS
 
 api_test

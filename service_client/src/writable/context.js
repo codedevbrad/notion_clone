@@ -83,6 +83,8 @@ const AppContextProvider = ( props  ) => {
                 currentItem.text = newText_H;
                 await updateWriting( arrayCopy );
                 break;
+            default:
+                return false;
         }
     }
 
@@ -93,11 +95,16 @@ const AppContextProvider = ( props  ) => {
     * @peram { block } the object to push to the array.
     */
 
+    // shouldnt i be creating the block here?
+    // when have I used the block perameter to create new blocks..
+        // - 
+
     const handleWrtableBlockUpdate = async ( type , index , block ) => {
         let arrayCopy = [ ...writing ];
         let key_id = uuidv4();
 
         switch ( type ) {
+            // creates only a text block. use for new page?
             case 'fresh':
                 let object_fresh = getblockData('text').block;
                     object_fresh.key = key_id;
@@ -114,6 +121,15 @@ const AppContextProvider = ( props  ) => {
                 await updateWriting( arrayCopy );
                 break;
 
+            case 'new_textAdded':
+                // expect block to be multi-object.
+                let { block_obj , appendedText } = block;
+                block_obj.key = key_id;
+                block_obj.text = appendedText;
+                arrayCopy.splice( index + 1 , 0 , block_obj );
+                await updateWriting( arrayCopy );
+                break;
+
             case 'delete':
                 arrayCopy.splice( index , 1 );
                 await updateWriting( arrayCopy );
@@ -121,10 +137,12 @@ const AppContextProvider = ( props  ) => {
 
             case 'delete_many':
                 arrayCopy = arrayCopy.filter( ( value , itemIndex ) => {
-                    return index.indexOf( itemIndex ) == -1;
+                    return index.indexOf( itemIndex ) === -1;
                 });
                 await updateWriting( arrayCopy );
                 break;
+            default:
+                return false;
         }
     }
 

@@ -1,25 +1,25 @@
-import React , { Fragment , useState , useRef , useEffect , useContext }  from 'react';
+import React , { Fragment , useContext }  from 'react';
 import { AppContext } from '../context';
 
 import useComponentVisible from '../useEffects/useClickBoundary';
-import { getblockData , blockChoices } from '../blocks/blockJSON';
-import { makeFocus , scrubOffTags } from '../utils/util.blockHelpers';
+import { blockChoices } from '../blocks/blockJSON';
+import { makeFocus } from '../utils/util.blockHelpers';
 import { v4 as uuidv4 } from 'uuid';
 
 import styles from './tooltips.module.scss';
 
 const BlockCreation  = ( ) => {
-    const { writing , highlighted ,
-            tooltip_b_coordinates , update_tooltip_b_coordinates , tooltip_b_blocks , update_tooltip_b_blocks ,
+    const { highlighted ,
+            tooltip_b_coordinates , tooltip_b_blocks , update_tooltip_b_blocks ,
             closeTooltips , handleWrtableBlockUpdate
           } = useContext( AppContext );
 
-    const { state , coor , anchor , blocks } = tooltip_b_coordinates;
+    const { state , coor } = tooltip_b_coordinates;
     const { block_state , block_query } = tooltip_b_blocks;
 
     const {
      ref
-    } = useComponentVisible( state , closeTooltips , [  ] , 'blockcreator'  );
+    } = useComponentVisible( state , closeTooltips , [ ] , 'blockcreator'  );
 
     const createNewBlock = async ( block , targetElement ) => {
           await handleWrtableBlockUpdate( 'new' , highlighted , block );

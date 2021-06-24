@@ -3,8 +3,8 @@ const db = require('../config/database');
 
 const Writable = db.define('writable', {
 	id: {
-		type: Sequelize.INTEGER,
-		autoIncrement: true,
+		type: Sequelize.UUID,
+		defaultValue: Sequelize.UUIDV4,
 		allowNull: false,
 		primaryKey: true
 	},

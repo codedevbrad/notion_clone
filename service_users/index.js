@@ -13,6 +13,7 @@ var config = require('./src/config/settings.js');
 app.use('/api' , require('./src/api'));
 app.use('/test', require('./src/api.test'));
 
+
 require('./src/util/errors').errors( app );
 
 (async () => {
