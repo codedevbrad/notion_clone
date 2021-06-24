@@ -1,0 +1,12 @@
+{
+  "name": "18.-flask_rest_api",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "py:update":  "pipreqs --force" , 
+    "py:install": "pip install -r requirements.txt" ,
+    "api:run":    "python api.py"
+  },
+  "author": "",
+  "license": "ISC"
+}

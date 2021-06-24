@@ -1,0 +1,215 @@
+
+.input_error {
+  border: 1px solid rgb(216, 27, 27) !important;
+}
+
+.submit_error {
+  background: rgb(216, 27, 27) !important;
+}
+
+.editable-heading[ contenteditable=true ]:empty:before {
+  content: attr(placeholder);
+  display: block; /* For Firefox */
+}
+
+.editable-body[ contenteditable=true ]:empty:before {
+  content: attr(placeholder);
+  display: block; /* For Firefox */
+  opacity: 0;
+}
+
+.editable-body[ contenteditable=true ]:empty:focus:before {
+  content: attr(placeholder);
+  display: block; /* For Firefox */
+  opacity: 1;
+}
+
+
+.disable_select {
+  user-select: none;
+}
+
+.drag_highlighted {
+  background: lightblue;
+}
+
+.drag_selection_box {
+  position:absolute;
+  background-color:rgba(6, 217, 160, 0.05);
+  border: 1px solid rgba(6, 217, 160, 0.3);
+}
+
+.content_block {
+     h1 {
+        font-size: 1.5em;
+     }
+     h2 {
+        font-size: 1.4em;
+     }
+     h3 {
+        font-size: 1.3em;
+     }
+     p {
+      font-family: 'Cormorant Garamond'; font-weight: 400;
+     }
+    .editable {
+      outline: none;  width: 100%; height: 100%;
+      word-break: break-all;
+      cursor: text;
+      div , span , h1 , h2 , h3 , h4 , p { display: inline-block; }
+
+      .bold {
+          font-weight: bold;
+      }
+
+      .underlined {
+          border-bottom: 1px solid black;
+      }
+      .highlighted {
+          background: lightblue;
+          padding: 0 1px;
+       }
+     }
+}
+
+
+.active {
+  display: block;
+}
+
+
+
+.App {
+     width: 100%; height: 100%; display: flex; justify-content: center; flex-direction: row;
+
+     .navigation {
+        flex: 0 0 200px; height: 100%; background: rgb(247, 246, 243);
+
+        ul {
+            li {
+              display: block; margin: 10px 0; padding: 10px; font-size: 1.1em;
+                a { font-family: 'Cormorant Garamond'; }
+            }
+        }
+     }
+
+    .Page {
+        flex: 1; background: white; display: flex; flex-direction: column; position: relative;
+        padding: 10px 0;
+
+        .page_top {
+
+            display: flex; flex-direction: row;
+            .page_top_titlecard {
+                flex: 0 0 25%; display: flex; justify-content: flex-end; align-items: center;
+                padding: 5px; border-right: 1px solid #cfcbcb;
+                padding-right: 10px;
+                h3 {
+                  font-size: 0.95em; color: #b8b8b8; font-family: 'Cormorant Garamond';
+                }
+            }
+
+            .page_top_heading {
+               flex: 1; padding: 15px 0;
+               .editable-heading {
+                   font-size: 2.25em; font-weight: 700; padding-left: 8px;
+                   font-family: 'Cormorant Garamond';
+                   outline: none;  width: 100%; height: 100%;
+                   word-break: break-all;
+                   cursor: text;
+               }
+            }
+        }
+
+        .page_bottom {
+
+            flex: 1; display: flex; flex-direction: row;
+            cursor: text;
+
+            .page_left {
+                flex: 0 0 25%; height: 100%; position: relative;
+            }
+
+            .page_right {
+
+                 flex: 1; height: 100%; display: flex; flex-direction: column;
+                 word-break: break-all; position: relative;
+                 padding: 10px 0;
+                 padding-right: 20px;
+
+                 .edit_control {
+                   position: absolute; text-align: center;
+                   bottom: 10px; right: 20px;
+                   background: black; padding: 10px 10px; border-radius: 5px;
+                   color: white;
+                   display: inline-block;
+                   cursor: pointer;
+                     i , svg {
+                         width: 20px;
+                     }
+                 }
+
+                 .edit_control_on {
+                   background: blue;
+                 }
+
+                     .writable_start {
+                       margin-top: 20px;
+                        p {
+                          font-family: 'Cormorant Garamond';
+                          font-weight: 400;
+                        }
+                     }
+
+                     .writable_placeholder {
+                         width: 100%; height: 20px;
+                     }
+
+                     .content_hover_active  {
+                         border-top: 3px solid #79cbfb;
+                     }
+
+                     .writable_section {
+
+                         display: flex; flex-direction: row; position: relative;
+                         margin-bottom: 4px;
+
+                         .content_block {
+                             flex: 1 1;  display: flex;  flex-direction: row;
+                             .content_edit {
+                                display: flex; flex: 0 0 20px; visibility: hidden; cursor: grab;
+                                > div {
+                                    width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+                                    svg {
+                                      width: 5px; height: 100%;
+                                    }
+                                }
+                             }
+                         }
+
+                         .content_hover {
+                           padding: 3px; border-top: 3px solid transparent;
+                           width: 100%; height: 100%;
+                           display: flex;
+                           flex-direction: row;
+                         }
+                         .content_hover_allowed:hover {
+                            background: #f1f1f1;
+                         }
+                         .content_hover_allowed:hover .content_edit  {
+                            visibility: visible;
+                         }
+
+                         .content_hover_active {
+                           border-top: 3px solid #79cbfb;
+                         }
+
+                         /* each block */
+                         .content_bullet {
+                            flex: 1;
+                          }
+                     }
+            }
+        }
+    }
+}

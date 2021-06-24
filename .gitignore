@@ -6,6 +6,8 @@
 /server/uploads
 node_modules
 
+*package-lock.json
+
 # dependencies
 /node_modules
 /.pnp

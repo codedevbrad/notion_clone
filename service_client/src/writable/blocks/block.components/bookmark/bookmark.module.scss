@@ -1,0 +1,29 @@
+
+
+.content_bookmark {
+       flex: 0 0 50%;
+       height: 100%;
+       display: flex;
+       flex-direction: row;
+       border: 1px solid #eee;
+       padding: 15px 15px;
+       border-radius: 3px;
+}
+
+ .content_bookmark_metadata {
+    flex: 1; display: flex; flex-direction: column;
+    padding-right: 20px;
+     h2 , p , a {
+        margin: 2px 0;
+        padding: 3px;
+     }
+     a {
+        font-size: 0.65em;
+     }
+ }
+
+.content_bookmark_image {
+    flex: 0 0 33%;
+    background-image: linear-gradient(to right, #b8cbb8 0%, #b8cbb8 0%, #b465da 0%, #cf6cc9 33%, #ee609c 66%, #ee609c 100%);
+    display: flex; align-items: center; justify-content: center;
+}
