@@ -9,7 +9,7 @@ const useDraggable = ( update , item ) => {
 
     function diff ( num1, num2  ) {
 
-        if ( num1 == num2 ) {
+        if ( num1 === num2 ) {
             return {
                 direction: 'same' ,
                 canChange: false
@@ -29,7 +29,7 @@ const useDraggable = ( update , item ) => {
                direction: 'up' ,
                canChange:  ( num2 - num1 ) >= 1 ,
                updateIndex: num1 ,
-               shouldPrepend: num1 == 0
+               shouldPrepend: num1 === 0
             };
         }
     }

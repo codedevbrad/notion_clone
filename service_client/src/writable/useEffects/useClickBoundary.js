@@ -1,4 +1,9 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect , useRef } from 'react';
+
+/** 
+ * @param condition - elements that are allowed to be clicked which wont trigger close.
+ * @param type - defines the current tooltp being used. usage for testing.
+ */
 
 function useComponentVisible( state , closeTooltips , conditions , type  ) {
 
@@ -10,6 +15,7 @@ function useComponentVisible( state , closeTooltips , conditions , type  ) {
 
   const handleClickOutside = event => {
         if ( state ) {
+
           var i = 0;
           var el = event.target;
           var found = false;
@@ -22,7 +28,6 @@ function useComponentVisible( state , closeTooltips , conditions , type  ) {
               if ( array.length > 0 && test ) {
                    found = true;
                    return;
-                   i = 5;
               }
               el = next;
               i++;

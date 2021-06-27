@@ -18,16 +18,11 @@ export const WritableRequests = {
              .catch( err => reject( err ) );
       }) ,
 
-      imageUpload: ( file ) => {
+      imageUpload: ( file ) => new Promise( ( resolve , reject ) => {
           var formData = new FormData();
               formData.append('file' , file );
-          return new Promise( ( resolve , reject ) => {
-                  axios({  method: 'post', url: `${WritablePort}/image` , data: formData , config: configFile })
+                axios({  method: 'post', url: `${WritablePort}/api/v0/writable/image` , data: formData , config: configFile })
                      .then(  imageURL => resolve( imageURL.data ))
                      .catch( err => reject( err.response.data ));
-          });
-      } , 
-      imageDelete: ( fileId ) => {
-
-      }
+      }) 
 };

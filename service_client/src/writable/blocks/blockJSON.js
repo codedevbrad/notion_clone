@@ -97,7 +97,10 @@ const getblockData = ( type ) => {
                   block: {
                       type: 'image' ,
                       tag: 'img' ,
-                      text: false ,
+                      text: {
+                        url: '' , 
+                        size: 100
+                      } ,
                       marginlevel: 0
                   } ,
                   definitions: {

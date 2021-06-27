@@ -9,7 +9,18 @@ const AppContextProvider = ( props  ) => {
 
     const [ heading , updateHeading ] = useState(``);
 
-    const [ writing , updateWriting ] = useState( [ ] );
+    const [ writing , updateWriting ] = useState( [
+        { 
+            key: "ade1853d-f5c8-44f8-af23-ab9ee16fa8c1" ,
+            marginlevel: 0 ,
+            tag: "img" ,
+            text: {
+                url: "http://res.cloudinary.com/dezoqwmss/image/upload/v1624649125/notion_clone/image_blocks/4VZfI3aDaHyHr0-eJlT6lC4__cncmp3.jpg" ,
+                size: 65 
+            } ,
+            type: "image"
+        }
+     ] );
 
     const [ dragSelection , updateDragSelection ] = useState( {
           canDrag: false , isDragging: false , selected: [ ]
@@ -44,7 +55,7 @@ const AppContextProvider = ( props  ) => {
         block_state: blockChoices( false , null ) ,
         block_query: ''
     } );
-
+    
     const handleWritableDragUpdate = async ( updatedObject , writable_updated ) => {
         let { elementToRemove , updateIndex , shouldPrepend } = updatedObject;
         let arrayCopy = [ ...writable_updated.current ];

@@ -1,13 +1,8 @@
 
 
 .content_bookmark {
-       flex: 0 0 50%;
-       height: 100%;
-       display: flex;
-       flex-direction: row;
-       border: 1px solid #eee;
-       padding: 15px 15px;
-       border-radius: 3px;
+   display: flex; flex-direction: row;
+   width: 100%;
 }
 
  .content_bookmark_metadata {

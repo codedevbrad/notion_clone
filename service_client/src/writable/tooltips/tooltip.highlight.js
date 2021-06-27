@@ -6,10 +6,7 @@ import useComponentVisible from '../useEffects/useClickBoundary';
 import styles from './tooltips.module.scss';
 
 const TooltipHighlight = ( ) => {
-    const {
-      selectedText , closeTooltips , tooltip_h_coordinates ,
-      handleBlockTagUpdate
-    } = useContext( AppContext );
+    const { closeTooltips , tooltip_h_coordinates , handleBlockTagUpdate } = useContext( AppContext );
 
     let { state , coor } = tooltip_h_coordinates;
 
@@ -23,7 +20,6 @@ const TooltipHighlight = ( ) => {
 
     return (
         <Fragment>
-
         { state &&
           <div className={ `tooltip ${ styles.tooltip_highlight } `} style={ { left: coor[0] , top: coor[1] } } ref={ ref }>
               <ul>

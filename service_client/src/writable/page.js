@@ -19,9 +19,12 @@ import './styles.scss';
 
 const StateStatus = ( ) => {
     const { writing , highlighted , selectedText , dragSelection } = useContext( AppContext );
+
+    console.log( writing );
+
     return (
         <div> { JSON.stringify( {
-            highlighted , selectedText , dragSelection
+            writing
         }) }</div>
     )
 }
@@ -63,10 +66,9 @@ const Notion = ( ) => {
               <TooltipHighlight />
 
               <BlockCreation />
+ 
 
               <div className="page_top">
-
-                  { idroom }
 
                   <div className="page_top_titlecard">
                      <h3> Heading </h3>

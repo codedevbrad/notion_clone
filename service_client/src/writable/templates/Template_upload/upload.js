@@ -1,9 +1,11 @@
-import React , { Fragment , useState , useEffect } from 'react';
+import React , { Fragment , useState , useEffect , useContext } from 'react';
 import styles from './upload.module.scss';
 import { delay } from '@codedevbrad/clientutils';
 import TextFormUpload  from '../Template_form/form.text';
 import MediaFormUpload from '../Template_form/form.media';
 import UploadLoader    from '../Template_loader/loader';
+
+import { AppContext } from '../../context';
 
 const CorrectMediaUpload = ( { formType , stateChange } ) => {
 
@@ -13,38 +15,39 @@ const CorrectMediaUpload = ( { formType , stateChange } ) => {
            <Fragment>
                 {
                   formType === 'text' &&
-                    <TextFormUpload state={ state } change={ change }/> 
+                    <TextFormUpload state={ state } change={ change } /> 
                 }
                 {
                   formType === 'media' &&
-                    <MediaFormUpload change={ change }/>
+                    <MediaFormUpload state={ state } change={ change } uploadDisplayType={ 0 } />
                 }
            </Fragment>
         )
 }
 
-const Placeholder = ( { update , parentProps } ) => {
+const Uploader = ( { uploadCompleted , parentProps } ) => {
 
-    const { templateRequired } = parentProps;
+    const { templateRequired , mainIndex } = parentProps;
 
-    const { uploadMethod , uploadBlockData , customStyles } = templateRequired;
+    const { uploadMethod , uploadBlockData } = templateRequired;
 
     const { blockName , blockDescription , blockFormValue , blockFormType } = uploadBlockData;
-    const { inputStyle } = customStyles;
 
     const [ isError ] = useState(false);
-    const [ uploadMade , updateComplete ] = useState( false );
+    const [ uploadMade , updatePending ] = useState( false );
 
     const [ uploadValue , updateUploadValue ] = useState( blockFormValue );
 
-    const Upload = ( e , dataReq ) => {
+    const { handleWritableUpdate } = useContext( AppContext ); 
+
+    const Upload = ( e , uploadValue ) => {
         e.preventDefault();
-        uploadMethod( dataReq )
-            .then( async data => {
-                console.log( data );
-                updateComplete( true );
-                await delay( 1500 );
-                update( true );
+        updatePending( true );
+        uploadMethod( uploadValue )
+            .then( async uploadData => {
+                handleWritableUpdate( uploadData , mainIndex );
+                await delay( 1000 );
+                uploadCompleted( true );
             })
             .catch( err => console.log( err ));
     }
@@ -62,6 +65,7 @@ const Placeholder = ( { update , parentProps } ) => {
                             <CorrectMediaUpload formType={ blockFormType } 
                                              stateChange={ { state: uploadValue , change: updateUploadValue } } 
                             />
+
                             <input type="submit" value={ `upload ${ blockName }`} className={ isError ? 'submit_error' : '' } />
                         </div>   
                     </form>
@@ -77,7 +81,7 @@ const Placeholder = ( { update , parentProps } ) => {
 
 const BlockUploadTemplate = ( { children , ...props } ) => {
     const [ state , changeState ] = useState( false );
-    const { section } = props;
+    const { section , size , completedBorder } = props;
 
     useEffect( ( ) => {
         if ( section.text != false ) {
@@ -88,15 +92,17 @@ const BlockUploadTemplate = ( { children , ...props } ) => {
     } , [ ] );
 
     return (
-        <Fragment>
+        <div className={ 
+            `${ styles.block_upload_template } ${ size === 'full' ? styles.template__full : styles.template__half } 
+             ${ completedBorder ? styles.template__border :  '' }` }>
             { !state ?
-                <Placeholder update={ changeState } parentProps={ props } />
+                <Uploader uploadCompleted={ changeState } parentProps={ props } />
                 :
                 <Fragment>
                     { children }
                 </Fragment>
              }
-        </Fragment>
+        </div>
     )
 }
 

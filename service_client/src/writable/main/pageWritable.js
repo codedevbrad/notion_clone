@@ -12,7 +12,7 @@ import useStateRef  from '../useEffects/useStateRef';
 
 const PageWritable = ( ) => {
 
-    const { writing , highlighted , selectedText , dragSelection , handleWrtableBlockUpdate , handleWritableDragUpdate } = useContext( AppContext );
+    const { writing , dragSelection , handleWrtableBlockUpdate , handleWritableDragUpdate } = useContext( AppContext );
 
     let [ writable_updated ] = useStateRef( writing );
 

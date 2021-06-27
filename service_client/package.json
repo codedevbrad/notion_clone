@@ -19,6 +19,7 @@
     "react-dom": "^16.13.1",
     "react-google-login": "^5.1.21",
     "react-helmet": "^6.0.0",
+    "react-resizable": "^3.0.4",
     "react-router-dom": "^5.2.0",
     "react-scripts": "2.1.8",
     "react-selectable": "^2.1.1",
