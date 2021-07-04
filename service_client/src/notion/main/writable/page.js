@@ -1,9 +1,9 @@
-import React , { useEffect , useContext , useState }  from 'react';
-import { Link , useParams } from "react-router-dom";
+import React , { useEffect , useContext }  from 'react';
+import { useParams } from "react-router-dom";
 
-import { HeadSeo } from '../randoms/seoTag';
+import { HeadSeo } from '../../../randoms/seoTag';
 
-import AppContextProvider , { AppContext } from './context';
+import { AppContext } from './context';
 
 import PageHeading   from './main/pageHeading';
 import PageWritable  from './main/pageWritable';
@@ -15,16 +15,14 @@ import BlockCreation    from './tooltips/tooltip.blockCreator';
 import useSelection from './useEffects/useSelection';
 import usePageBindListeners from './main/functions/handleBindListener';
 
-import { SocialContext } from '../social/social_context';
-import useNavigate from '../utils/util.navigatePage';
-
 import './styles.scss'; 
-
 
 
 // LOGGED IN AND YOU HAVE ACCESS TO PAGE ...
 
-const Notion = ( ) => {
+// pass writable as props?
+
+const NotionPage = ( ) => {
 
     const { getSingleWritable , dragSelection , updateDragSelection , togglecanEdit , handleWrtableBlockUpdate } = useContext( AppContext );
 
@@ -95,65 +93,5 @@ const Notion = ( ) => {
     )
 }
 
-const Navigation = ( ) => {
 
-    const { user } = useContext( SocialContext );
-    const { writables , updateWritableRooms } = useContext( AppContext );
-    const [ roomInput , changeRoomInput ] = useState('');
-
-    const createNewRoom = async ( input ) => {
-            if ( input === '' ) { return false };
-            await updateWritableRooms({ type: 'new_page' , obj: { writablename: roomInput }});
-            changeRoomInput('');
-    }
-
-    useEffect( ( ) => {
-             updateWritableRooms({ type: 'get_pages' })
-    } , [ ] );
-
-    return (
-       <div className="navigation">
-
-            <section>
-                <div> { user.username } </div>
-            </section>
-
-            <div> 
-                 <h3 onClick={ ( ) => createNewRoom(  roomInput) }> add a new page </h3>
-                <input value={ roomInput } onChange={ ( evt ) => changeRoomInput( evt.target.value ) } />
-            </div>
-
-            <ul>
-                { writables.map( ( { id , writablename  } ) => 
-                    
-                  <li page-id={ id } key={ id }>
-                    <Link to={ `/workspace/${ id }`}> { writablename } </Link>
-                  </li>
-
-                )}
-            </ul>
-       </div>
-    )
-}
-
-
-const NotionApp = ( ) => {
-
-    const { getUserFromDb } = useContext( SocialContext );
-    const { changePage } = useNavigate();
-
-    useEffect( ( ) => {
-        console.log( 'checking user is logged' );
-        getUserFromDb()
-            .catch( redirectURL => changePage( redirectURL ) );
-    } , [ ] );
-
-    return (
-         <AppContextProvider>
-             <Notion />
-             <Navigation />
-         </AppContextProvider>
-    )
-}
-
-export default NotionApp;
+export default NotionPage;

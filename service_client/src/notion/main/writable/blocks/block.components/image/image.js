@@ -2,7 +2,7 @@ import React , { useState, useContext } from 'react';
 import Side   from '../../block.chunks/chunk.side';
 import styles from './image.module.scss';
 
-import { writableRequests } from '../../../../network_requests';
+import { writableRequests } from '../../../../../../network_requests';
 import BlockUploadTemplate  from '../../../templates/Template_upload/upload';
 
 import ResizeTooltip from './tooltip/tooltip';

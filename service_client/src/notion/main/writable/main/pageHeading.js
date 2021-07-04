@@ -4,6 +4,9 @@ import ContentEditable  from 'react-contenteditable';
 
 const PageHeading = ( ) => {
     const { heading , updateHeading } = useContext( AppContext );
+
+    // update writablepage and sync with database.
+
     const handleChange = ( evt ) => {
         updateHeading( value => evt.target.value );
     };

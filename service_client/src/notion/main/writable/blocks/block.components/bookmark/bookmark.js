@@ -2,7 +2,7 @@ import React  from 'react';
 import Side   from '../../block.chunks/chunk.side';
 import styles from './bookmark.module.scss';
 
-import { writableRequests } from '../../../../network_requests';
+import { writableRequests } from '../../../../../../network_requests';
 import BlockUploadTemplate  from '../../../templates/Template_upload/upload';
 
 const { generateBookmark } = writableRequests;

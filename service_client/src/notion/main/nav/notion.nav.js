@@ -2,7 +2,7 @@
 import React , { useContext , useState , useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { SocialContext } from '../../../social/social_context';
-import { AppContext } from '../../../writable/context';
+import { AppContext } from '../writable/context';
 
 
 const NotionNavigation = ( ) => {

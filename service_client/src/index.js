@@ -5,14 +5,13 @@ import { BrowserRouter as Router , Switch , Route } from 'react-router-dom';
 import { DefaultHeadSEO , HeadSeo } from './randoms/seoTag';
 import Error404 from './randoms/404page';
 
-import NotionApp   from './writable/page';
+import NotionApp   from './notion/notion';
 import SocialLogin from './social/Login';
 
 import SocialContextProvider from './social/social_context';
 
 import './_cssLibrary/class_reset.css';
 import './_cssLibrary/class_app.scss';
-
 
 const App = () => {
     return (
