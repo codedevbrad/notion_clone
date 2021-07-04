@@ -1,24 +1,32 @@
-import React    from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 
 import { BrowserRouter as Router , Switch , Route } from 'react-router-dom';
-import { DefaultHeadSEO , HeadSeo } from './seoTag';
-import Error404 from './404page';
+import { DefaultHeadSEO , HeadSeo } from './randoms/seoTag';
+import Error404 from './randoms/404page';
 
-import NotionApp from './writable/page';
+import NotionApp   from './writable/page';
+import SocialLogin from './social/Login';
+
+import SocialContextProvider from './social/social_context';
 
 import './_cssLibrary/class_reset.css';
 import './_cssLibrary/class_app.scss';
+
 
 const App = () => {
     return (
       <Router>
             <div className="App">
-                    <HeadSeo title={ 'notion clone' } description={ 'template description'} keywords={ 'react , css' }/>
-                    <Switch>
-                          <Route path="/:idspace/:idroom" component={ NotionApp } />
-                          <Route component={ Error404 } />
-                    </Switch>
+                  <DefaultHeadSEO />
+                  <HeadSeo title={ 'notion clone' } description={ 'template description'} keywords={ 'manage your thoughts' }/>
+                  <SocialContextProvider>
+                        <Switch>
+                              <Route path="/login" component={ SocialLogin } />
+                              <Route path="/workspace/:idroom" component={ NotionApp } />
+                              <Route component={ Error404 } />
+                        </Switch>
+                  </SocialContextProvider>
             </div>
       </Router>
     );

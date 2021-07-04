@@ -94,7 +94,7 @@ const BlockUploadTemplate = ( { children , ...props } ) => {
     return (
         <div className={ 
             `${ styles.block_upload_template } ${ size === 'full' ? styles.template__full : styles.template__half } 
-             ${ completedBorder ? styles.template__border :  '' }` }>
+             ${ state && !completedBorder ? styles.template__border :  '' }` }>
             { !state ?
                 <Uploader uploadCompleted={ changeState } parentProps={ props } />
                 :

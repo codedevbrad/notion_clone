@@ -2,12 +2,19 @@ import React  from 'react';
 import Side   from '../../block.chunks/chunk.side';
 import styles from './bookmark.module.scss';
 
-import { WritableRequests } from '../../../../network_requests';
+import { writableRequests } from '../../../../network_requests';
 import BlockUploadTemplate  from '../../../templates/Template_upload/upload';
 
-const { generateBookmark } = WritableRequests;
+const { generateBookmark } = writableRequests;
 
 const BookmarkBlock = ( { section , mainIndex , initialState = false } ) => {
+
+    // DOES THIS RETURN THE OBJECT?
+    /** 
+     * {
+     *    title , description , url
+     * }
+     */
 
     const uploadMethod = ( url ) => {
         return generateBookmark( url )

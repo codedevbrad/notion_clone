@@ -1,4 +1,4 @@
-import React , { Fragment , useState , useRef , useEffect , useContext } from 'react';
+import React , { Fragment , useContext } from 'react';
 import { AppContext } from '../context';
 
 import TextBlock     from '../blocks/block.components/text/text';
@@ -6,6 +6,7 @@ import BulletedBlock from '../blocks/block.components/bulletpoints/bulletPoints'
 import BookmarkBlock from '../blocks/block.components/bookmark/bookmark';
 import ImageBlock    from '../blocks/block.components/image/image';
 import DividerBlock  from '../blocks/block.components/divider/divider';
+import VideoBlock    from '../blocks/block.components/video/video';
 
 import useDraggable from '../useEffects/useDraggable';
 import useStateRef  from '../useEffects/useStateRef';
@@ -64,6 +65,12 @@ const PageWritable = ( ) => {
                     section.type === 'image' &&
                           <div className={`content_block content_image`}>
                                 <ImageBlock section={ section } mainIndex={ index } />
+                          </div>
+                  }
+                  {
+                    section.type === 'video' &&
+                          <div className={`content_block content_video`}>
+                               <VideoBlock block={ section } mainIndex={ index } />
                           </div>
                   }
               </div>

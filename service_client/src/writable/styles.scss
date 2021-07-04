@@ -124,7 +124,7 @@
         .page_bottom {
 
             flex: 1; display: flex; flex-direction: row;
-            cursor: text;
+            cursor: text; overflow: hidden; 
 
             .page_left {
                 flex: 0 0 25%; height: 100%; position: relative;
@@ -136,9 +136,11 @@
                  word-break: break-all; position: relative;
                  padding: 10px 0;
                  padding-right: 20px;
+                 margin-right: 20px;
+                 overflow-y: scroll;
 
                  .edit_control {
-                   position: absolute; text-align: center;
+                   position: fixed; text-align: center;
                    bottom: 10px; right: 20px;
                    background: black; padding: 10px 10px; border-radius: 5px;
                    color: white;
@@ -213,3 +215,18 @@
         }
     }
 }
+
+  .scrollbar::-webkit-scrollbar {
+    width: 20px;
+  }
+  
+  /* Track */
+  .scrollbar::-webkit-scrollbar-track {
+    background: white;
+  }
+  
+  /* Handle */
+  .scrollbar::-webkit-scrollbar-thumb {
+    background: #888;
+    border: 5px solid white;
+  }

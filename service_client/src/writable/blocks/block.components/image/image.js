@@ -2,13 +2,13 @@ import React , { useState, useContext } from 'react';
 import Side   from '../../block.chunks/chunk.side';
 import styles from './image.module.scss';
 
-import { WritableRequests } from '../../../../network_requests';
+import { writableRequests } from '../../../../network_requests';
 import BlockUploadTemplate  from '../../../templates/Template_upload/upload';
 
 import ResizeTooltip from './tooltip/tooltip';
 import { AppContext } from '../../../context';
 
-const { imageUpload } = WritableRequests;
+const { imageUpload } = writableRequests;
 
 const ImageBlock = ( { section , mainIndex } ) => {
 
@@ -49,7 +49,12 @@ const ImageBlock = ( { section , mainIndex } ) => {
     }
 
     const uploadMethod = ( imageObject ) => {
-        return imageUpload( imageObject );
+        return imageUpload( imageObject ).then( imageUrl => {
+                return {
+                    url: imageUrl , 
+                    size: 50
+                }
+        });
     }
 
     const uploadData = {

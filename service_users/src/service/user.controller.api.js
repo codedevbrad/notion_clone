@@ -5,9 +5,8 @@ const { generateAccessToken } = require('../authStrategy/auth.token');
 
 const databaseMethods = require('./user.controller.db');
 
-const { getUserByUsername } = databaseMethods.finderQueries;
-const { createNewUser , updateUser , removeUser } = databaseMethods.mutableQueries;
 const { findOrCreateUser } = databaseMethods.authQueries;
+const { getUserById } = databaseMethods.finderQueries;
 
 exports.login = asyncSupport(  async ( req , res , next ) => {
 
@@ -19,16 +18,20 @@ exports.login = asyncSupport(  async ( req , res , next ) => {
 
     let user = await findOrCreateUser( { username , password } );
 
-    let userSigned = await generateAccessToken( user );
+    let token = await generateAccessToken( user );
 
     res.status(201).send( {
-        user: user , 
-        token: userSigned 
+        user , 
+        token  
     } );
 });
 
 exports.getLoggedUser = asyncSupport(  async ( req , res , next ) => {
     // return USER object from token asigned to res.
-    let user = res.locals.user;
-    res.status(200).send( user );
+    let { user: userToken } = res.locals.user;
+    // query USER in database.
+    let { id , username } = await getUserById( userToken.id );
+    res.status(200).send({
+            id , username 
+    });
 });

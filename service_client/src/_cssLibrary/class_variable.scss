@@ -2,6 +2,7 @@
 $primary_elementBackground: white;
 $primary_button: white;
 $primary_border: 1px solid black;
+$primary_transition_speed: transition all 400ms;
 
 @mixin buttonStyle ( ) {
 

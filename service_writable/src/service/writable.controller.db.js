@@ -27,6 +27,10 @@ const writableDelete = ( writableID ) => {
 
 // === authorization queries === //
 
+const writableSingleByUserPK = ( writableId ) => {
+    return Writable.findByPk( writableId );
+}
+
 const writableFindByUserPK = ( userId ) => {
     return Writable.findAll({
         where: {
@@ -46,5 +50,5 @@ module.exports.mutableQueries = {
 }
 
 module.exports.authorizationQueries = {
-    writableFindByUserPK 
+    writableSingleByUserPK , writableFindByUserPK 
 }

@@ -1,26 +1,85 @@
 import React , { createContext , useState } from 'react';
-import { makeFocus , scrubOffTags } from './utils/util.blockHelpers';
+import { makeFocus } from './utils/util.blockHelpers';
 import { v4 as uuidv4 } from 'uuid';
 import { getblockData , blockChoices } from './blocks/blockJSON';
+import { writableRequests  } from '../network_requests';
 
 export const AppContext = createContext();
 
 const AppContextProvider = ( props  ) => {
 
+    const { getWritable , getWritables , createWritable  } = writableRequests;
+
+
+    // === WRITABLES SYNC WITH DATABASE === //
+
+    const [ writables , updateWritables ] = useState( [ ] );
+
+    const getSingleWritable = async ( chosenId ) => {
+        getWritable( chosenId )
+            .then( writable => {
+                    writable.data = JSON.parse( writable.data );
+                    setWritable( writable );
+            } )
+            .catch( err => console.log( err ));
+    }
+
+    const updateWritableRooms = async ( { type , obj } ) => {
+
+        let writablesCopy = [ ...writables ];
+
+        switch ( type ) {
+
+            case 'get_pages':
+                await getWritables()
+                    .then( writables => { 
+                        updateWritables( writables );
+                        console.log( writables );
+                    })
+                    .catch( err => console.log( err ));
+                break;
+
+            case 'new_page':
+                let { writablename } = obj;
+                await createWritable( writablename )
+                    .then( writable => {
+                        writablesCopy.push( writable );
+                        updateWritables( writablesCopy );
+                    })
+                    .catch( err => {
+                        console.log( err );
+                    });
+                break;
+
+            case 'update_page':
+                break;
+            
+            case 'delete_page':
+                break;
+        
+            default:
+                return null;
+        }
+    }
+
+
+    // === INDIVIDUAL WRITABLE === //
+
+    // do we really need this?
+    const [ pageId , setPageId ] = useState(null);
+
+    
     const [ heading , updateHeading ] = useState(``);
 
-    const [ writing , updateWriting ] = useState( [
-        { 
-            key: "ade1853d-f5c8-44f8-af23-ab9ee16fa8c1" ,
-            marginlevel: 0 ,
-            tag: "img" ,
-            text: {
-                url: "http://res.cloudinary.com/dezoqwmss/image/upload/v1624649125/notion_clone/image_blocks/4VZfI3aDaHyHr0-eJlT6lC4__cncmp3.jpg" ,
-                size: 65 
-            } ,
-            type: "image"
-        }
-     ] );
+
+    const [ writing , updateWriting ] = useState( [ ] );
+
+    const setWritable = ( { data , id , writablename } ) => {
+         setPageId( id );
+         updateHeading( writablename );
+         updateWriting( data );
+    }
+
 
     const [ dragSelection , updateDragSelection ] = useState( {
           canDrag: false , isDragging: false , selected: [ ]
@@ -223,6 +282,13 @@ const AppContextProvider = ( props  ) => {
 
     return (
         <AppContext.Provider value={ {
+
+              // ROOMS //
+
+              updateWritableRooms , writables , updateWritables , getSingleWritable ,
+
+              // INDIVIDUAL // 
+              
               heading , updateHeading ,
 
               writing , updateWriting , handleWritableUpdate , handleWritableHighlighting ,

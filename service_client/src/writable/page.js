@@ -1,8 +1,9 @@
-import React , { Fragment , useState , useRef , useEffect , useContext }  from 'react';
+import React , { useEffect , useContext , useState }  from 'react';
 import { Link , useParams } from "react-router-dom";
 
-import { AppContext }     from './context';
-import AppContextProvider from './context';
+import { HeadSeo } from '../randoms/seoTag';
+
+import AppContextProvider , { AppContext } from './context';
 
 import PageHeading   from './main/pageHeading';
 import PageWritable  from './main/pageWritable';
@@ -12,26 +13,20 @@ import TooltipSection   from './tooltips/tooltip.section';
 import BlockCreation    from './tooltips/tooltip.blockCreator';
 
 import useSelection from './useEffects/useSelection';
-import useStateRef  from './useEffects/useStateRef';
 import usePageBindListeners from './main/functions/handleBindListener';
 
-import './styles.scss';
+import { SocialContext } from '../social/social_context';
+import useNavigate from '../utils/util.navigatePage';
 
-const StateStatus = ( ) => {
-    const { writing , highlighted , selectedText , dragSelection } = useContext( AppContext );
+import './styles.scss'; 
 
-    console.log( writing );
 
-    return (
-        <div> { JSON.stringify( {
-            writing
-        }) }</div>
-    )
-}
+
+// LOGGED IN AND YOU HAVE ACCESS TO PAGE ...
 
 const Notion = ( ) => {
 
-    const { dragSelection , updateDragSelection , togglecanEdit , handleWrtableBlockUpdate } = useContext( AppContext );
+    const { getSingleWritable , dragSelection , updateDragSelection , togglecanEdit , handleWrtableBlockUpdate } = useContext( AppContext );
 
     const itemsSelected = ({ items, event }) => {
           let arraySelected = [ ];
@@ -51,23 +46,29 @@ const Notion = ( ) => {
           }
     }
 
-    let { idspace , idroom } = useParams();
-
     usePageBindListeners();
     useSelection( dragSelection.canDrag , itemsSelected );
 
+    
+    let { idroom } = useParams();
+
     useEffect( (  ) => {
-        console.log('re rendered');
+         
+         console.log('get page data for' , idroom );
+         getSingleWritable( idroom )
+
     } , [ idroom ] );
+
 
     return (
         <div className="Page">
+
+              <HeadSeo title={ 'individual page' } description={ 'each indidvidual page'} keywords={ 'manage your thoughts' }/>
 
               <TooltipHighlight />
 
               <BlockCreation />
  
-
               <div className="page_top">
 
                   <div className="page_top_titlecard">
@@ -83,7 +84,7 @@ const Notion = ( ) => {
                       <TooltipSection />
                   </div>
 
-                  <div className="page_right" onClick={ ( evt ) => handleBlockCreation( evt.target ) }>
+                  <div className={ `page_right scrollbar`} onClick={ ( evt ) => handleBlockCreation( evt.target ) } >
                       <p className={ `edit_control ${ dragSelection.canDrag ? 'edit_control_on' : ''  } `} onClick={ () => togglecanEdit() }>
                           <i className="fas fa-edit"></i>
                       </p>
@@ -95,27 +96,62 @@ const Notion = ( ) => {
 }
 
 const Navigation = ( ) => {
-     let space = 'workspace1';
 
-     return (
+    const { user } = useContext( SocialContext );
+    const { writables , updateWritableRooms } = useContext( AppContext );
+    const [ roomInput , changeRoomInput ] = useState('');
+
+    const createNewRoom = async ( input ) => {
+            if ( input === '' ) { return false };
+            await updateWritableRooms({ type: 'new_page' , obj: { writablename: roomInput }});
+            changeRoomInput('');
+    }
+
+    useEffect( ( ) => {
+             updateWritableRooms({ type: 'get_pages' })
+    } , [ ] );
+
+    return (
        <div className="navigation">
+
+            <section>
+                <div> { user.username } </div>
+            </section>
+
+            <div> 
+                 <h3 onClick={ ( ) => createNewRoom(  roomInput) }> add a new page </h3>
+                <input value={ roomInput } onChange={ ( evt ) => changeRoomInput( evt.target.value ) } />
+            </div>
+
             <ul>
-                <li>
-                  <Link to={ `/${space}/room1`}> room1 </Link>
-                </li>
-                <li>
-                  <Link to={ `/${space}/room2`}> room2 </Link>
-                </li>
+                { writables.map( ( { id , writablename  } ) => 
+                    
+                  <li page-id={ id } key={ id }>
+                    <Link to={ `/workspace/${ id }`}> { writablename } </Link>
+                  </li>
+
+                )}
             </ul>
        </div>
-     )
+    )
 }
 
+
 const NotionApp = ( ) => {
+
+    const { getUserFromDb } = useContext( SocialContext );
+    const { changePage } = useNavigate();
+
+    useEffect( ( ) => {
+        console.log( 'checking user is logged' );
+        getUserFromDb()
+            .catch( redirectURL => changePage( redirectURL ) );
+    } , [ ] );
+
     return (
          <AppContextProvider>
-            <Notion />
-            <Navigation />
+             <Notion />
+             <Navigation />
          </AppContextProvider>
     )
 }

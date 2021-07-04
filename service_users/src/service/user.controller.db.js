@@ -34,6 +34,7 @@ function destroyAll( ) {
 	return User.sync({ force: true });
 }
 
+
 const matchUserByCredentials = ( userObject ) => new Promise( async ( resolve , reject ) => {
 	try {
 		let { username , password } = userObject;
@@ -50,6 +51,7 @@ const matchUserByCredentials = ( userObject ) => new Promise( async ( resolve , 
 	}
 });
 
+
 const findOrCreateUser = ( userObject ) => new Promise( async ( resolve , reject ) => {
 	try {
 		let { username , password } = userObject;
@@ -61,20 +63,28 @@ const findOrCreateUser = ( userObject ) => new Promise( async ( resolve , reject
 
 			if ( !userPasswordMatches ) reject( 'wrong credentials');
 
+			let user = { 
+				username : usernameExists.username , 
+				id: usernameExists.id
+			}
+
 			resolve( {
-				user : usernameExists  , 
+				user ,
 				fresh: false
 			});
 		}
 		else if ( !usernameExists ) {
 			let newUser = userObject;
-			createNewUser( newUser )
-			 	.then( user => resolve({
-					user , fresh : true
-				}))
-				.catch( err => reject('could not save new user' ));
+			createNewUser( newUser ).then( user => {
+					resolve({ 
+						user , 
+						fresh : true 
+					}
+			)})
+			.catch( err => reject('could not save new user' ));
 		}
 	}
+
 	catch ( err ) {
 		reject( 'error finding or creating user' );
 	}

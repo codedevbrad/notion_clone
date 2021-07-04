@@ -1,4 +1,8 @@
 const betterTypes = [
+  {
+    type: 'video' , 
+    catches: 'youtube vid stream yt'
+  } ,
   { type: 'text' ,
     catches: 'text block writing'
   } ,
@@ -34,6 +38,33 @@ const betterTypes = [
 
 const getblockData = ( type ) => {
     switch ( type ) {
+
+          case 'video' :
+              return {
+                block: {
+                  type: 'video' ,
+                  tag:  'div' ,
+                  text: '' ,
+                  marginlevel: 0
+                } ,
+                definitions: {
+                    publicUrl:   'https://res.cloudinary.com/dezoqwmss/image/upload/v1625167785/notion_clone/block_icons/video_sc4mfq.png' ,
+                    block_title: 'Video block' ,
+                    block_description: 'save a youtube video.' ,
+                    classFocus:  'input' ,
+                    rules: {
+                      canTurn:  true ,
+                      canFocus: false
+                    }
+                } , 
+                creation: {
+                     url: null , 
+                    size: 100 , 
+                    sizes: 'full-length | center | 100% ' , 
+                    textType: Object 
+                }
+              }
+
           case 'text' :
               return {
                   block: {
@@ -97,10 +128,7 @@ const getblockData = ( type ) => {
                   block: {
                       type: 'image' ,
                       tag: 'img' ,
-                      text: {
-                        url: '' , 
-                        size: 100
-                      } ,
+                      text: '' ,
                       marginlevel: 0
                   } ,
                   definitions: {
