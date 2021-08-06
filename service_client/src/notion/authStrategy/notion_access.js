@@ -1,7 +1,7 @@
 import React , { useContext , useEffect , useState } from 'react';
 import { useParams } from 'react-router';
-import { SocialContext } from '../social/social_context';
-import useNavigate from '../utils/util.navigatePage';
+import { SocialContext } from '../../social/social_context';
+import useNavigate from '../../utils/util.navigatePage';
 
 
 /** 
@@ -17,7 +17,7 @@ import useNavigate from '../utils/util.navigatePage';
     return (
         <div id="notion__noaccess">
                <div> { message } </div>
-               <p Onclick={ ( ) => changePage( '/workspace/welcome' ) }> back to my content </p>
+               <p Onclick={ ( ) => changePage( '/welcome' ) }> back to my content </p>
         </div>
     )
 }

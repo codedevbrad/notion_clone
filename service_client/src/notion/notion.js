@@ -1,45 +1,51 @@
 
-import React , { useContext , useEffect } from 'react';
-import useNavigate from '../utils/util.navigatePage';
+import React , { useContext , Fragment } from 'react';
 
-import AppContextProvider from '../notion/main/writable/context';
+import AppContextProvider, { AppContext } from '../notion/main/writable/context';
 import { SocialContext }  from '../social/social_context';
 
 import NotionPage       from './main/writable/page';
 import NotionNavigation from './main/nav/notion.nav';
-import { Fragment } from 'react';
+import NotionWelcome    from './main/writableNoFetch/notionPage_welcome/index';
+import { useUserFetch } from './pageFetches/notion.user';
+import useSyncWritableroom from './pageFetches/notion.workspace';
 
-/** 
- *  page left
- *      - notionPage ( if user and has access to page )
- *      - notionMessage ( else )
- *  page nav
- */
+const NotionPlain = (  ) => {
+    return ( <div> </div> )
+}
 
 
-/** 
- *  Import notion access as a wrapper around notion_page to protect access.
- */
+const NotionRender = ( ) => {
+
+    const { writableComponent } = useContext( AppContext );
+
+    // fetch data for writable.
+    useSyncWritableroom();
+
+    return (
+        <div className="Page">
+            { writableComponent === 'loading' && <NotionPlain /> }
+            { writableComponent === 'notion'  && <NotionPage /> }
+            { writableComponent === 'welcome' && <NotionWelcome /> }
+        </div>
+    )
+}
 
 
 const NotionApp = ( ) => {
 
     // Should I hide these components till a user is found?
 
-    const { isUser , getUserFromDb } = useContext( SocialContext );
-    const { changePage } = useNavigate();
+    const { isUser } = useContext( SocialContext );
 
-    useEffect( ( ) => {
-        console.log( 'checking user is logged' );
-        getUserFromDb()
-            .catch( redirectURL => changePage( redirectURL ) );
-    } , [ ] );
+    // fetch user. else return to login.
+    useUserFetch( );
 
     return (
          <AppContextProvider>
              { isUser &&
                     <Fragment>
-                         <NotionPage />
+                         <NotionRender />
                          <NotionNavigation />
                     </Fragment>
              }

@@ -1,7 +1,7 @@
 
 import React from 'react';
 
-const Error404 = ( ) => {
+const PageError404 = ( ) => {
     return (
         <div className="error">
             Error page
@@ -9,4 +9,4 @@ const Error404 = ( ) => {
     )
 }
 
-export default Error404;
+export default PageError404;

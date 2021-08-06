@@ -11,7 +11,7 @@ api.get('/v0/writables'   , authenticateTokenMiddleware   , controller_writable.
 api.get('/v0/writable'    , authenticateTokenMiddleware , controller_writable.getWritable    );
 api.post('/v0/writable'   , authenticateTokenMiddleware , controller_writable.createWritable );
 api.delete('/v0/writable' , authenticateTokenMiddleware , controller_writable.deleteWritable );
-api.put('/v0/writable'    , authenticateTokenMiddleware , controller_writable.updateWritable );
+api.post('/v0/writable/update'    , authenticateTokenMiddleware , controller_writable.updateWritable );
 
 api.get('/v0/writable/bookmark' , controller_writable.Writable__bookmark );
 

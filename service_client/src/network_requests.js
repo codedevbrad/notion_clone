@@ -75,10 +75,6 @@ class WritableRequests {
             });
       } 
 
-      sync ( ) {
-
-      }
-
       getWritable ( writableId ) {
             return new Promise( ( resolve , reject ) => {
                   axios.get(`${ WritablePort }/writable?writableId=${ writableId }` , configAuth() )
@@ -110,11 +106,13 @@ class WritableRequests {
             });
       }
 
-      update ( model ) {
+      updateWritable ( reqObj ) {
       
-            return new Promise( ( resolve , reject ) => {
+            return new Promise( ( resolve , reject ) => { 
 
-                  axios.put( `${ WritablePort }/writable/` , configAuth() )
+                  const body = JSON.stringify(reqObj);
+
+                  axios.post( `${ WritablePort }/writable/update` , body , configAuth() )
                         .then(  res => resolve( res.data ) )
                         .catch( err => reject( err ) );
             });

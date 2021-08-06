@@ -8,21 +8,32 @@ export const AppContext = createContext();
 
 const AppContextProvider = ( props  ) => {
 
-    const { getWritable , getWritables , createWritable  } = writableRequests;
+    const { getWritable , getWritables , createWritable , updateWritable } = writableRequests;
 
+    // === WRITABLES ALL === //
 
-    // === WRITABLES SYNC WITH DATABASE === //
+    /** 
+     * @property writablename
+     * @property data
+     * @property id
+     */
 
     const [ writables , updateWritables ] = useState( [ ] );
 
-    const getSingleWritable = async ( chosenId ) => {
+
+    const getSingleWritable = async ( chosenId ) => new Promise( ( resolve , reject ) => {
         getWritable( chosenId )
             .then( writable => {
-                    writable.data = JSON.parse( writable.data );
-                    setWritable( writable );
+                writable.data = JSON.parse( writable.data );
+                setWritable( writable );
+                console.log( 'set data' );
+                resolve();
             } )
-            .catch( err => console.log( err ));
-    }
+            .catch( err => {
+                console.log( err );
+                reject( err );
+            });
+    });
 
     const updateWritableRooms = async ( { type , obj } ) => {
 
@@ -52,9 +63,18 @@ const AppContextProvider = ( props  ) => {
                 break;
 
             case 'update_page':
+
+                    let { writableId , name_updated } = obj;
+
+                    let writableUpdate = writablesCopy.find( ( { id } ) => id === writableId );
+                    writableUpdate.writablename = name_updated;
+
+                    updateWritables( writablesCopy );
+
                 break;
             
             case 'delete_page':
+
                 break;
         
             default:
@@ -65,17 +85,74 @@ const AppContextProvider = ( props  ) => {
 
     // === INDIVIDUAL WRITABLE === //
 
-    // do we really need this?
-    const [ pageId , setPageId ] = useState(null);
+    const [ writableComponent , switchComponents ] = useState( 'loading' );
 
+    const renderNotionComponentType = ( page ) => {
+        switch ( page ) {
+            case 'loading':
+                switchComponents('loading');
+                return;
+            case 'notion_render':
+                switchComponents('notion');
+                break;
+            case 'notion_welcome':
+                switchComponents('welcome');
+                break;
+            default:
+                switchComponents('welcome');
+                break;
+        }
+    }
+
+    const [ writableId , setWritableId ] = useState(null);
     
     const [ heading , updateHeading ] = useState(``);
 
-
     const [ writing , updateWriting ] = useState( [ ] );
 
+    /** 
+     * @param type - '| heading | data'
+     * @param value - 'type: string | obj 
+     */
+    const saveUpdateToDatabase = ( type , value ) => {
+        switch ( type ) {
+            case 'heading': 
+            
+                     const MODEL = { writablename: value };
+
+                     updateWritable( { writableId , MODEL } )
+                            .then( ( writable ) => {
+
+                                let { id: writableId , writablename: name_updated } = writable;
+
+                                console.log( writable );
+
+                                updateWritableRooms({
+                                    type: 'update_page' ,
+                                     obj: {
+                                         writableId , name_updated
+                                      }
+                                });
+                            })
+                            .catch( err => console.log( err  ));
+
+                break;
+
+            case 'data':
+
+                break;
+
+            default:
+                
+                break;
+        }
+    }
+
+
+    // set in page when used to find the writable. expects a model of
+         // { data , id , writablename }
     const setWritable = ( { data , id , writablename } ) => {
-         setPageId( id );
+         setWritableId( id );
          updateHeading( writablename );
          updateWriting( data );
     }
@@ -201,8 +278,18 @@ const AppContextProvider = ( props  ) => {
                 break;
 
             case 'delete':
+                
+                let deletedObj = arrayCopy[ index ];
+
+                if ( deletedObj.type === 'image' && deletedObj.text != '' ) {
+                        console.log( 'image to delete' );
+                };
+                
                 arrayCopy.splice( index , 1 );
                 await updateWriting( arrayCopy );
+                makeFocus( index , 'prev' , {
+                    elementTarget: '.editable'
+                } );
                 break;
 
             case 'delete_many':
@@ -288,8 +375,12 @@ const AppContextProvider = ( props  ) => {
               updateWritableRooms , writables , updateWritables , getSingleWritable ,
 
               // INDIVIDUAL // 
+
+              writableComponent , renderNotionComponentType ,
               
               heading , updateHeading ,
+
+              writableId , saveUpdateToDatabase ,
 
               writing , updateWriting , handleWritableUpdate , handleWritableHighlighting ,
 

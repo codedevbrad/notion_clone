@@ -1,0 +1,21 @@
+
+
+.system_notify {
+    position: absolute; right: 30px; top: 15px;
+    
+    padding: 12px 20px; border-radius: 7px;
+    
+    p {
+        font-weight: 400;  font-size: 0.73em;
+    } 
+}
+
+.system_updating {
+     background-color: rgb(0, 0, 0);
+     p { color: white; }
+}
+
+.system_synced {
+    background-color: transparent; 
+    p { color: black; }
+}

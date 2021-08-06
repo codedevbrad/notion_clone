@@ -12,7 +12,7 @@ const TooltipHighlight = ( ) => {
 
     const {
      ref
-   } = useComponentVisible( state , closeTooltips , [ 'content_block' , 'tooltip' ] , 'highlght'  );
+    } = useComponentVisible( state , closeTooltips , [ 'content_block' , 'tooltip' ] , 'highlght'  );
 
     const turnInto = ( type , tag ) => {
         handleBlockTagUpdate( type , tag );

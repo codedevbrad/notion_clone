@@ -1,4 +1,4 @@
-import React , { Fragment , useContext }  from 'react';
+import React , { Fragment , useContext, useEffect, useRef }  from 'react';
 import { AppContext } from '../context';
 
 import useComponentVisible from '../useEffects/useClickBoundary';
@@ -8,7 +8,11 @@ import { v4 as uuidv4 } from 'uuid';
 
 import styles from './tooltips.module.scss';
 
+
 const BlockCreation  = ( ) => {
+
+    let inputRef = useRef( null );
+
     const { highlighted ,
             tooltip_b_coordinates , tooltip_b_blocks , update_tooltip_b_blocks ,
             closeTooltips , handleWrtableBlockUpdate
@@ -37,16 +41,28 @@ const BlockCreation  = ( ) => {
           update_tooltip_b_blocks( { block_state: generatedBlocksToShow , block_query: block_searchString } );
     }
 
+    useEffect( ( ) => {
+            
+            if ( state ) {
+                inputRef.current.focus(); 
+            }
+    } , [ state ] );
+
+
     return (
         <Fragment>
             { state &&
               <div className={`tooltip ${ styles.tooltip_blockcreation }`} style={ { left: coor[0] , top: coor[1] - 10 } } ref={ ref }>
                     <h3> create a new .. </h3>
+
                     <input className={`${ styles.blockCreation_input }` } type="text" value={ block_query }
                             onChange={ ( evt ) => handleSearch( evt ) }
-                         placeholder="filter blocks"
+                         placeholder="filter blocks" 
+                                 ref={ inputRef }
                     />
+
                     <section className={ `${ styles.blockCreation_blockchoices }` }>
+
                         { block_state.map( ( block , index ) =>
 
                             <div key={ uuidv4() } className={ `${ styles.blockCreation_choice }`} onClick={ ( ) => createNewBlock( block.block , block.definitions.classFocus ) }>
@@ -59,6 +75,7 @@ const BlockCreation  = ( ) => {
                                   </section>
                             </div>
                         )}
+
                     </section>
               </div>
             }

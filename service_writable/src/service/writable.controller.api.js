@@ -52,14 +52,18 @@ module.exports.createWritable = asyncSupport( async( req , res , next ) => {
 
 module.exports.updateWritable = asyncSupport( async ( req , res , next ) => {
     let { id } = res.locals.user;
-    let { writableID , model } = req.body;
+    let { MODEL , writableId } = req.body;
 
-    let updatedWritable = await writableUpdate(
-        model , 
-        writableID
-    );
-    res.status(201).send( updatedWritable[1] );
+    writableUpdate( MODEL , writableId )
+        .then( updated => updated[ 1 ] )
+        .then( obj => {
+            res.status(201).send( {
+                id: obj.id ,  
+                writablename: obj.writablename
+            } );
+        });
 });
+
 
 module.exports.deleteWritable = asyncSupport( async ( req , res , next ) => {
     let { id } = res.locals.user;
@@ -77,6 +81,8 @@ module.exports.deleteWritable = asyncSupport( async ( req , res , next ) => {
 });
 
 // ==== IMAGE CREATE / DELETE ==== //
+
+// what about errors?
 
 module.exports.Writable__imageUPLOAD = asyncSupport( async( req , res , next ) => {
     // Get image from request...

@@ -1,4 +1,4 @@
-import React , { Fragment , useState , useRef , useEffect , useContext }  from 'react';
+import React , {  useRef , useContext }  from 'react';
 import ContentEditable  from 'react-contenteditable';
 import Side from '../../block.chunks/chunk.side';
 import { AppContext } from '../../../context';
@@ -7,7 +7,7 @@ import useComponentKeybinds from '../../textShortcuts';
 
 const TextBlock = ( { section , mainIndex } ) => {
     const {
-        updateWriting , handleWritableUpdate , updateHighlighted , handleWritableHighlighting , dragSelection
+        handleWritableUpdate , updateHighlighted , handleWritableHighlighting , dragSelection
     } = useContext( AppContext );
 
     const highlightedFunc = ( e ) => {

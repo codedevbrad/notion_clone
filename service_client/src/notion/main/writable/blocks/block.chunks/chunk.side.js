@@ -1,6 +1,7 @@
 
-import React , { Fragment , useState , useRef , useEffect , useContext }  from 'react';
+import React , { Fragment , useRef , useEffect , useContext }  from 'react';
 import { AppContext }   from '../../context';
+
 
 const Carrot = ( ) => {
     return (
@@ -15,9 +16,10 @@ const Carrot = ( ) => {
     )
 }
 
+
 const Side = ( { curr } ) => {
 
-    const { tooltip_s_coordinates , update_tooltip_s_coordinates , closeTooltipsExcept } = useContext( AppContext );
+    const { update_tooltip_s_coordinates , closeTooltipsExcept , updateHighlighted } = useContext( AppContext );
 
     const curr_ref = useRef( null );
 
@@ -40,6 +42,7 @@ const Side = ( { curr } ) => {
         curr_ref.current.addEventListener( 'mousedown' , handleMouseDown );
         curr_ref.current.addEventListener( 'mouseup'   , handleMouseUp );
         curr_ref.current.addEventListener( 'mouseend'  , handleDragEnd );
+
         return ( ) => {
           curr_ref.current.removeEventListener( 'mousedown' , handleMouseDown );
           curr_ref.current.removeEventListener( 'mouseup'   , handleMouseUp );
@@ -49,11 +52,11 @@ const Side = ( { curr } ) => {
 
     const toggleSectionHover = async ( e ) => {
 
-        console.log( curr );
-
         let current = e.currentTarget.getBoundingClientRect();
+
         // if this is already active, then hide the tooltip...
-        let data = ( e.currentTarget.getAttribute('data-carrot') == 'true');
+        // not too sure what this does.
+        let data = ( e.currentTarget.getAttribute('data-carrot') === 'true');
         let els = document.querySelectorAll('.content_edit');
 
         let els_array = Array.from( els );
@@ -68,20 +71,26 @@ const Side = ( { curr } ) => {
         e.currentTarget.setAttribute('data-carrot' , !data );
         if ( data ) state_new = false;
 
+        // update highlighted. 
+
+        updateHighlighted( curr );
+
+        // close tooltip.
+
         await closeTooltipsExcept('section');
 
         await update_tooltip_s_coordinates( {
-           state: state_new , coor: [ current.x  , current.y ]
+           state: state_new , coor: [ current.x - 10 , current.y ]
         });
     }
 
     return (
       <Fragment>
-          <div ref={ curr_ref } className="content_edit" onClick={ ( e ) => toggleSectionHover( e ) } data-carrot="false">
-                <div className="edit_container">
-                      <Carrot />
-                </div>
-          </div>
+            <div ref={ curr_ref } className="content_edit" onClick={ ( e ) => toggleSectionHover( e ) } data-carrot="false">
+                    <div className="edit_container">
+                        <Carrot />
+                    </div>
+            </div>
       </Fragment>
     )
 }

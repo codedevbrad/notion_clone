@@ -8814,6 +8814,11 @@
     "fast-deep-equal" "^2.0.1"
     "prop-types" "^15.7.1"
 
+"react-detect-offline@^2.4.4":
+  "integrity" "sha512-pdlTxMW9lPcTCW0QUK8FRgcNo/SRmCGrABLVSuAG91ELeTPOEFWj81dcf6sJ3IpDKdYaalbPUrw722/AmMMJOw=="
+  "resolved" "https://registry.npmjs.org/react-detect-offline/-/react-detect-offline-2.4.4.tgz"
+  "version" "2.4.4"
+
 "react-dev-utils@^8.0.0":
   "integrity" "sha512-TK8cj7eghvxfe7bfBluLGpI/upo4EXC+G74hYmPucAG8C2XcbT+vKnlWPwLnABb75Zk+mR6D556Da+yvDjljrw=="
   "resolved" "https://registry.npmjs.org/react-dev-utils/-/react-dev-utils-8.0.0.tgz"

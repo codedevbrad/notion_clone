@@ -1,7 +1,7 @@
 
 import React from 'react';
 
-const NotionMessage = (  { message }) => {
+const NotionMessage = ( { message }) => {
     return (
         <div id="notion__message">
                 { message }

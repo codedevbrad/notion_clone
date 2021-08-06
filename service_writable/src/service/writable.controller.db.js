@@ -33,9 +33,7 @@ const writableSingleByUserPK = ( writableId ) => {
 
 const writableFindByUserPK = ( userId ) => {
     return Writable.findAll({
-        where: {
-          userId
-        }
+        where: { userId } , order: [['createdAt', 'ASC']]
     });
 }
 

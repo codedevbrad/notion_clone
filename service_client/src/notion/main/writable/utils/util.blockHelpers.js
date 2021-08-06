@@ -37,7 +37,10 @@ function placeCaretAtEnd(el) {
 }
 
 
-// what is the highlighted variable?
+/** 
+ * @param highlighted - current integer position of active block
+ */
+
 const makeFocus = ( highlighted , direction , options ) => {
 
     let { elementTarget } = options;
@@ -55,9 +58,9 @@ const makeFocus = ( highlighted , direction , options ) => {
         }
     }
 
-    // if div does not exist, do not call to focus element.
-
     let indexOfelement = returnIndex( direction );
+    
+    // if div does not exist, do not call to focus element.
     let div = document.querySelector(`[data-editable-id="${ indexOfelement }"] ${ elementTarget }`);
     if ( div !== null ) {
         placeCaretAtEnd( div );

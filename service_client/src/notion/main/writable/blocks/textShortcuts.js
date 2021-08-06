@@ -5,8 +5,7 @@ import { getblockData } from './blockJSON';
 
 // why placeCaret and detectKeyIsCharacter is needed?.
 import { 
-      scrubOffTags , makeFocus , getTextWidth , 
-      placeCaretAtEnd , detectKeyIsCharacter 
+      scrubOffTags , makeFocus , getTextWidth , placeCaretAtEnd , detectKeyIsCharacter 
 } from '../utils/util.blockHelpers';
 
 /**
@@ -45,9 +44,6 @@ function useComponentKeybinds( target, blockType , ...options ) {
                      if ( currentText_scrubbed < 1 ) {
                           evt.preventDefault();
                           await handleWrtableBlockUpdate( 'delete' , highlighted );
-                          makeFocus( highlighted , 'prev' , {
-                                elementTarget: '.editable'
-                          } );
                      }
                 }
                 else if ( keyInput === 'Backspace' && tooltip_b_coordinates.state ) {
@@ -64,6 +60,7 @@ function useComponentKeybinds( target, blockType , ...options ) {
                      } );
                 }
                 else if ( keyInput === '/' ) {
+                     evt.preventDefault();
                      let curr_elm_coors = evt.target.getBoundingClientRect();
                      let curr_elm_text  = scrubOffTags( evt.target.innerHTML );
                      let curr_elm_text_length = getTextWidth( curr_elm_text );

@@ -1,4 +1,4 @@
-import React , { Fragment , useState , useRef , useEffect , useContext }  from 'react';
+import React , { Fragment , useContext }  from 'react';
 import { AppContext } from '../context';
 
 import useComponentVisible from '../useEffects/useClickBoundary';
@@ -6,9 +6,15 @@ import styles from './tooltips.module.scss';
 
 const TooltipSection = ( ) => {
 
-    const { tooltip_s_coordinates , closeTooltips } = useContext( AppContext );
+    const { highlighted , tooltip_s_coordinates , closeTooltips , handleWrtableBlockUpdate } = useContext( AppContext );
 
     const { state , coor } = tooltip_s_coordinates;
+
+
+    const handleBlockDeletion = ( ) => {
+        handleWrtableBlockUpdate( 'delete' , highlighted );
+        closeTooltips();
+    }
 
     const {
      ref
@@ -18,10 +24,10 @@ const TooltipSection = ( ) => {
         <Fragment>
           { state &&
             <div className={`tooltip ${ styles.tooltip_section }`} style={ { left: coor[0] - 100, top: coor[1] - 10 } } ref={ ref }>
-              <ul>
-                <li> delete    </li>
-                <li> turn into </li>
-              </ul>
+                <ul>
+                    <li onClick={ ( ) => handleBlockDeletion() }> delete </li>
+                    <li> turn into </li>
+                </ul>
             </div>
           }
         </Fragment>

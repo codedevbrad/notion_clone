@@ -1,9 +1,10 @@
-import React , { useEffect , useContext }  from 'react';
-import { useParams } from "react-router-dom";
+import React , { useContext }  from 'react';
 
 import { HeadSeo } from '../../../randoms/seoTag';
 
 import { AppContext } from './context';
+
+import NotionSaveSync from './extras/notionSync/sync';
 
 import PageHeading   from './main/pageHeading';
 import PageWritable  from './main/pageWritable';
@@ -18,13 +19,28 @@ import usePageBindListeners from './main/functions/handleBindListener';
 import './styles.scss'; 
 
 
+
 // LOGGED IN AND YOU HAVE ACCESS TO PAGE ...
+
 
 // pass writable as props?
 
+
+const NotionEdit = ( ) => {
+
+    const { dragSelection , togglecanEdit } = useContext( AppContext );
+
+    return (
+        <p className={ `edit_control ${ dragSelection.canDrag ? 'edit_control_on' : ''  } `} onClick={ () => togglecanEdit() }>
+             <i className="fas fa-edit"> </i>
+         </p>
+    )
+}
+
+
 const NotionPage = ( ) => {
 
-    const { getSingleWritable , dragSelection , updateDragSelection , togglecanEdit , handleWrtableBlockUpdate } = useContext( AppContext );
+    const { dragSelection , updateDragSelection ,  handleWrtableBlockUpdate } = useContext( AppContext );
 
     const itemsSelected = ({ items, event }) => {
           let arraySelected = [ ];
@@ -38,7 +54,7 @@ const NotionPage = ( ) => {
     }
 
     const handleBlockCreation = async ( evt ) => {
-          let isOutOfElement = evt.classList[0] == 'page_right';
+          let isOutOfElement = evt.classList[0] === 'page_right';
           if ( isOutOfElement && !dragSelection.canDrag ) {
                await handleWrtableBlockUpdate( 'fresh' );
           }
@@ -47,28 +63,18 @@ const NotionPage = ( ) => {
     usePageBindListeners();
     useSelection( dragSelection.canDrag , itemsSelected );
 
-    
-    let { idroom } = useParams();
-
-    useEffect( (  ) => {
-         
-         console.log('get page data for' , idroom );
-         getSingleWritable( idroom )
-
-    } , [ idroom ] );
-
-
     return (
-        <div className="Page">
+        <div className="Notion">
 
               <HeadSeo title={ 'individual page' } description={ 'each indidvidual page'} keywords={ 'manage your thoughts' }/>
+
+              <NotionSaveSync />
 
               <TooltipHighlight />
 
               <BlockCreation />
  
               <div className="page_top">
-
                   <div className="page_top_titlecard">
                      <h3> Heading </h3>
                   </div>
@@ -82,10 +88,8 @@ const NotionPage = ( ) => {
                       <TooltipSection />
                   </div>
 
-                  <div className={ `page_right scrollbar`} onClick={ ( evt ) => handleBlockCreation( evt.target ) } >
-                      <p className={ `edit_control ${ dragSelection.canDrag ? 'edit_control_on' : ''  } `} onClick={ () => togglecanEdit() }>
-                          <i className="fas fa-edit"></i>
-                      </p>
+                  <div className={ `page_right scrollbar` } onClick={ ( evt ) => handleBlockCreation( evt.target ) } >
+                      <NotionEdit />
                       <PageWritable />
                   </div>
               </div>
