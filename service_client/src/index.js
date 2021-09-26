@@ -6,6 +6,7 @@ import { DefaultHeadSEO , HeadSeo } from './randoms/seoTag';
 
 import PageError404 from './pages/page404/index';
 
+import AppHome     from './pages/landing/index';
 import NotionApp   from './notion/notion';
 import SocialLogin from './social/Login';
 
@@ -20,9 +21,10 @@ const App = () => {
       <Router>
             <div className="App">
                   <DefaultHeadSEO />
-                  <HeadSeo title={ 'notion clone' } description={ 'template description'} keywords={ 'manage your thoughts' }/>
+                  <HeadSeo title={ 'notion clone' } description={ 'template description' } keywords={ 'manage your thoughts' }/>
                   <SocialContextProvider>
                         <Switch>
+                              <Route exact path ="/" component={ AppHome } />
                               <Route path="/login" component={ SocialLogin } />
                               <Route path="/workspace/:idroom" component={ NotionApp } />
                               <Route component={ PageError404 } />

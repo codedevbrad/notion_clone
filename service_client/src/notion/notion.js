@@ -1,5 +1,5 @@
 
-import React , { useContext , Fragment } from 'react';
+import React , { useContext , Fragment, useEffect } from 'react';
 
 import AppContextProvider, { AppContext } from '../notion/main/writable/context';
 import { SocialContext }  from '../social/social_context';
@@ -7,8 +7,11 @@ import { SocialContext }  from '../social/social_context';
 import NotionPage       from './main/writable/page';
 import NotionNavigation from './main/nav/notion.nav';
 import NotionWelcome    from './main/writableNoFetch/notionPage_welcome/index';
+import NotionNoFetch    from './main/writableNoFetch/notionPage_error/index';
+
 import { useUserFetch } from './pageFetches/notion.user';
 import useSyncWritableroom from './pageFetches/notion.workspace';
+
 
 const NotionPlain = (  ) => {
     return ( <div> </div> )
@@ -24,8 +27,9 @@ const NotionRender = ( ) => {
 
     return (
         <div className="Page">
-            { writableComponent === 'loading' && <NotionPlain /> }
-            { writableComponent === 'notion'  && <NotionPage /> }
+            { writableComponent === 'loading' && <NotionPlain />   }
+            { writableComponent === 'notion'  && <NotionPage />    }
+            { writableComponent === 'nofetch' && <NotionNoFetch /> }
             { writableComponent === 'welcome' && <NotionWelcome /> }
         </div>
     )

@@ -7,6 +7,8 @@ const configFile = { headers: {'Content-Type': 'multipart/form-data' }};
 const WritablePort = 'http://localhost:5000/api/v0';
 const UsersPort    = 'http://localhost:5001/api/v0';
 
+// ERROR - err.response.data
+
 const configAuth = ( ) => {
 
       let token = getAuthToken();
@@ -78,7 +80,11 @@ class WritableRequests {
       getWritable ( writableId ) {
             return new Promise( ( resolve , reject ) => {
                   axios.get(`${ WritablePort }/writable?writableId=${ writableId }` , configAuth() )
-                       .then( res => resolve( res.data ))
+                       .then( res => {
+                             let writable = res.data;
+                             writable.data = JSON.parse( writable.data );
+                             resolve( writable );
+                        })
                        .catch( err => reject( err.response.data ));
             });
       }

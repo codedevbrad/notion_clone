@@ -3,6 +3,7 @@ import { makeFocus } from './utils/util.blockHelpers';
 import { v4 as uuidv4 } from 'uuid';
 import { getblockData , blockChoices } from './blocks/blockJSON';
 import { writableRequests  } from '../../../network_requests';
+import { delay } from '@codedevbrad/clientutils';
 
 export const AppContext = createContext();
 
@@ -24,7 +25,6 @@ const AppContextProvider = ( props  ) => {
     const getSingleWritable = async ( chosenId ) => new Promise( ( resolve , reject ) => {
         getWritable( chosenId )
             .then( writable => {
-                writable.data = JSON.parse( writable.data );
                 setWritable( writable );
                 console.log( 'set data' );
                 resolve();
@@ -72,7 +72,7 @@ const AppContextProvider = ( props  ) => {
                     updateWritables( writablesCopy );
 
                 break;
-            
+
             case 'delete_page':
 
                 break;
@@ -98,6 +98,9 @@ const AppContextProvider = ( props  ) => {
             case 'notion_welcome':
                 switchComponents('welcome');
                 break;
+            case 'notion_nofetch':
+                switchComponents('nofetch');
+                break;
             default:
                 switchComponents('welcome');
                 break;
@@ -110,22 +113,149 @@ const AppContextProvider = ( props  ) => {
 
     const [ writing , updateWriting ] = useState( [ ] );
 
+
+    // writing sync.
+    const [ redoHistory , updateRedoHistory ] = useState({
+        history: [ ] , curr: 0 , size: null
+    });
+
+
+    function cloneMessage ( array ) {
+        return JSON.parse(JSON.stringify( array ) );
+    }
+
+
+    const redoHistoryProcedure = ( type , writableArrSaved ) => {
+        let { history , curr: currentHistory  } = redoHistory;
+        let history_updated = cloneMessage( history );
+
+        switch( type ) {
+            case 'build':
+                updateRedoHistory( { 
+                    ...redoHistory , 
+                    history: [ writing ] , 
+                    curr: writing.length , 
+                    size: writing.length 
+                } );
+                break;
+
+            case 'synced':
+                break;
+
+            case 'rewrite_next':
+                if ( currentHistory < history.length ) {
+
+                    history_updated.length = currentHistory + 1;
+
+                    updateRedoHistory( { 
+                        ...redoHistory , history: history_updated , curr: history_updated.length - 1 , 
+                        size: ( history_updated.length - 1 )
+                    } );
+                }
+                break;
+
+            case 'add_to':
+                let writableSave = cloneMessage( writableArrSaved );
+                history_updated.push( writableSave );
+                updateRedoHistory( { 
+                        ...redoHistory , 
+                        history: history_updated , 
+                        curr: ( history.length - 1 ) + 1 ,
+                        size: ( history_updated.length - 1 ) 
+                } );
+                break;
+
+            case 'prev':
+                if ( currentHistory > 0 ) {
+                    let prevArray = history[ currentHistory - 1 ]; 
+                    updateRedoHistory( { 
+                        ...redoHistory , 
+                        curr: currentHistory - 1 
+                    } );
+                    updateWritingByHistory( prevArray );
+                }
+                break;
+
+            case 'next':
+                if ( currentHistory < history.length ) {
+                    let nextArray = history[ currentHistory + 1 ]; 
+                    updateRedoHistory( { 
+                        ...redoHistory , 
+                        curr: currentHistory + 1                
+                    } );
+                    updateWritingByHistory( nextArray );
+                } 
+                break;
+
+            default:
+                break;
+        }
+    }
+
+
+    // push last state and index change here.
+       // push text letter or word as redo / undo.
+
+
+    const [ writingChanges , updateChanges ] = useState( { state: false , msg: 'no new changes' } );
+
+    const updateDataProcedure = async ( type ) => {
+        // showcase that new updates have been made to page.
+        let { changedCount } = writingChanges;
+        switch ( type ) {
+                case 'synced':
+                    updateChanges( { state: false , msg: 'no new changes' } );
+                    break;
+
+                case 'required':
+                    updateChanges( { state: true  , msg: `changes to save` } );
+                    break;
+
+                case 'save':
+                    updateChanges( { state: true , msg: `saving new changes` } );
+                    break;
+
+                case 'saved':
+                    await delay( 3000 );
+                    updateChanges( { state: false , msg: `${ changedCount + 1 } changes saved` } );
+                    break;
+                    
+                default:
+                    break;
+        }
+    }
+
+
+    const updateWritingByHistory = ( array ) => {
+        updateDataProcedure( 'required' );
+        updateWriting( array );
+    }
+
+
+    const updateWritingShowSync = ( array ) => {
+        updateDataProcedure( 'required' );
+        redoHistoryProcedure( 'add_to' , array );
+        updateWriting( array );
+        if ( redoHistory.curr < redoHistory.size ) {
+            console.log( redoHistory.curr , redoHistory.size , 'rewrite' );
+            redoHistoryProcedure( 'rewrite_next');
+        }
+    }
+
+
     /** 
      * @param type - '| heading | data'
      * @param value - 'type: string | obj 
      */
+
     const saveUpdateToDatabase = ( type , value ) => {
         switch ( type ) {
             case 'heading': 
-            
-                     const MODEL = { writablename: value };
+                     updateWritable( { writableId , MODEL: { writablename: value } } )
 
-                     updateWritable( { writableId , MODEL } )
                             .then( ( writable ) => {
 
                                 let { id: writableId , writablename: name_updated } = writable;
-
-                                console.log( writable );
 
                                 updateWritableRooms({
                                     type: 'update_page' ,
@@ -134,16 +264,26 @@ const AppContextProvider = ( props  ) => {
                                       }
                                 });
                             })
-                            .catch( err => console.log( err  ));
+                            .catch( err => console.log( err.response.data  ));
 
                 break;
 
             case 'data':
 
+                        let dataSend = JSON.stringify( value );
+
+                        updateWritable( { writableId , MODEL: { data: dataSend } } )
+                            .then( ( writable ) => {
+
+                                console.log( writable );
+                                let writableData = JSON.parse( writable.data );
+                                console.log( writableData );
+
+                            })
+                            .catch( err => console.log( err  ));
                 break;
 
             default:
-                
                 break;
         }
     }
@@ -205,7 +345,8 @@ const AppContextProvider = ( props  ) => {
         } else {
              arrayCopy.splice( updateIndex , 0 , object );
         }
-        await updateWriting( arrayCopy );
+        // updateWriting( arrayCopy );
+        await updateWritingShowSync( arrayCopy );
     }
 
     // ( type : switch condition , index: single or array of values for array , block : block : object to be inserted )
@@ -213,22 +354,25 @@ const AppContextProvider = ( props  ) => {
     const handleBlockTagUpdate = async( type , tag ) => {
         let arrayCopy = [ ...writing ];
         let currentItem = arrayCopy[ highlighted ];
-        let { selected , selRange } = selectedText;
+        let { selected } = selectedText;
 
         switch( type ) {
             case 'tag_update':
                 currentItem.tag = tag;
-                await updateWriting( arrayCopy );
+                // await updateWriting( arrayCopy );
+                await updateWritingShowSync( arrayCopy );
                 break;
             case 'underline':
                 let newText_U = currentItem.text.replace( selected , `<div class="underlined"> ${ selected } </div>` );
                 currentItem.text = newText_U;
-                await updateWriting( arrayCopy );
+                // await updateWriting( arrayCopy );
+                await updateWritingShowSync( arrayCopy );
                 break;
             case 'highlight':
                 let newText_H = currentItem.text.replace( selected , `<div class="highlighted"> ${ selected } </div>` );
                 currentItem.text = newText_H;
-                await updateWriting( arrayCopy );
+                // await updateWriting( arrayCopy );
+                await updateWritingShowSync( arrayCopy );
                 break;
             default:
                 return false;
@@ -256,16 +400,16 @@ const AppContextProvider = ( props  ) => {
                 let object_fresh = getblockData('text').block;
                     object_fresh.key = key_id;
                 arrayCopy.push( object_fresh );
-                await updateWriting( arrayCopy );
-                makeFocus( writing.length , 'curr' , {
-                    elementTarget: '.editable'
-                } );
+                // await updateWriting( arrayCopy );
+                await updateWritingShowSync( arrayCopy );
+                makeFocus( writing.length , 'curr' , { elementTarget: '.editable' } );
                 break;
 
             case 'new':
                 block.key = key_id;
                 arrayCopy.splice( index + 1 , 0 , block );
-                await updateWriting( arrayCopy );
+                // await updateWriting( arrayCopy );
+                await updateWritingShowSync( arrayCopy );
                 break;
 
             case 'new_textAdded':
@@ -274,7 +418,8 @@ const AppContextProvider = ( props  ) => {
                 block_obj.key = key_id;
                 block_obj.text = appendedText;
                 arrayCopy.splice( index + 1 , 0 , block_obj );
-                await updateWriting( arrayCopy );
+                // await updateWriting( arrayCopy );
+                await updateWritingShowSync( arrayCopy );
                 break;
 
             case 'delete':
@@ -286,27 +431,31 @@ const AppContextProvider = ( props  ) => {
                 };
                 
                 arrayCopy.splice( index , 1 );
-                await updateWriting( arrayCopy );
-                makeFocus( index , 'prev' , {
-                    elementTarget: '.editable'
-                } );
+                // await updateWriting( arrayCopy );
+                await updateWritingShowSync( arrayCopy );
+                makeFocus( index , 'prev' , { elementTarget: '.editable' } );
                 break;
 
             case 'delete_many':
-                arrayCopy = arrayCopy.filter( ( value , itemIndex ) => {
-                    return index.indexOf( itemIndex ) === -1;
-                });
-                await updateWriting( arrayCopy );
+                arrayCopy = arrayCopy.filter( ( value , itemIndex ) => { return index.indexOf( itemIndex ) === -1; });
+                // await updateWriting( arrayCopy );
+                await updateWritingShowSync( arrayCopy );
                 break;
             default:
                 return false;
         }
     }
 
-    const handleWritableUpdate = ( value , index ) => {
+    const handleWritableTextUpdate = async ( value , index ) => {
+        let arrayCopy = [ ...writing ];
+        arrayCopy[ index ].text = value;
+        updateWritingShowSync( arrayCopy );
+    }
+
+    const handleWritableUpdate = async ( value , index ) => {
           let arrayCopy = [ ...writing ];
           arrayCopy[ index ].text = value;
-          updateWriting( arrayCopy );
+          updateWritingShowSync( arrayCopy );
     }
 
     const handleWritableHighlighting = async ( evt ) => {
@@ -376,8 +525,14 @@ const AppContextProvider = ( props  ) => {
 
               // INDIVIDUAL // 
 
+              // sync.
+              writingChanges , updateDataProcedure ,
+              redoHistory , redoHistoryProcedure ,
+
+              // render.
               writableComponent , renderNotionComponentType ,
-              
+
+              // writable.
               heading , updateHeading ,
 
               writableId , saveUpdateToDatabase ,
@@ -388,6 +543,8 @@ const AppContextProvider = ( props  ) => {
 
               highlighted , updateHighlighted ,
               currCursor , updateCursor ,
+
+              // tooltip.
               tooltip_s_coordinates , update_tooltip_s_coordinates ,
               tooltip_h_coordinates , update_tooltip_h_coordinates ,
               tooltip_b_coordinates , update_tooltip_b_coordinates , tooltip_b_blocks , update_tooltip_b_blocks ,

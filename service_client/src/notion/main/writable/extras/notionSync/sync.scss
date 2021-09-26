@@ -1,21 +1,48 @@
 
-
+// SYNC ..
 .system_notify {
-    position: absolute; right: 30px; top: 15px;
+    position: absolute; right: 30px; top: 15px; padding: 12px 20px; border-radius: 7px;
+
+    display: flex; flex-direction: row;
     
-    padding: 12px 20px; border-radius: 7px;
-    
-    p {
-        font-weight: 400;  font-size: 0.73em;
+    > p {
+        font-weight: 400; font-size: 0.73em;
     } 
+
+    // HISTORY
+
+    .history {
+
+        display: flex; flex-direction: row;
+
+        .history-btn {
+            margin-right: 10px; background-color: lightgray; padding: 6px 10px; border-radius: 4px;
+            cursor: pointer; box-shadow: 2px 1px 6px 0 #9a9a9a;
+            i , svg {
+                color: rgb(121, 121, 121);
+            }
+        }
+        .history-btn.active {
+            background-color: black;
+            i , svg {
+                color: white;
+            }
+        }
+    }
 }
 
-.system_updating {
-     background-color: rgb(0, 0, 0);
+.system_message {
+    display: flex; align-items: center; justify-content: center; border-radius: 4px;
+    
+    p { padding: 5px 10px; font-size: 0.78em; }
+}
+
+.system_required {
+     background-color: rgb(0, 0, 0); box-shadow: 2px 1px 6px 0 #9a9a9a;
      p { color: white; }
 }
 
 .system_synced {
     background-color: transparent; 
-    p { color: black; }
+    p { color: rgb(145, 145, 145); }
 }

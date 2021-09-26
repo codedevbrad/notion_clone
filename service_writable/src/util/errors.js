@@ -9,7 +9,7 @@ module.exports.errors = function( app ) {
     // error handler
     app.use( ( err , req , res , next ) => {
        let errorMessage = ErrorMessageTemplate( err.message || err );
-       console.error( err || err.message );
+       console.error( 'err || err.message' );
        
        res.status( err.status || 500 );
        res.send( errorMessage );

@@ -63,14 +63,14 @@ services:
   #   volumes:
   #    - nps_data:/var/lib/postgresql/data
       
-  notion_scraper:
-    container_name: notion_scraper
-    build: 
-      context: ./service_flask
-    volumes:
-      - ./service_flask:/usr/src/app
-    ports:
-      - "5002:5002"
+  # notion_scraper:
+  #   container_name: notion_scraper
+  #   build: 
+  #     context: ./service_flask
+  #   volumes:
+  #     - ./service_flask:/usr/src/app
+  #   ports:
+  #     - "5002:5002"
 
   # notion_redis
 

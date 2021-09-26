@@ -13,9 +13,7 @@
    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
     box-sizing: border-box;        /* Opera/IE 8+ */
-}
 
-* {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -32,17 +30,10 @@ h1, h2, h3, h4, a, li, p, input, label, textarea, button {
 
 input , button { font-weight: 400; outline: none; border: none; }
 
-/* -- html content -- */
-html, body { padding: 0; margin: 0; width: 100%; background: white; }
-
-html , body { height: 100%; }
-
 
 li , a  { text-decoration: none; cursor: pointer; color: black; }
 a:hover { text-decoration: none; }
 svg     { pointer-events:  none; }
-
-.App , #root  { background: white; width: 100%; height: 100%; color: black; }
 
 .noSelect {
   -webkit-touch-callout: none;
@@ -51,4 +42,40 @@ svg     { pointer-events:  none; }
   -moz-user-select: none;
   -ms-user-select: none;
    user-select: none;
+}
+
+
+/* -- html content -- */
+html, body { padding: 0; margin: 0; width: 100%; background: white; }
+
+html , body { height: 100%; }
+
+.App , #root  { background: white; width: 100%; height: 100%; color: black; }
+
+.App {
+      width: 100%; height: 100%; display: flex; justify-content: center; flex-direction: row;
+     
+    .Page {
+      
+        flex: 1; background: white; display: flex; 
+        position: relative;
+        padding: 10px 0; overflow: hidden;
+    }
+}
+
+.scrollbar::-webkit-scrollbar {
+  width: 15px;
+}
+
+/* Track */
+.scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Handle */
+.scrollbar::-webkit-scrollbar-thumb {
+  background: #888;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  background-clip: padding-box;  
 }

@@ -1,5 +1,5 @@
 import { AppContext } from '../context';
-import React , { useContext , useState }  from 'react';
+import React , { useContext }  from 'react';
 import ContentEditable  from 'react-contenteditable';
 
 let timeout = null;
@@ -15,7 +15,6 @@ const PageHeading = ( ) => {
 
         if( timeout ) clearTimeout( timeout );
         timeout = setTimeout( ( ) => {
-             console.log( text ); 
              saveUpdateToDatabase( 'heading' , text );
         }, 2500 );
     };

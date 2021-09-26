@@ -5,7 +5,7 @@ import { HeadSeo } from '../../../randoms/seoTag';
 import { AppContext } from './context';
 
 import NotionSaveSync from './extras/notionSync/sync';
-
+import NotionEdit     from './extras/notionEdit/index';
 import PageHeading   from './main/pageHeading';
 import PageWritable  from './main/pageWritable';
 
@@ -18,29 +18,14 @@ import usePageBindListeners from './main/functions/handleBindListener';
 
 import './styles.scss'; 
 
-
-
 // LOGGED IN AND YOU HAVE ACCESS TO PAGE ...
-
 
 // pass writable as props?
 
 
-const NotionEdit = ( ) => {
-
-    const { dragSelection , togglecanEdit } = useContext( AppContext );
-
-    return (
-        <p className={ `edit_control ${ dragSelection.canDrag ? 'edit_control_on' : ''  } `} onClick={ () => togglecanEdit() }>
-             <i className="fas fa-edit"> </i>
-         </p>
-    )
-}
-
-
 const NotionPage = ( ) => {
 
-    const { dragSelection , updateDragSelection ,  handleWrtableBlockUpdate } = useContext( AppContext );
+    const { heading , dragSelection , updateDragSelection ,  handleWrtableBlockUpdate } = useContext( AppContext );
 
     const itemsSelected = ({ items, event }) => {
           let arraySelected = [ ];
@@ -66,7 +51,7 @@ const NotionPage = ( ) => {
     return (
         <div className="Notion">
 
-              <HeadSeo title={ 'individual page' } description={ 'each indidvidual page'} keywords={ 'manage your thoughts' }/>
+              <HeadSeo title={ heading } description={ 'notion page'} keywords={ 'manage your thoughts' }/>
 
               <NotionSaveSync />
 

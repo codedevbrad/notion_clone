@@ -59,9 +59,11 @@ module.exports.updateWritable = asyncSupport( async ( req , res , next ) => {
         .then( obj => {
             res.status(201).send( {
                 id: obj.id ,  
-                writablename: obj.writablename
+                writablename: obj.writablename , 
+                data: obj.data
             } );
-        });
+        })
+        .catch( next )
 });
 
 
