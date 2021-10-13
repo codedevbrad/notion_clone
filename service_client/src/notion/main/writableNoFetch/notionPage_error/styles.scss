@@ -1,0 +1,8 @@
+@import "../../../../_cssLibrary/class_variable.scss";
+
+.workspace-error {
+    .welcome-navigate {
+        @include linkBlue; display: flex; width: fit-content; padding: 12px 13px; border-radius: 6px;
+        font-size: 0.7em; margin: 20px 0;
+    }
+}

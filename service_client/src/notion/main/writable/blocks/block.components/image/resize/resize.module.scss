@@ -1,0 +1,11 @@
+
+.image_resize {
+    background: transparent;
+    height: 100%; 
+    cursor: col-resize;
+    flex: 0 0 7px;
+}
+
+.image_resize:hover {
+    background: #79cbfb;
+}

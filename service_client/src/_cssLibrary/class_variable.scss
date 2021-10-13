@@ -2,17 +2,18 @@
 $primary_elementBackground: white;
 $primary_button: white;
 $primary_border: 1px solid black;
+$primary_transition_speed: transition all 400ms;
 
-@mixin buttonStyle ( ) {
 
+@mixin linkBlue {
+   background-color: darkblue;
+   color: white;
+   @include boxShadow( darkblue );
+   cursor: pointer;
 }
 
-@mixin inputStyle ( ) {
-
-}
-
-@mixin boxShadow ( $color , $space ) {
-
+@mixin boxShadow ( $color ) {
+   box-shadow: 2px 2px 2px 2px $color;
 }
 
 @mixin flexbox_row ( $v_type , $h_type ) {

@@ -2,7 +2,7 @@
 const jwt = require('jsonwebtoken');
 
 const generateAccessToken = ( user ) => new Promise( async ( resolve , reject ) => {
-    let token = jwt.sign( user , process.env.TOKEN_SECRET, { expiresIn: '30d' });
+    let token = jwt.sign( user , process.env.TOKEN_SECRET, { expiresIn: '60d' });
     resolve( token );
 });
 

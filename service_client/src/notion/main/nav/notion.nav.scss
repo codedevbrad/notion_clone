@@ -1,0 +1,53 @@
+
+.navigation {
+      flex: 0 0 350px; height: 100%; background: rgb(247, 246, 243);
+      border-left: 1px solid #dedcdc;
+      display: flex; flex-direction: column;
+
+      .heading-social {
+          flex: 0; display: flex; justify-content: flex-end; align-items: center;
+          padding: 25px 0;
+
+          .social-avatar {
+              margin-right: 20px; cursor: pointer;
+              h1 { margin-right: 5px; font-size: 1em; }
+          }
+      }
+
+      .nav-items {
+         flex: 1; overflow-y: scroll; padding-left: 10px;
+
+         .nav-item:hover .page-link-more {
+            visibility: visible;
+         }
+
+         div.nav-item {
+            display: flex; flex-direction: row;
+            margin: 10px 0; padding: 10px; font-size: 1.1em;
+
+               .page-link {
+                  flex: 1;
+                  a { font-family: 'Cormorant Garamond'; }
+               }
+   
+               .page-link-more {
+                  flex: 0; visibility: hidden; cursor: pointer;
+               }
+         }
+      }
+
+      .new-page {
+
+          flex: 0 0 60px; display: flex; flex-direction: row; background: white; border-top: 1px solid #dedcdc;
+          input { 
+             flex: 1; background-color: white; padding-left: 15px;
+          }
+          div   {
+             flex: 0 0 20%; padding: 0 20px; display: flex; align-items: center; justify-content: center;
+             background-color: rgb(0, 0, 0);
+             color: white;
+
+             i , svg { color: white; }
+          }
+      }
+ }

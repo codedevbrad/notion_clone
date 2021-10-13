@@ -9,9 +9,8 @@ const authenticateTokenMiddleware = async( req , res, next ) => {
         let userRequest = await stripToken( req );
 
         // MAKE SURE USER IS IN DATABASE
-        let userPersistsInDB = await tokenUserMatchesDatabase( userRequest );
-        if (!userPersistsInDB ) reject('user token does not match any user in DB');
-        
+        // let userPersistsInDB = await tokenUserMatchesDatabase( userRequest );
+        // if (!userPersistsInDB ) reject('user token does not match any user in DB');
         res.locals.user = userRequest;
         next( );
     }
@@ -28,8 +27,8 @@ const authenticateToken = ( ) => new Promise( async ( resolve , reject ) => {
         let userRequest = await stripToken( req );
 
         // MAKE SURE USER IS IN DATABASE
-        let userPersistsInDB = await tokenUserMatchesDatabase( userRequest );
-        if (!userPersistsInDB ) reject('user token does not match any user in DB');
+        // let userPersistsInDB = await tokenUserMatchesDatabase( userRequest );
+        // if (!userPersistsInDB ) reject('user token does not match any user in DB');
         
         resolve( userRequest );
     }

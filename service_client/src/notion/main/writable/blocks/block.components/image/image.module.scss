@@ -1,0 +1,15 @@
+
+.block_imageTemplate {
+    width: 100%; display: flex; justify-content: center; position: relative; 
+
+    .block_image {
+        display: flex; flex-direction: row;  transition: all 400ms;
+    
+        .block_img_container {
+            flex: 1; cursor: pointer;
+            img {
+                width: 100%; height: 100%; border-radius: 3px;
+            }
+        }
+    }
+}

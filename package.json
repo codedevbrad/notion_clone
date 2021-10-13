@@ -12,7 +12,7 @@
     "app:all":   "concurrently \"npm run app:apis\"     \"npm run app:client\"",
 
     "micro-up:all": "docker-compose up --build",
-    "micro-down": "docker-compose down"
+    "micro-down":   "docker-compose down"
   },
   "repository": {
     "type": "git",

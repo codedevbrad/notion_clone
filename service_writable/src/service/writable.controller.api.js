@@ -9,40 +9,63 @@ const { asyncSupport } = require('@codedevbrad/serverutils');
 const modelQueries = require('./writable.controller.db');
 
 const { writableCreate , writableUpdate , writableDelete } = modelQueries.mutableQueries;
-const { writableFindByUserPK } = modelQueries.authorizationQueries;
+const { writableSingleByUserPK , writableFindByUserPK } = modelQueries.authorizationQueries;
 
-// expect request to be user and user PK IS same as workspace FK..
+// expect request to be user and user PK IS same as workspace user FK..
 
 
 // ==== WRITABLES fetch / create / update / delete ==== // 
 
+module.exports.getWritable = asyncSupport( async ( req , res , next ) => {
+    let { writableId } = req.query;
+    let { data , id , writablename } = await writableSingleByUserPK( writableId );
+    res.status( 200 ).send( {
+        data , id , writablename
+    } );
+});
+
 module.exports.getWritables = asyncSupport( async( req , res , next ) => {
     let { id } = res.locals.user;
     let writables = await writableFindByUserPK( id );
-    res.status( 200 ).send( writables );
+
+    let writables__stripped = writables.map( ( { id , writablename } ) => ({ id , writablename }));
+    res.status( 200 ).send(  writables__stripped );
 });
+
 
 module.exports.createWritable = asyncSupport( async( req , res , next ) => {
     let { id } = res.locals.user;
-    let { data , writablename } = req.body;
+    let { writablename } = req.body;
+    
     const Writable_MODEL = {
-        data , writablename , userId: id
+        data: '[]' , writablename , userId: id
     }
 
     let newWritable = await writableCreate( Writable_MODEL );
-    res.status(201).send( newWritable );
+    res.status(201).send( {
+            id: newWritable.id , 
+            data: newWritable.data , 
+            writablename: newWritable.writablename
+    } );
 });
+
 
 module.exports.updateWritable = asyncSupport( async ( req , res , next ) => {
     let { id } = res.locals.user;
-    let { writableID , model } = req.body;
+    let { MODEL , writableId } = req.body;
 
-    let updatedWritable = await writableUpdate(
-        model , 
-        writableID
-    );
-    res.status(201).send( updatedWritable[1] );
+    writableUpdate( MODEL , writableId )
+        .then( updated => updated[ 1 ] )
+        .then( obj => {
+            res.status(201).send( {
+                id: obj.id ,  
+                writablename: obj.writablename , 
+                data: obj.data
+            } );
+        })
+        .catch( next )
 });
+
 
 module.exports.deleteWritable = asyncSupport( async ( req , res , next ) => {
     let { id } = res.locals.user;
@@ -61,6 +84,8 @@ module.exports.deleteWritable = asyncSupport( async ( req , res , next ) => {
 
 // ==== IMAGE CREATE / DELETE ==== //
 
+// what about errors?
+
 module.exports.Writable__imageUPLOAD = asyncSupport( async( req , res , next ) => {
     // Get image from request...
     let [ file , ...files ] = Object.values( req.files );
@@ -68,7 +93,7 @@ module.exports.Writable__imageUPLOAD = asyncSupport( async( req , res , next ) =
     let upload = await cloudinary.v2.uploader.upload( 
         file.path , { folder: "notion_clone/image_blocks" , use_filename: true }
     );
-    res.status( 200 ).send( 'test' );
+    res.status( 200 ).send( upload.url );
 });
 
 module.exports.Writable__imageDELETE = asyncSupport( async( req , res , next ) => {

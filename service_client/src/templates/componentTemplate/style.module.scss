@@ -1,0 +1,24 @@
+
+.page_template {
+        display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;
+        overflow-y: scroll; margin-right: 20px;
+        .page_template__inner {
+                display: flex; flex-direction: column; 
+                flex: 0 0 50%;
+                height: 70%;
+
+                .page_template_head { 
+
+                        flex: 0; margin: 30px 0; font-size: 2em; word-break: break-all;
+                }
+
+                .page_template_body { 
+
+                        flex: 1; 
+
+                        p {
+                            font-weight: 400; word-break: break-all;
+                        }
+                }
+        }
+}
