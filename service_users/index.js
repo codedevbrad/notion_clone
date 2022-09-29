@@ -13,7 +13,6 @@ var config = require('./src/config/settings.js');
 app.use('/api' , require('./src/api'));
 app.use('/test', require('./src/api.test'));
 
-
 require('./src/util/errors').errors( app );
 
 (async () => {
@@ -22,7 +21,8 @@ require('./src/util/errors').errors( app );
         { force: false } //Reset db every time
       );
       app.listen(port, () => console.log(`users service running in env: ${ process.env.NODE_ENV }`))
-    } catch (error) {
+    } 
+    catch (error) {
       console.log(error);
     }
 })();

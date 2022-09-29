@@ -3,12 +3,12 @@
   "version": "1.0.0",
   "description": "base script to run server and frontend app.",
   "scripts": {
-    "app:client": "npm --prefix ./service_client run start",
+    "app:client":   "npm --prefix ./service_client run start",
     "app:writable": "npm --prefix ./service_writable run server:testing",
-    "app:users": "npm --prefix ./service_users run server:testing",
-    "app:scraper": "npm --prefix ./service_flask run api:run",
+    "app:users":    "npm --prefix ./service_users run server:testing",
+    "app:scraper":  "npm --prefix ./service_flask run api:run",
 
-    "app:apis":  "concurrently \"npm run app:writable\" \"npm run app:users\"  \"npm run app:scraper\"",
+    "app:apis":  "concurrently \"npm run app:writable\" \"npm run app:users\"",
     "app:all":   "concurrently \"npm run app:apis\"     \"npm run app:client\"",
 
     "micro-up:all": "docker-compose up --build",

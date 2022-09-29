@@ -15,7 +15,6 @@ import SocialContextProvider from './social/social_context';
 import './_cssLibrary/class_reset.css';
 import './_cssLibrary/class_app.scss';
 
-
 const App = () => {
     return (
       <Router>

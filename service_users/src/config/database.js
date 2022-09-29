@@ -7,7 +7,7 @@ function returnDatabaseURI ( ) {
         return new Sequelize(
             'writable_database' ,
             'postgres' ,
-            'password',
+            '12345',
             {
                 host: 'localhost' ,
                 dialect: 'postgres'
@@ -27,4 +27,3 @@ function returnDatabaseURI ( ) {
 }
 
 module.exports = returnDatabaseURI();
-

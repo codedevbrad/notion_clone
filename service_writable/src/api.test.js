@@ -24,9 +24,9 @@ api_test.get('/v0/passauth'  , authenticateTokenMiddleware , test_controller_aut
 // === ACCESS-STRATEGY === // 
 
 api_test.get('/v0/testaccess' , 
-             authenticateTokenMiddleware , authenticateAccessMiddleware ,
-             test_controller_access.testaccess
-            );
+    authenticateTokenMiddleware , authenticateAccessMiddleware ,
+    test_controller_access.testaccess
+);
 
 
 // === SERVICE : DATABASE QUERIES ===== // 
@@ -39,6 +39,5 @@ api_test.get('/v0/testaccess' ,
 // api.delete('/v0/writable/single/:id', controller_writable.deleteOne);
 
 // ==== SERVICE : API REQUEST ===== //
-
 
 module.exports = api_test;

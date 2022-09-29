@@ -1,5 +1,5 @@
-from flask_restful import Api , Resource
-from flask_cors import CORS, cross_origin
+from flask_restful import Api, Resource
+from flask_cors import CORS 
 from routes.module_bookmark.bookmark import API_Bookmark
 from routes.module_image.image import API_Images
 
